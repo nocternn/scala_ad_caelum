@@ -4,80 +4,61 @@ using UnityEngine;
 
 public class HUDManager : MonoBehaviour
 {
-    public static HUDManager singleton;
+    private StageManager _stage;
+    
+    private HUDCombatManager _combat;
+    private HUDBuffManager _buff;
 
-    private StatBarController _barEnemyHealth;
-    private StatBarController _barPlayerHealth;
-    private StatBarController _barPlayerSkillPoints;
-    private StatBarController _barPlayerAttackCharge;
-    
-    private SkillButtonController _btnActive;
-    private SkillButtonController _btnUltimate;
-    
     public void Initialize()
     {
-        singleton = this;
+        Transform combat = transform.GetChild(0);
+        Transform buff = transform.GetChild(1);
         
-        _barEnemyHealth        = transform.Find("BarHealthEnemy").GetComponent<StatBarController>();
-        _barPlayerHealth       = transform.Find("BarHealthPlayer").GetComponent<StatBarController>();
-        _barPlayerSkillPoints  = transform.Find("BarSkillPlayer").GetComponent<StatBarController>();
-        _barPlayerAttackCharge = transform.Find("BarChargePlayer").GetComponent<StatBarController>();
+        combat.gameObject.SetActive(false);
+        buff.gameObject.SetActive(false);
+        
+        if (_stage.type == Enums.StageType.Combat)
+        {
+            combat.gameObject.SetActive(true);
+            
+            _combat = combat.GetComponent<HUDCombatManager>();
+            _combat.Initialize();
+        }
+        else if (_stage.type == Enums.StageType.Buff)
+        {
+            buff.gameObject.SetActive(true);
 
-        _btnActive   = transform.Find("ButtonActive").GetComponent<SkillButtonController>();
-        _btnUltimate = transform.Find("ButtonUltimate").GetComponent<SkillButtonController>();
+            _buff = buff.GetComponent<HUDBuffManager>();
+            _buff.Initialize();
+        }
+    }
+    
+    public void SetManager(StageManager stage)
+    {
+        _stage = stage;
+    }
+    
+    void Update()
+    {
+        if (_stage.type == Enums.StageType.Combat)
+        {
+            _combat.UpdateHealthUI("player", _stage.player.stats.currentHealth, _stage.player.stats.maxHealth);
+            _combat.UpdateHealthUI("enemy", _stage.enemy.stats.currentHealth, _stage.enemy.stats.maxHealth);
+            _combat.UpdatePlayerSkillPointsUI((int)Mathf.Round(_stage.player.stats.currentSkillPoints), _stage.player.stats.maxSkillPoints);
+            _combat.UpdatePlayerAttackCharge(_stage.player.stats.currentCharge, PlayerStats.MaxCharge);
+        }
     }
     
     public void UpdateUI(WeaponItem weapon)
     {
-        UpdateSkillButtonsUI(weapon);
-    }
-    public void UpdateUI(string tag, int currentValue, int maxValue)
-    {
-        if (tag.Equals("player_health"))
-        {
-            UpdateHealthUI("player", currentValue, maxValue);
-        }
-        else if (tag.Equals("enemy_health"))
-        {
-            UpdateHealthUI("enemy", currentValue, maxValue);
-        }
-        else if (tag.Equals("skill"))
-        {
-            UpdatePlayerSkillPointsUI(currentValue, maxValue);
-        }
-        else if (tag.Equals("charge"))
-        {
-            UpdatePlayerAttackCharge(currentValue, maxValue);
-        }
+        _combat.UpdateSkillButtonsUI(weapon);
     }
 
-    private void UpdateHealthUI(string tag, int currentHealth, int maxHealth)
+    public void SwitchToCombat()
     {
-        if (tag.Equals("player"))
+        if (_buff.selectedCard != null)
         {
-            _barPlayerHealth.UpdateUI(currentHealth, maxHealth);
-        }
-        else
-        {
-            _barEnemyHealth.UpdateUI(currentHealth, maxHealth);
+            _stage.SwitchToCombat(_buff.selectedCard);
         }
     }
-    
-    private void UpdatePlayerSkillPointsUI(int currentPoints, int maxPoints)
-    {
-        _barPlayerSkillPoints.UpdateUI(currentPoints, maxPoints);
-    }
-    
-    private void UpdatePlayerAttackCharge(int currentCharge, int maxCharge)
-    {
-        _barPlayerAttackCharge.SetMaxValue(maxCharge);
-        _barPlayerAttackCharge.SetValue(currentCharge);
-    }
-
-    private void UpdateSkillButtonsUI(WeaponItem weaponItem)
-    {
-        _btnActive.UpdateUI(weaponItem);
-        _btnUltimate.UpdateUI(weaponItem);
-    }
-    
 }

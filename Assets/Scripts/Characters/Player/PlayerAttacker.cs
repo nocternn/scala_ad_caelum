@@ -5,34 +5,34 @@ using UnityEngine;
 
 public class PlayerAttacker : MonoBehaviour
 {
-    private PlayerManager _playerManager;
+    private PlayerManager _manager;
     
     private string lastAttack;
 
     public void SetManager(PlayerManager manager)
     {
-        _playerManager = manager;
+        _manager = manager;
     }
 
     public void HandleWeaponCombo(WeaponItem weaponItem)
     {
-        if (!_playerManager.IsPerformingCombo())
+        if (!_manager.inputHandler.comboFlag)
             return;
         
-        _playerManager.SetAnimatorBool("canDoCombo", false);
+        _manager.animatorHandler.SetBool("canDoCombo", false);
         if (lastAttack.Equals(weaponItem.basic_attack_01))
         {
-            _playerManager.PlayTargetAnimation(weaponItem.basic_attack_02, true);
+            _manager.PlayTargetAnimation(weaponItem.basic_attack_02, true);
             lastAttack = weaponItem.basic_attack_02;
         }
         else if (lastAttack.Equals(weaponItem.basic_attack_02))
         {
-            _playerManager.PlayTargetAnimation(weaponItem.basic_attack_03, true);
+            _manager.PlayTargetAnimation(weaponItem.basic_attack_03, true);
             lastAttack = weaponItem.basic_attack_03;
         }
         else if (lastAttack.Equals(weaponItem.basic_attack_03))
         {
-            _playerManager.PlayTargetAnimation(weaponItem.basic_attack_04, true);
+            _manager.PlayTargetAnimation(weaponItem.basic_attack_04, true);
             lastAttack = weaponItem.basic_attack_04;
         }
     }
@@ -41,19 +41,19 @@ public class PlayerAttacker : MonoBehaviour
     {
 		Debug.Log("Use Active");
 /*
-        _playerManager.PlayTargetAnimation(weaponItem.active_attack, true);
+        _manager.PlayTargetAnimation(weaponItem.active_attack, true);
 */
     }
     
     public void HandleBasicAttack(WeaponItem weaponItem)
     {
-        _playerManager.PlayTargetAnimation(weaponItem.basic_attack_01, true);
+        _manager.PlayTargetAnimation(weaponItem.basic_attack_01, true);
         lastAttack = weaponItem.basic_attack_01;
     }
 
     public void HandleChargedAttack(WeaponItem weaponItem)
     {
-        _playerManager.PlayTargetAnimation(weaponItem.charged_attack, true);
+        _manager.PlayTargetAnimation(weaponItem.charged_attack, true);
         lastAttack = weaponItem.charged_attack;
     }
 
@@ -61,7 +61,7 @@ public class PlayerAttacker : MonoBehaviour
     {
 		Debug.Log("Use Ultimate");
 /*
-        _playerManager.PlayTargetAnimation(weaponItem.ultimate_attack, true);
+        _manager.PlayTargetAnimation(weaponItem.ultimate_attack, true);
 */
     }
 

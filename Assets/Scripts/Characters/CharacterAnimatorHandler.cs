@@ -9,7 +9,7 @@ public class CharacterAnimatorHandler : MonoBehaviour
     protected int _horizontal;
     protected int _vertical;
 
-    private void Awake()
+    public void Initialize()
     {
         _animator = GetComponent<Animator>();
         _animator.SetBool("canRotate", true);

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7b832e07391fbb479976a3f7afd05ad, type: 3}
+  m_Name: Gauntlet
+  m_EditorClassIdentifier: 
+  primaryIcon: {fileID: 21300000, guid: a1a93b127cf286947b1b49af58976175, type: 3}
+  secondaryIcon: {fileID: 21300000, guid: 4fcbdd08490792549b597ecb4355b3b6, type: 3}
+  name: Gauntlet
+  description: 
+  level: 0
+  model: {fileID: 4527068538015241186, guid: 2b9507c87cddb56459a866eb09d08b0a, type: 3}
+  active_cost: 0
+  ultimate_cost: 0
+  active_attack: 
+  basic_attack_01: gauntlet_basic_attack_01
+  basic_attack_02: gauntlet_basic_attack_02
+  basic_attack_03: gauntlet_basic_attack_03
+  basic_attack_04: gauntlet_basic_attack_04
+  charged_attack: gauntlet_charged_attack
+  ultimate_attack: 

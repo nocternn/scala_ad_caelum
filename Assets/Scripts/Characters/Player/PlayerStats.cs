@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerStats : CharacterStats
 {
-    private PlayerManager _playerManager;
+    private PlayerManager _manager;
     
     [Header("Fixed Stats")]
     public const int MaxCharge = 100;
@@ -14,44 +14,42 @@ public class PlayerStats : CharacterStats
     public int baseSkillPoints;
 
     [Header("Stats Scale")]
-    public int scaleSkillPoints = 1;
+    public float scaleSkillPoints = 1;
 
     [Header("Skill Points")]
     public int maxSkillPoints;
-    public int currentSkillPoints;
+    public float currentSkillPoints;
 
-    [Header("Attack Charge")]
+    [Header("Attack")]
     public int currentCharge;
+    public int hitCount;
 
     void Start()
     {
-        maxHealth = baseHealth * scaleHealth;
-        maxSkillPoints = baseSkillPoints * scaleSkillPoints;
+        maxHealth = ScaleStat(baseHealth, scaleHealth);
+        maxSkillPoints = ScaleStat(baseSkillPoints, scaleSkillPoints);
 
         currentHealth = maxHealth;
-        currentSkillPoints = maxSkillPoints;
-
-        _playerManager.UpdateUI("player_health", currentHealth, maxHealth);
-        _playerManager.UpdateUI("skill", currentSkillPoints, maxSkillPoints);
-        _playerManager.UpdateUI("charge", currentCharge, MaxCharge);
+        currentSkillPoints = maxSkillPoints / 3;
     }
     
     public void SetManager(PlayerManager manager)
     {
-        _playerManager = manager;
+        _manager = manager;
     }
 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        _playerManager.UpdateUI("player_health", currentHealth, maxHealth);
-        _playerManager.PlayTargetAnimation("damage", true, true);
+        _manager.PlayTargetAnimation("damage", true, true);
 
         if (currentHealth <= 0)
         {
             currentHealth = 0;
-            _playerManager.PlayTargetAnimation("death", true, true);
+            _manager.PlayTargetAnimation("death", true, true);
         }
+
+        _manager.isHit = true;
     }
 
     public void UpdateAttackCharge(bool isGain)
@@ -66,11 +64,15 @@ public class PlayerStats : CharacterStats
         {
             currentCharge = 0;
         }
-        _playerManager.UpdateUI("charge", currentCharge, MaxCharge);
     }
 
     public bool IsFullCharge()
     {
         return currentCharge >= MaxCharge;
     }
+
+	public void UpdateMaxHealth()
+	{
+		maxHealth = ScaleStat(baseHealth, scaleHealth);
+	}
 }

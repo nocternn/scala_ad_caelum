@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7b832e07391fbb479976a3f7afd05ad, type: 3}
+  m_Name: Spear
+  m_EditorClassIdentifier: 
+  primaryIcon: {fileID: 0}
+  secondaryIcon: {fileID: 0}
+  name: Spear
+  description: 
+  level: 0
+  model: {fileID: 1879072980467666848, guid: a70b4d49ddb080d4e83e9e3fee990773, type: 3}
+  active_cost: 0
+  ultimate_cost: 0
+  active_attack: 
+  basic_attack_01: spear_atack_01
+  basic_attack_02: spear_atack_02
+  basic_attack_03: spear_atack_03
+  basic_attack_04: spear_atack_04
+  charged_attack: 
+  ultimate_attack: 

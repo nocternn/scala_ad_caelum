@@ -11,12 +11,12 @@ public class EnemyAnimatorHandler : CharacterAnimatorHandler
     {
         float delta = Time.deltaTime;
 
-        _manager.locomotion.rigidbody.drag = 0;
+        _manager.rigidbody.drag = 0;
 
         Vector3 deltaPosition = GetDeltaPosition();
         deltaPosition.y = 0;
 
-        _manager.locomotion.rigidbody.velocity = deltaPosition / delta;
+        _manager.rigidbody.velocity = deltaPosition / delta;
     }
 
     public void SetManager(EnemyManager manager)

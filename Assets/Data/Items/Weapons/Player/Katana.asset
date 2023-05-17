@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7b832e07391fbb479976a3f7afd05ad, type: 3}
+  m_Name: Katana
+  m_EditorClassIdentifier: 
+  primaryIcon: {fileID: 21300000, guid: 90a447e0be7f5af488a3b109fe709c53, type: 3}
+  secondaryIcon: {fileID: 21300000, guid: 022ab74063a06a843ad6c5c8b62ac3e7, type: 3}
+  name: Katana
+  description: 
+  level: 0
+  model: {fileID: 6046141879700435344, guid: d88257ee18cb4894b8ec606ac4a73dec, type: 3}
+  active_cost: 0
+  ultimate_cost: 0
+  active_attack: 
+  basic_attack_01: katana_basic_attack_01
+  basic_attack_02: katana_basic_attack_02
+  basic_attack_03: katana_basic_attack_03
+  basic_attack_04: katana_basic_attack_04
+  charged_attack: katana_charged_attack
+  ultimate_attack: 

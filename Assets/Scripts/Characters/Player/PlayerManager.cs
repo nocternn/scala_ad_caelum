@@ -4,134 +4,73 @@ using UnityEngine;
 
 public class PlayerManager : CharacterManager
 {
-    public static PlayerManager singleton;
-
-	private StageManager _stage;
-    
-    private PlayerAnimatorHandler _animatorHandler;
-    private PlayerAttacker _attacker;
-    private PlayerInputHandler _inputHandler;
-    private PlayerInventory _inventory;
-    private PlayerLocomotion _locomotion;
-    private PlayerStats _stats;
-    private WeaponSlotManager _weaponSlotManager;
-
-    [SerializeField] private HUDManager _hudManager;
+    public PlayerAnimatorHandler animatorHandler;
+    public PlayerAttacker attacker;
+    public PlayerInputHandler inputHandler;
+    public PlayerLocomotion locomotion;
+    public PlayerStats stats;
+    public PlayerWeaponSlotManager weaponSlotManager;
 
     public bool canDoCombo;
-    
+    public bool isHit = false;
+
     public void Initialize()
     {
-        singleton = this;
+        _stage.camera.SetPlayerManager(this);
 
-		_stage.cameraHandler.SetPlayerManager(singleton);
+        animatorHandler   = GetComponent<PlayerAnimatorHandler>();
+        attacker          = GetComponent<PlayerAttacker>();
+        inputHandler      = GetComponent<PlayerInputHandler>();
+        locomotion        = GetComponent<PlayerLocomotion>();
+        stats             = GetComponent<PlayerStats>();
+        weaponSlotManager = GetComponent<PlayerWeaponSlotManager>();
 
-        _animatorHandler   = GetComponent<PlayerAnimatorHandler>();
-        _attacker          = GetComponent<PlayerAttacker>();
-        _inputHandler      = GetComponent<PlayerInputHandler>();
-        _inventory         = GetComponent<PlayerInventory>();
-        _locomotion        = GetComponent<PlayerLocomotion>();
-        _stats             = GetComponent<PlayerStats>();
-        _weaponSlotManager = GetComponent<WeaponSlotManager>();
+        animatorHandler.Initialize();
+        weaponSlotManager.Initialize();
 
-        _animatorHandler.SetManager(singleton);
-        _attacker.SetManager(singleton);
-        _inputHandler.SetManager(singleton);
-        _inventory.SetManager(singleton);
-        _locomotion.SetManager(singleton);
-        _stats.SetManager(singleton);
-        _weaponSlotManager.SetManager(singleton);
+        animatorHandler.SetManager(this);
+        attacker.SetManager(this);
+        inputHandler.SetManager(this);
+        locomotion.SetManager(this);
+        stats.SetManager(this);
+        weaponSlotManager.SetManager(this);
+        
+        stats.CalculateCritChance(_stage.id);
     }
 
     #region Setters
-	public void SetManager(StageManager stage)
-	{
-		_stage = stage;
-	}
 
-    public void SetPlayerVelocity(Vector3 velocity)
-    {
-        _locomotion.rigidbody.velocity = velocity;
-    }
-    public void SetPlayerDrag(float drag)
-    {
-        _locomotion.rigidbody.drag = drag;
-    }
-    public void EndDodge()
-    {
-        _inputHandler.dodgeInput = false;
-    }
-    public void SetUsedWeaponType(string trigger)
-    {
-        _animatorHandler.SetUsedWeaponType(trigger);
-    }
-
-    public void SetAnimatorBool(string key, bool value)
-    {
-        _animatorHandler.SetBool(key, value);
-    }
-    
-    public void UpdateAttackCharge(bool isGain)
-    {
-        _stats.UpdateAttackCharge(isGain);
-    }
-        
     #endregion
+    
     #region Getters
 
     public Vector3 GetCameraValue(string direction)
     {
         if (direction.Equals("forward"))
-            return _stage.cameraHandler.cameraTransform.forward;
+            return _stage.camera.cameraTransform.forward;
         if (direction.Equals("right"))
-            return _stage.cameraHandler.cameraTransform.right;
+            return _stage.camera.cameraTransform.right;
         return Vector3.zero;
-    }
-    public Vector3 GetLockOnTargetPosition()
-    {
-        return _stage.cameraHandler.currentLockOnTarget.position;
     }
     
     public float GetMovementInput(string direction)
     {
         if (direction.Equals("vertical"))
-            return _inputHandler.verticalMovementInput;
+            return inputHandler.verticalMovementInput;
         if (direction.Equals("horizontal"))
-            return _inputHandler.horizontalMovementInput;
+            return inputHandler.horizontalMovementInput;
         return 0;
     }
-    public float GetMoveAmount()
-    {
-        return _inputHandler.moveAmount;
-    }
-    public bool IsPerformingCombo()
-    {
-        return _inputHandler.comboFlag;
-    }
-    public bool IsDodging()
-    {
-        return _inputHandler.dodgeFlag;
-    }
+    
     public bool IsLockingOnTarget()
     {
-        return (_inputHandler.lockOnFlag || _stage.cameraHandler.currentLockOnTarget != null);
+        return (inputHandler.lockOnFlag || _stage.camera.currentLockOnTarget != null);
     }
-    public Vector3 GetAnimatorDeltaPosition()
+    public Vector3 GetLockOnTargetPosition()
     {
-        return _animatorHandler.GetDeltaPosition();
+        return _stage.camera.currentLockOnTarget.position;
     }
     
-    public WeaponItem GetCurrentWeapon()
-    {
-        if (_inventory.leftWeapon != null)
-            return _inventory.leftWeapon;
-        return _inventory.rightWeapon;
-    }
-    
-    public bool IsAttackFullCharge()
-    {
-        return _stats.IsFullCharge();
-    }
     #endregion
 
     #region Middlewares
@@ -140,11 +79,12 @@ public class PlayerManager : CharacterManager
     {
         if (isWeaponBased)
         {
-            _animatorHandler.PlayTargetWeaponBasedAnimation(targetAnimation, isInteracting);
+            animatorHandler.PlayTargetWeaponBasedAnimation(targetAnimation, isInteracting,
+                weaponSlotManager.weaponTypes);
         }
         else
         {
-            _animatorHandler.PlayTargetAnimation(targetAnimation, isInteracting);
+            animatorHandler.PlayTargetAnimation(targetAnimation, isInteracting);
         }
     }
     
@@ -152,77 +92,67 @@ public class PlayerManager : CharacterManager
     {
         if (tag.Equals("active"))
         {
-            _attacker.HandleActiveAttack(weapon);
+            attacker.HandleActiveAttack(weapon);
         }
         else if (tag.Equals("basic"))
         {
-            _attacker.HandleBasicAttack(weapon);
+            attacker.HandleBasicAttack(weapon);
         }
         else if (tag.Equals("charged"))
         {
-            _attacker.HandleChargedAttack(weapon);
+            attacker.HandleChargedAttack(weapon);
         }
         else if (tag.Equals("combo"))
         {
-            _attacker.HandleWeaponCombo(weapon);
+            attacker.HandleWeaponCombo(weapon);
         }
         else if (tag.Equals("ultimate"))
         {
-            _attacker.HandleUltimateAttack(weapon);
+            attacker.HandleUltimateAttack(weapon);
         }
     }
-	public bool IsBasicAttack()
-	{
-		return _attacker.IsBasicAttack();
-	}
 
     public void UpdateUI(WeaponItem weapon)
     {
-        _hudManager.UpdateUI(weapon);
+        _stage.hud.UpdateUI(weapon);
     }
-    public void UpdateUI(string tag, int currentValue, int maxValue)
-    {
-        _hudManager.UpdateUI(tag, currentValue, maxValue);
-    }
-
-	public void TakeDamage(int damage)
-	{
-		_stats.TakeDamage(damage);
-	}
 
     public void HandleLockOn()
     {
-        _stage.cameraHandler.HandleLockOn();
+        _stage.camera.HandleLockOn();
 
-        if (_stage.cameraHandler.nearestLockOnTarget != null)
+        if (_stage.camera.nearestLockOnTarget != null)
         {
-            _stage.cameraHandler.currentLockOnTarget = _stage.cameraHandler.nearestLockOnTarget;
-            _inputHandler.lockOnFlag = true;
+            _stage.camera.currentLockOnTarget = _stage.camera.nearestLockOnTarget;
+            inputHandler.lockOnFlag = true;
         }
     }
+
     public void ClearLockOnTargets()
     {
-        _stage.cameraHandler.ClearLockOnTargets();
+        _stage.camera.ClearLockOnTargets();
     }
 
     public void SetCameraHeight()
     {
-        _stage.cameraHandler.SetCameraHeight(Time.deltaTime);
+        _stage.camera.SetCameraHeight(Time.deltaTime);
     }
+
     #endregion
 
     #region Updates
+    
     private void Update()
     {
-        _inputHandler.HandleAllInputs(Time.deltaTime);
+        inputHandler.HandleAllInputs(Time.deltaTime);
 
         if (IsLockingOnTarget())
         {
-            _animatorHandler.UpdateAnimatorValues(_inputHandler.horizontalMovementInput, _inputHandler.verticalMovementInput);
+            animatorHandler.UpdateAnimatorValues(inputHandler.horizontalMovementInput, inputHandler.verticalMovementInput);
         }
         else
         {
-            _animatorHandler.UpdateAnimatorValues(0, _inputHandler.moveAmount);
+            animatorHandler.UpdateAnimatorValues(0, inputHandler.moveAmount);
         }
     }
 
@@ -230,25 +160,25 @@ public class PlayerManager : CharacterManager
     {
         float delta = Time.deltaTime;
 
-        isInteracting = _animatorHandler.GetBool("isInteracting");
-        canRotate     = _animatorHandler.GetBool("canRotate");
-        canDoCombo    = _animatorHandler.GetBool("canDoCombo");
+        isInteracting = animatorHandler.GetBool("isInteracting");
+        canRotate     = animatorHandler.GetBool("canRotate");
+        canDoCombo    = animatorHandler.GetBool("canDoCombo");
         
-        _locomotion.HandleAllMovements(delta);
+        locomotion.HandleAllMovements(delta);
         
-        if (_stage.cameraHandler != null)
+        if (_stage.camera != null)
         {
-            _stage.cameraHandler.FollowTarget(delta);
-            _stage.cameraHandler.HandleRotation(delta, _inputHandler.horizontalCameraInput, _inputHandler.verticalCameraInput);
+            _stage.camera.FollowTarget(delta);
+            _stage.camera.HandleRotation(delta, inputHandler.horizontalCameraInput, inputHandler.verticalCameraInput);
         }
     }
 
     private void LateUpdate()
     {
-        _inputHandler.attackActiveInput = false;
-        _inputHandler.attackBasicInput = false;
-        _inputHandler.attackChargedInput = false;
-        _inputHandler.attackUltimateInput = false;
+        inputHandler.attackActiveInput = false;
+        inputHandler.attackBasicInput = false;
+        inputHandler.attackChargedInput = false;
+        inputHandler.attackUltimateInput = false;
     }
     #endregion
 

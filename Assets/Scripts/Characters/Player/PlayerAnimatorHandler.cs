@@ -7,6 +7,7 @@ public class PlayerAnimatorHandler : CharacterAnimatorHandler
 {
 	private PlayerManager _manager;
 
+	/*
 	private void OnAnimatorMove()
 	{
 		if (_manager.isInteracting)
@@ -19,6 +20,7 @@ public class PlayerAnimatorHandler : CharacterAnimatorHandler
 		deltaPosition.y = 0;
 		_manager.SetPlayerVelocity(deltaPosition / delta);
 	}
+	*/
 	
 	public void SetManager(PlayerManager manager)
 	{
@@ -27,9 +29,8 @@ public class PlayerAnimatorHandler : CharacterAnimatorHandler
 
 	#region Play Animation
 
-	public void PlayTargetWeaponBasedAnimation(string targetAnimation, bool isInteracting)
+	public void PlayTargetWeaponBasedAnimation(string targetAnimation, bool isInteracting, string[] weaponTypes)
 	{
-		string[] weaponTypes = new[] { "Pistol", "Greatsword", "Gauntlet", "Katana", "Scythe" };
 		foreach (string weaponType in weaponTypes)
 		{
 			if (_animator.GetBool(String.Format("isUsing{0}", weaponType)))
@@ -44,9 +45,8 @@ public class PlayerAnimatorHandler : CharacterAnimatorHandler
 	
 	#region Setters
 
-	public void SetUsedWeaponType(string currentWeaponType)
+	public void SetUsedWeaponType(string currentWeaponType, string[] weaponTypes)
 	{
-		string[] weaponTypes = new[] { "Pistol", "Greatsword", "Gauntlet", "Katana", "Scythe" };
 		foreach (string weaponType in weaponTypes)
 		{
 			_animator.SetBool(String.Format("isUsing{0}", weaponType), false);

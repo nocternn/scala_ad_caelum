@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0efc0cf4d22f4c34ea038d5a9369aecb, type: 3}
   m_Name: archer_kick
   m_EditorClassIdentifier: 
-  animation: archer_attack_03
+  animation: bow_attack_03
   score: 3
   recoveryTime: 2
   minAngle: -35
   maxAngle: 35
   minDistance: 0
-  maxDistance: 5
+  maxDistance: 1

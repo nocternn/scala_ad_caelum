@@ -2,64 +2,63 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Random;
+using UnityEngine.AI;
 
 public class EnemyManager : CharacterManager
 {
-    public static EnemyManager singleton;
+    #region Attributes
+
     public static string[] Types = new[] { "Archer", "Spearwoman", "Crossbowman", "Ninja", "Paladin" };
 
-    public Transform currentEnemy;
-    
     [Header("Components")]
     public EnemyAnimatorHandler animatorHandler;
-    public EnemyLocomotion locomotion; 
     public EnemyStats stats;
+    public EnemyWeaponSlotManager weaponSlotManager;
+    public NavMeshAgent navMeshAgent;
+    public new Rigidbody rigidbody;
 
-    [Header("Attacks")]
-    public EnemyActionAttack currentAttack;
+    [Header("A.I. Settings - Components")]
+    public Transform currentEnemy;
+    public CharacterManager currentTarget;
+    public EnemyState currentState;
 
+    [Header("A.I. Settings")]
+    public float distanceFromTarget;
+    public float viewableAngle;
+    public float currentRecoveryTime = 0;
+    public float maxAttackRange = 10;
+    public float minDetectionAngle = -50;
+    public float maxDetectionAngle = 50;
+
+    #endregion
+    
     #region Handlers
 
-    private void HandleCurrentAction()
+    private void HandleStateMachine()
     {
-        if (locomotion.currentTarget == null)
+        if (currentState != null)
         {
-            locomotion.HandleDetection();
-        }
-        else
-        {
-            locomotion.distanceFromTarget = Vector3.Distance(locomotion.currentTarget.transform.position, transform.position);
-            if (locomotion.distanceFromTarget > stats.stoppingDistance)
+            EnemyState nextState = currentState.Tick(this);
+            if (nextState != null)
             {
-                locomotion.HandleMovement();
-                locomotion.HandleRotation();
-                locomotion.ResetNavMesh();
-            }
-            else
-            {
-                locomotion.HandleRotation();
-                locomotion.ResetNavMesh();
-                AttackTarget();
+                SwitchToNextState(nextState);
             }
         }
     }
 
     private void HandleRecoveryTime()
     {
-        if (stats.currentRecoveryTime > 0)
-            stats.currentRecoveryTime -= Time.deltaTime;
+        if (currentRecoveryTime > 0)
+            currentRecoveryTime -= Time.deltaTime;
 
         if (isInteracting)
         {
-            if (stats.currentRecoveryTime <= 0)
+            if (currentRecoveryTime <= 0)
                 isInteracting = false;
         }
     }
 
     #endregion
-
-
     #region Updates
     
     private void Update()
@@ -74,19 +73,26 @@ public class EnemyManager : CharacterManager
         isInteracting = animatorHandler.GetBool("isInteracting");
         canRotate     = animatorHandler.GetBool("canRotate");
         
-        HandleCurrentAction();
+        HandleStateMachine();
     }
 
     #endregion
-    
+
+    private void SwitchToNextState(EnemyState nextState)
+    {
+        currentState = nextState;
+    }
+
     public void Initialize()
     {
-        singleton = this;
-        
-        locomotion = GetComponent<EnemyLocomotion>();
-        
-        locomotion.SetManager(singleton);
+        navMeshAgent = GetComponentInChildren<NavMeshAgent>();
+        rigidbody = GetComponent<Rigidbody>();
+
+        navMeshAgent.enabled = false;
+        rigidbody.isKinematic = false;
     }
+
+    #region Setters
 
     public void SetEnemyType(string enemyName)
     {
@@ -94,86 +100,65 @@ public class EnemyManager : CharacterManager
         for (int i = 0; i < EnemyManager.Types.Length; i++)
         {
             Transform enemy = enemies.GetChild(i);
-            enemy.gameObject.SetActive(false);
             
-            if (enemy.name.Equals(EnemyManager.Types[i]))
+            if (enemy.name.Equals(enemyName))
             {
                 currentEnemy = enemy;
                 currentEnemy.gameObject.SetActive(true);
                 
                 animatorHandler = currentEnemy.GetComponent<EnemyAnimatorHandler>();
-                animatorHandler.SetManager(singleton);
+                animatorHandler.Initialize();
+                animatorHandler.SetManager(this);
                 animatorHandler.SetEnemyType(EnemyManager.Types[i]);
                 
                 stats = enemy.GetComponent<EnemyStats>();
+                stats.CalculateCritChance(_stage.id);
+                
+                weaponSlotManager = currentEnemy.GetComponent<EnemyWeaponSlotManager>();
+                weaponSlotManager.Initialize();
+                weaponSlotManager.SetManager(this);
 
                 break;
             }
         }
     }
+
+    #endregion
+
     
     public void TakeDamage(int damage)
     {
         stats.TakeDamage(damage);
         animatorHandler.PlayTargetAnimation(String.Format("{0}_damage", currentEnemy.name.ToLower()), true);
+        
+        if (stats.currentHealth == 0)
+            animatorHandler.PlayTargetAnimation(String.Format("{0}_death", currentEnemy.name.ToLower()), true);
     }
 
-    #region Attacks
-
-    private void GetNewAttack()
+    public void ResetNavMeshAgent()
     {
-        Vector3 targetsDirection = locomotion.currentTarget.transform.position - transform.position;
-        float viewableAngle = Vector3.Angle(targetsDirection, transform.position);
-        
-        locomotion.distanceFromTarget = Vector3.Distance(locomotion.currentTarget.transform.position, transform.position);
-
-        int maxScore = 0;
-        foreach (EnemyActionAttack attack in stats.enemyAttacks)
-        {
-            if ((locomotion.distanceFromTarget >= attack.minDistance)
-                && (locomotion.distanceFromTarget <= attack.maxDistance)
-                && (viewableAngle >= attack.minAngle && viewableAngle <= attack.maxAngle))
-            {
-                maxScore += attack.score;
-            }
-        }
-
-        int randomScore = Range(0, maxScore);
-        int tempScore = 0;
-        
-        foreach (EnemyActionAttack attack in stats.enemyAttacks)
-        {
-            if ((locomotion.distanceFromTarget >= attack.minDistance)
-                && (locomotion.distanceFromTarget <= attack.maxDistance)
-                && (viewableAngle >= attack.minAngle && viewableAngle <= attack.maxAngle))
-            {
-                if (currentAttack != null)
-                    return;
-
-                tempScore += attack.score;
-                if (tempScore > randomScore)
-                    currentAttack = attack;
-            }
-        }
+        navMeshAgent.transform.localPosition = Vector3.zero;
+        navMeshAgent.transform.localRotation = Quaternion.identity;
     }
 
-    private void AttackTarget()
+    public void UpdateAISettings()
     {
-        if (isInteracting)
+        if (currentTarget == null)
             return;
         
-        if (currentAttack == null)
-        {
-            GetNewAttack();
-        }
-        else
-        {
-            isInteracting = true;
-            stats.currentRecoveryTime = currentAttack.recoveryTime;
-            animatorHandler.PlayTargetAnimation(currentAttack.animation, true);
-            currentAttack = null;
-        }
+        Vector3 targetDirection = currentTarget.transform.position - transform.position;
+        
+        distanceFromTarget = Vector3.Distance(currentTarget.transform.position, transform.position);
+        viewableAngle = Vector3.Angle(targetDirection, transform.position);
     }
 
-    #endregion
+    public bool IsInAttackRange()
+    {
+        UpdateAISettings();
+        if (distanceFromTarget > maxAttackRange)
+            return false;
+        if (viewableAngle < minDetectionAngle || viewableAngle > maxDetectionAngle)
+            return false;
+        return true;
+    }
 }

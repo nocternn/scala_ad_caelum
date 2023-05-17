@@ -4,37 +4,58 @@ using UnityEngine;
 
 public class StageManager : MonoBehaviour
 {
-    public static StageManager singleton;
+    public Enums.StageType type;
+    
     public int id = 1;
 
-    [SerializeField] private PlayerManager _player;
-    [SerializeField] private EnemyManager _enemy;
-    [SerializeField] private HUDManager _hud;
+    public PlayerManager player;
+    public EnemyManager enemy;
     
-    public CameraHandler cameraHandler;
+    public HUDManager hud;
+    public new CameraHandler camera;
 
+    public List<CardItem> selectedBuffs;
+    public GameObject buffHolder;
+    
     private void Awake()
     {
-        singleton = this;
+        type = Enums.StageType.Buff;
 
-        cameraHandler = GameObject.Find("Camera Holder").GetComponent<CameraHandler>();
+        camera = GameObject.Find("Camera Holder").GetComponent<CameraHandler>();
+        hud    = GameObject.Find("HUD").GetComponent<HUDManager>();
+
+        hud.SetManager(this);
+        hud.Initialize();
+    }
+    
+    private void Update()
+    {
+        if (type == Enums.StageType.Buff)
+            return;
         
-        _player = GameObject.Find("Player").GetComponent<PlayerManager>();
-        _enemy  = GameObject.Find("Enemy").GetComponent<EnemyManager>();
-        _hud    = GameObject.Find("HUD").GetComponent<HUDManager>();
-
-        _player.SetManager(singleton);
-
-        // Temporarily init right away. Change later to call when switching scenes. 
-        Initialize();
+        foreach (CardItem buff in selectedBuffs)
+        {
+            buff.effect.Apply(buff, player, enemy);
+        }
     }
 
-    public void Initialize()
+    public void SwitchToCombat(CardItem selectedBuff)
     {
-        _player.Initialize();
-        _enemy.Initialize();
-        _hud.Initialize();
+        selectedBuffs.Add(selectedBuff);
+        
+        player.gameObject.SetActive(true);
+        enemy.gameObject.SetActive(true);
 
-        _enemy.SetEnemyType(EnemyManager.Types[id - 1]);
+        player.SetManager(this);
+        enemy.SetManager(this);
+        
+        player.Initialize();
+        enemy.Initialize();
+
+        enemy.SetEnemyType(EnemyManager.Types[id - 1]);
+        
+        type = Enums.StageType.Combat;
+        
+        hud.Initialize();
     }
 }

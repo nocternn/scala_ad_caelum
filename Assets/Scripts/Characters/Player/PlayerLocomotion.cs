@@ -36,6 +36,7 @@ public class PlayerLocomotion : CharacterLocomotion
 	#region Locomotion
 	private Vector3 normalVector;
 	private Vector3 targetPosition;
+	
 	private void HandleMovement(float delta)
 	{
 		Vector3 moveDirection = GetTargetDirection(true);
@@ -48,7 +49,7 @@ public class PlayerLocomotion : CharacterLocomotion
 		{
 			Quaternion targetRotation;
 			
-			if (_manager.IsDodging())
+			if (_manager.inputHandler.dodgeFlag)
 			{
 				Vector3 targetDirection = GetTargetDirection(false);
 				if (targetDirection == Vector3.zero)
@@ -85,14 +86,14 @@ public class PlayerLocomotion : CharacterLocomotion
 	#region Actions
 	private void HandleDodging(float delta)
 	{
-		if (!_manager.IsDodging())
+		if (!_manager.inputHandler.dodgeFlag)
 			return;
 		
 		Vector3 moveDirection = Vector3.zero;
 		moveDirection  = _camera.forward * _manager.GetMovementInput("vertical");
 		moveDirection += _camera.right * _manager.GetMovementInput("horizontal");
 
-		if (_manager.GetMoveAmount() > 0)
+		if (_manager.inputHandler.moveAmount > 0)
 		{
 			_manager.PlayTargetAnimation("Rolling", true);
 			
@@ -104,7 +105,7 @@ public class PlayerLocomotion : CharacterLocomotion
 			_manager.PlayTargetAnimation("Backstep", true);
 		}
 
-		_manager.EndDodge();
+		_manager.inputHandler.dodgeInput = false;
 	}
 	#endregion
 

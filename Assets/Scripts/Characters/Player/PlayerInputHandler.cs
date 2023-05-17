@@ -5,7 +5,7 @@ using UnityEngine.InputSystem.Interactions;
 
 public class PlayerInputHandler : MonoBehaviour
 {
-    private PlayerManager _playerManager;
+    private PlayerManager _manager;
     private PlayerControls _playerControls;
     
     [Header("Inputs")]
@@ -99,35 +99,36 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void HandleAttackInput()
     {
+	    WeaponItem currentWeapon = _manager.weaponSlotManager.GetCurrentWeapon();
 	    if (attackActiveInput)
 		{
-			_playerManager.HandleAttack("active", _playerManager.GetCurrentWeapon());
+			_manager.HandleAttack("active", currentWeapon);
 		}
 		else if (attackBasicInput)
 		{
-			if (_playerManager.canDoCombo)
+			if (_manager.canDoCombo)
 			{
 				comboFlag = true;
-				_playerManager.HandleAttack("combo", _playerManager.GetCurrentWeapon());
+				_manager.HandleAttack("combo", currentWeapon);
 				comboFlag = false;
 			}
 			else
 			{
-				if (_playerManager.isInteracting)
+				if (_manager.isInteracting)
 					return;
-				_playerManager.HandleAttack("basic", _playerManager.GetCurrentWeapon());
+				_manager.HandleAttack("basic", currentWeapon);
 			}
 		}
 		else if (attackChargedInput)
 		{
-			if (!_playerManager.IsAttackFullCharge())
+			if (!_manager.stats.IsFullCharge())
 				return;
-			_playerManager.HandleAttack("charged", _playerManager.GetCurrentWeapon());
-			_playerManager.UpdateAttackCharge(false);
+			_manager.HandleAttack("charged", currentWeapon);
+			_manager.stats.UpdateAttackCharge(false);
 		}
 		else if (attackUltimateInput)
 		{
-			_playerManager.HandleAttack("ultimate", _playerManager.GetCurrentWeapon());
+			_manager.HandleAttack("ultimate", currentWeapon);
 		}
     }
 
@@ -137,21 +138,21 @@ public class PlayerInputHandler : MonoBehaviour
 	    {
 		    lockOnInput = false;
 		    
-		    _playerManager.ClearLockOnTargets();
-		    _playerManager.HandleLockOn();
+		    _manager.ClearLockOnTargets();
+		    _manager.HandleLockOn();
 	    }
 	    else if (lockOnInput && lockOnFlag)	// Lock off
 	    {
 		    lockOnInput = false;
 		    lockOnFlag = false;
 
-		    _playerManager.ClearLockOnTargets();
+		    _manager.ClearLockOnTargets();
 	    }
     }
     
     public void SetManager(PlayerManager manager)
     {
-	    _playerManager = manager;
+	    _manager = manager;
     }
 
     public void HandleAllInputs(float delta)

@@ -7,5 +7,7 @@ public class Item : ScriptableObject
     [Header("Item Information")]
     public Sprite primaryIcon;
     public Sprite secondaryIcon;
-    public string itemName;
+    public new string name;
+    public string description;
+    public int level;
 }
