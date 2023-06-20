@@ -5,9 +5,15 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Items/Card")]
 public class CardItem : Item
 {
+	public bool canUpgrade;
+
 	public Enums.CardType type;
 
     public int id;
+    public int level;
+
+    public int cost;
+    public string costDescription;
     
     public float[] count;
     public float[] duration;
@@ -17,57 +23,105 @@ public class CardItem : Item
 
     public void Initialize()
     {
-		InitializeInfo();
-		InitializeEffect();
+	    level = 0;
+	    canUpgrade = true;
+	    GetLevelUpCondition(); // Set initial cost value
+    }
+
+    public void EnableEffect(GameObject holder)
+    {
+	    switch(type)
+	    {
+		    case Enums.CardType.Bodhi:
+			    effect = holder.AddComponent<CardEffectBodhi>() as CardEffectBodhi;
+			    break;
+		    case Enums.CardType.Decimation:
+			    effect = holder.AddComponent<CardEffectDecimation>() as CardEffectDecimation;
+			    break;
+		    case Enums.CardType.Deliverance:
+			    effect = holder.AddComponent<CardEffectDeliverance>() as CardEffectDeliverance;
+			    break;
+		    case Enums.CardType.Gold:
+			    effect = holder.AddComponent<CardEffectGold>() as CardEffectGold;
+			    break;
+		    case Enums.CardType.Vicissitude:
+			    effect = holder.AddComponent<CardEffectVicissitude>() as CardEffectVicissitude;
+			    break;
+		    default:
+			    break;
+	    }
     }
 
     public void LevelUp()
     {
-        level++;
-		effect.canBeApplied = true;
-        InitializeInfo();
+	    if (canUpgrade)
+	    {
+		    level++;
+		    GetLevelUpCondition(); // Set initial cost value
+		    effect.canBeApplied = true;
+	    }
+
+	    if (level == 3)
+		    canUpgrade = false;
     }
 
-	private void InitializeInfo()
+	public string GetName()
 	{
+		string updatedName = name;
 	    if (level == 0)
         {
-            name = name.Replace("LEVEL", "");
+            updatedName = updatedName.Replace("LEVEL", "");
         }
-        else
-        {
-            name = name.Replace("LEVEL", "+" + level.ToString());
-        }
-        if (count.Length > 0)
-            description = description.Replace("COUNT", count[level].ToString());
-        if (duration.Length > 0)
-            description = description.Replace("DURATION", duration[level].ToString());
-        if (scalar.Length > 0)
-            description = description.Replace("SCALAR", scalar[level].ToString());
+		else
+		{
+        	updatedName = updatedName.Replace("LEVEL", "+" + level.ToString());
+		}
+		return updatedName;
 	}
 
-	private void InitializeEffect()
+	public string GetDescription()
 	{
-		StageManager stage = GameObject.Find("StageManager").GetComponent<StageManager>();
-		switch(type)
+		string updatedDescription = description;
+        if (count.Length > 0)
+            updatedDescription = updatedDescription.Replace("COUNT", count[level].ToString());
+        if (duration.Length > 0)
+            updatedDescription = updatedDescription.Replace("DURATION", duration[level].ToString());
+        if (scalar.Length > 0)
+            updatedDescription = updatedDescription.Replace("SCALAR", scalar[level].ToString());
+		return updatedDescription;
+	}
+
+	public string GetCost()
+	{
+		string updatedCost = "Cost: COST";
+		if (cost == 0)
 		{
-			case Enums.CardType.Bodhi:
-				effect = stage.buffHolder.AddComponent<CardEffectBodhi>() as CardEffectBodhi;
+			updatedCost = updatedCost.Replace("COST", "MAX");
+		}
+		else
+		{
+			updatedCost = updatedCost.Replace("COST", cost.ToString());
+		}
+		return updatedCost;
+	}
+
+	public int GetLevelUpCondition()
+	{
+		switch (level)
+		{
+			case 0:
+				cost =  80;
 				break;
-			case Enums.CardType.Decimation:
-				effect = stage.buffHolder.AddComponent<CardEffectDecimation>() as CardEffectDecimation;
+			case 1:
+				cost = 120;
 				break;
-			case Enums.CardType.Deliverance:
-				effect = stage.buffHolder.AddComponent<CardEffectDeliverance>() as CardEffectDeliverance;
-				break;
-			case Enums.CardType.Gold:
-				effect = stage.buffHolder.AddComponent<CardEffectGold>() as CardEffectGold;
-				break;
-			case Enums.CardType.Vicissitude:
-				effect = stage.buffHolder.AddComponent<CardEffectVicissitude>() as CardEffectVicissitude;
+			case 2:
+				cost = 160;
 				break;
 			default:
+				cost = 0;
 				break;
 		}
+		return cost;
 	}
 }

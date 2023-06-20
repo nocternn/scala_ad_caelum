@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class CharacterAnimatorHandler : MonoBehaviour
 {
@@ -9,7 +10,11 @@ public class CharacterAnimatorHandler : MonoBehaviour
     protected int _horizontal;
     protected int _vertical;
 
-    public void Initialize()
+    protected RigBuilder _rigBuilder;
+    public TwoBoneIKConstraint leftHandConstraint;
+    public TwoBoneIKConstraint rightHandConstraint;
+
+    public virtual void Initialize()
     {
         _animator = GetComponent<Animator>();
         _animator.SetBool("canRotate", true);
@@ -37,6 +42,11 @@ public class CharacterAnimatorHandler : MonoBehaviour
 
     #region Setters
 
+    public void SetSpeed(float speed)
+    {
+        _animator.speed = speed;
+    }
+
     public void SetBool(string key, bool value)
     {
         _animator.SetBool(key, value);
@@ -45,6 +55,30 @@ public class CharacterAnimatorHandler : MonoBehaviour
     public void SetFloat(string key, float value, float dampTime, float deltaTime)
     {
         _animator.SetFloat(key, value, dampTime, deltaTime);
+    }
+
+    public virtual void SetHandIK(LeftHandIKTarget leftHandTarget, RightHandIKTarget rightHandTarget, bool isTwoHanding)
+    {
+        if (isTwoHanding)
+        {
+            rightHandConstraint.data.target = rightHandTarget.transform;
+            rightHandConstraint.data.targetPositionWeight = 1;
+            rightHandConstraint.data.targetRotationWeight = 1;
+
+            leftHandConstraint.data.target = leftHandTarget.transform;
+            leftHandConstraint.data.targetPositionWeight = 1;
+            leftHandConstraint.data.targetRotationWeight = 1;
+        }
+        else
+        {
+            rightHandConstraint.data.target = null;
+            leftHandConstraint.data.target = null;
+        }
+    }
+
+    public virtual void EraseHandIK()
+    {
+        
     }
 
     #endregion
@@ -59,6 +93,11 @@ public class CharacterAnimatorHandler : MonoBehaviour
     public bool GetBool(string key)
     {
         return _animator.GetBool(key);
+    }
+
+    public float GetFloat(string key)
+    {
+        return _animator.GetFloat(key);
     }
 
     private float GetSnappedValue(float movement)

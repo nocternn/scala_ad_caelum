@@ -23,6 +23,21 @@ public class Enums : MonoBehaviour
     public enum StageType
     {
         Buff,
-        Combat
+        Combat,
+        Shop,
+        Quit
+    }
+    
+    public enum MenuType
+    {
+        Main,
+        Inventory,
+        Quit
+    }
+
+    public enum SceneType
+    {
+        Menu,
+        Game
     }
 }

@@ -5,19 +5,23 @@ using UnityEngine;
 public class EnemyStateIdle : EnemyState
 {
     [Header("A.I. Settings - Components")]
-    public LayerMask detectionLayer;
-    public EnemyStatePursueTarget pursueTargetState;
+    [SerializeField] private LayerMask detectionLayer;
+    [SerializeField] private EnemyStatePursueTarget pursueTargetState;
     
     [Header("A.I. Settings - Detection")]
     public float detectionRadius = 15;
+    public float minDetectionAngle = -50;
+    public float maxDetectionAngle = 50;
     
     public override EnemyState Tick(EnemyManager manager)
     {
         // Look for a potential target
         HandleDetection(manager);
+
         // Switch to pursue the new target
         if (manager.currentTarget != null)
             return pursueTargetState;
+
         return this;
     }
     
@@ -29,13 +33,14 @@ public class EnemyStateIdle : EnemyState
             CharacterManager character = colliders[i].transform.GetComponent<CharacterManager>();
             if (character != null)
             {
-                Vector3 targetDirection = character.transform.position - transform.position;
-                manager.viewableAngle = Vector3.Angle(targetDirection, transform.forward);
+                Vector3 targetDirection = character.transform.position - manager.transform.position;
+                float viewableAngle = Vector3.Angle(targetDirection, manager.transform.forward);
 
                 if ((character.transform.root != transform.root)
-                    && (manager.viewableAngle >= manager.minDetectionAngle && manager.viewableAngle <= manager.maxDetectionAngle))
+                    && (viewableAngle >= minDetectionAngle && viewableAngle <= maxDetectionAngle))
                 {
                     manager.currentTarget = character;
+                    return;
                 }
             }
         }

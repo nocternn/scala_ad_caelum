@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: bodhi_03
   m_EditorClassIdentifier: 
   primaryIcon: {fileID: 21300000, guid: 3033892a78afca14c89e689a878f7366, type: 3}
-  secondaryIcon: {fileID: 0}
   name: Motto of Asavakkhaya LEVEL
   description: 'Attacks grant COUNT bonus combo hits on hit. CD: DURATIONs'
-  level: 0
   type: 0
   id: 3
+  level: 0
   count:
   - 25
   - 30

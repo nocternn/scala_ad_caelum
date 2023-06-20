@@ -47,6 +47,7 @@ public class PlayerStats : CharacterStats
         {
             currentHealth = 0;
             _manager.PlayTargetAnimation("death", true, true);
+            _manager.Lose();
         }
 
         _manager.isHit = true;

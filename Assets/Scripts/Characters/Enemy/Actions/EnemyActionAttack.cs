@@ -6,7 +6,7 @@ using UnityEngine;
 public class EnemyActionAttack : EnemyAction
 {
     public int score = 3;
-    public float recoveryTime = 2;
+    public float recoveryTime = 1;
 
     public float minAngle = -50;
     public float maxAngle = 50;

@@ -17,5 +17,5 @@ MonoBehaviour:
   recoveryTime: 2
   minAngle: -50
   maxAngle: 50
-  minDistance: 2
+  minDistance: 0
   maxDistance: 10

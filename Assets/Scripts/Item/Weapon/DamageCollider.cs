@@ -4,24 +4,21 @@ using UnityEngine;
 
 public class DamageCollider : MonoBehaviour
 {
-    private BoxCollider _damageCollider;
-    private PlayerManager _player;
-    private EnemyManager _enemy;
+    protected BoxCollider _damageCollider;
+    protected PlayerManager _player;
+    protected EnemyManager _enemy;
     
     public int currentWeaponDamage = 100;
 
     private void Awake()
     {
-        _damageCollider = GetComponent<BoxCollider>();
-        _damageCollider.gameObject.SetActive(true);
-        _damageCollider.isTrigger = true;
-        _damageCollider.enabled = false;
+        SetDamageCollider();
 
         _player = GameObject.Find("Player").GetComponent<PlayerManager>();
         _enemy = GameObject.Find("Enemy").GetComponent<EnemyManager>();
     }
 
-    private void OnTriggerEnter(Collider collision)
+    protected virtual void OnTriggerEnter(Collider collision)
     {
         if (collision.tag == "Player")
         {
@@ -51,13 +48,32 @@ public class DamageCollider : MonoBehaviour
         }
     }
 
+    protected void SetDamageCollider()
+    {
+        _damageCollider = GetComponent<BoxCollider>();
+        _damageCollider.gameObject.SetActive(true);
+        _damageCollider.isTrigger = true;
+        _damageCollider.enabled = false;
+    }
+    
+    protected void DestroyAmmo()
+    {
+        _player.weaponSlotManager.DisableDamageCollider();
+        _enemy.weaponSlotManager.DisableDamageCollider();
+        Destroy(transform.root.gameObject);
+    }
+    
     public void Enable()
     {
+        if (_damageCollider == null)
+            SetDamageCollider();
         _damageCollider.enabled = true;
     }
     
     public void Disable()
     {
+        if (_damageCollider == null)
+            return;
         _damageCollider.enabled = false;
     }
 }

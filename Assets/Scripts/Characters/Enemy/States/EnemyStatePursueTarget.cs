@@ -5,22 +5,29 @@ using UnityEngine;
 public class EnemyStatePursueTarget : EnemyState
 {
     [Header("A.I. Settings - Components")]
-    public EnemyStateCombatStance combatStanceState;
+    [SerializeField] private EnemyStateIdle idleState;
+    [SerializeField] private EnemyStateCombatStance combatStanceState;
     
     [Header("A.I. Settings - Movement")]
-    public float rotationSpeed = 20;
+    private float distanceFromTarget;
+    private float viewableAngle;
     
     public override EnemyState Tick(EnemyManager manager)
     {
-        manager.UpdateAISettings();
+        Vector3 direction = manager.currentTarget.transform.position - manager.transform.position;
+        distanceFromTarget = Vector3.Distance(manager.currentTarget.transform.position, manager.transform.position);
+        viewableAngle = Vector3.Angle(direction, manager.transform.forward);
         
         // Chase the target
-        HandleMovement(manager);
+        if (!manager.isInteracting)
+        {
+            HandleMovement(manager);
+        }
         HandleRotation(manager);
         manager.ResetNavMeshAgent();
         
         // Switch to combat stance state if within attack range
-        if (manager.IsInAttackRange())
+        if (!manager.isInteracting && distanceFromTarget <= manager.stats.maxAttackRange)
             return combatStanceState;
         
         // Continue to chase if out of attack range
@@ -29,15 +36,14 @@ public class EnemyStatePursueTarget : EnemyState
     
     public void HandleMovement(EnemyManager manager)
     {
-        if (manager.isInteracting)
+        if (distanceFromTarget > manager.stats.maxAttackRange)
+        {
+            manager.animatorHandler.UpdateAnimatorValues(0, 1);
+        }
+        else
         {
             manager.animatorHandler.UpdateAnimatorValues(0, 0);
-            manager.navMeshAgent.enabled = false;
-            return;
         }
-        
-        if (!manager.IsInAttackRange())
-            manager.animatorHandler.UpdateAnimatorValues(0, 1);
     }
     
     public void HandleRotation(EnemyManager manager)
@@ -52,9 +58,8 @@ public class EnemyStatePursueTarget : EnemyState
                 direction = manager.transform.forward;
 
             Quaternion targetRotation = Quaternion.LookRotation(direction);
-            
             manager.transform.rotation = Quaternion.Slerp(manager.transform.rotation, targetRotation,
-                rotationSpeed / Time.deltaTime);
+                manager.locomotion.rotationSpeed / Time.deltaTime);
         }
         else // If the enemy is not performing an action then rotate with pathfinding
         {
@@ -66,7 +71,7 @@ public class EnemyStatePursueTarget : EnemyState
 
             manager.rigidbody.velocity = targetVelocity;
             manager.transform.rotation = Quaternion.Slerp(manager.transform.rotation, manager.navMeshAgent.transform.rotation,
-                rotationSpeed / Time.deltaTime);
+                manager.locomotion.rotationSpeed / Time.deltaTime);
         }
     }
 }

@@ -6,6 +6,8 @@ using UnityEngine;
 public class WeaponItem : Item
 {
     public GameObject model;
+	public AmmoItem ammo;
+    public Sprite secondaryIcon;
 
     [Header("Skill Info")]
     public int active_cost;

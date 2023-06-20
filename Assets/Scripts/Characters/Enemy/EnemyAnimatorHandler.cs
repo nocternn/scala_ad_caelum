@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class EnemyAnimatorHandler : CharacterAnimatorHandler
 {
@@ -18,7 +19,20 @@ public class EnemyAnimatorHandler : CharacterAnimatorHandler
 
         _manager.rigidbody.velocity = deltaPosition / delta;
     }
+    
+    public override void Initialize()
+    {
+        base.Initialize();
 
+        _rigBuilder = GetComponent<RigBuilder>();
+    }
+    
+    public override void SetHandIK(LeftHandIKTarget leftHandTarget, RightHandIKTarget rightHandTarget, bool isTwoHanding)
+    {
+        base.SetHandIK(leftHandTarget, rightHandTarget, isTwoHanding);
+        _manager.rigBuilder.Build();
+    }
+    
     public void SetManager(EnemyManager manager)
     {
         _manager = manager;

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Crossbow
   m_EditorClassIdentifier: 
   primaryIcon: {fileID: 0}
-  secondaryIcon: {fileID: 0}
   name: Crossbow
   description: 
-  level: 0
   model: {fileID: 6449960425678237739, guid: e73e14e40fec31f43a8f349d391139ae, type: 3}
+  ammo: {fileID: 11400000, guid: b4cecc4708eedb4499de5b125aca404b, type: 2}
+  secondaryIcon: {fileID: 0}
   active_cost: 0
   ultimate_cost: 0
   active_attack: 

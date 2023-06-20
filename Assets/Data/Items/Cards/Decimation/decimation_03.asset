@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: decimation_03
   m_EditorClassIdentifier: 
   primaryIcon: {fileID: 21300000, guid: 4c80d4e5162079043a9f1f63511ee007, type: 3}
-  secondaryIcon: {fileID: 0}
   name: Desireless, Mindless, and Homeless LEVEL
-  description: Losing HP boosts DMG taken by all enemies by 25% for 8s.
-  level: 0
+  description: Every COUNT HP loss boosts DMG taken by all enemies by SCALAR%.
   type: 1
   id: 3
+  level: 0
   count:
   - 100
   - 100

@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: bodhi_02
   m_EditorClassIdentifier: 
   primaryIcon: {fileID: 21300000, guid: 3033892a78afca14c89e689a878f7366, type: 3}
-  secondaryIcon: {fileID: 0}
   name: Motto of Dibba-Sota LEVEL
   description: Combo hits are reset at COUNT to reduce DMG taken by SCALAR% for DURATIONs.
-  level: 0
   type: 0
   id: 2
+  level: 0
   count:
   - 150
   - 150

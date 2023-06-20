@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: decimation_02
   m_EditorClassIdentifier: 
   primaryIcon: {fileID: 21300000, guid: 4c80d4e5162079043a9f1f63511ee007, type: 3}
-  secondaryIcon: {fileID: 0}
   name: Path, Misfortune, and Written Fate LEVEL
-  description: Max HP increases by SCALAR%
-  level: 0
+  description: Max HP increases by SCALAR%.
   type: 1
   id: 2
+  level: 0
   count: []
   duration: []
   scalar:

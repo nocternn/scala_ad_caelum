@@ -374,7 +374,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07ab864a64a887d468423c7e778af730, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentWeaponDamage: 100
+  currentWeaponDamage: 0
 --- !u!1 &6092675367373588108
 GameObject:
   m_ObjectHideFlags: 0

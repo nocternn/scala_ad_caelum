@@ -5,36 +5,52 @@ using static UnityEngine.Random;
 
 public class EnemyStateAttack : EnemyState
 {
-    public EnemyStateCombatStance combatStanceState;
-    public EnemyActionAttack currentAttack;
+    [Header("A.I. Settings - Components")]
+    [SerializeField] private EnemyStatePursueTarget pursueTargetState;
+    [SerializeField] private EnemyStateCombatStance combatStanceState;
+    [SerializeField] private EnemyActionAttack currentAttack;
+    
+    [Header("A.I. Settings - Attack")]
+    private float distanceFromTarget;
+    private float viewableAngle;
     
     public override EnemyState Tick(EnemyManager manager)
-    {        
-        manager.UpdateAISettings();
-        
+    {   
         // Return to combat stance
-        if (manager.isInteracting || !manager.IsInAttackRange())
+        if (manager.isInteracting)
             return combatStanceState;
-        
+
         // Select an attack based on attack scores
-        GetNewAttack(manager);
-        if (currentAttack == null)
-            return this;
-        
-        // If attack is out of range/angle, select a new attack
-        if (manager.distanceFromTarget < currentAttack.minDistance || manager.distanceFromTarget > currentAttack.maxDistance)
-            return this;
-        if (manager.viewableAngle < currentAttack.minAngle || manager.viewableAngle > currentAttack.maxAngle)
-            return this;
-        
-        // Stop movement and attack target
-        if (manager.currentRecoveryTime <= 0 && !manager.isInteracting)
+        if (currentAttack != null)
+        {   
+            Vector3 direction = manager.currentTarget.transform.position - manager.transform.position;
+            distanceFromTarget = Vector3.Distance(manager.currentTarget.transform.position, manager.transform.position);
+            viewableAngle = Vector3.Angle(direction, manager.transform.forward);
+
+            // If attack is out of range/angle, select a new attack
+            if (distanceFromTarget < currentAttack.minDistance)
+                return this;
+            // If attack is in range
+            if (distanceFromTarget < currentAttack.maxDistance)
+            {
+                // If target is within viewable angle then attack
+                if (viewableAngle >= currentAttack.minAngle && viewableAngle <= currentAttack.maxAngle)
+                {
+                    // If not recovering then stop movement and attack target
+                    if (manager.stats.currentRecoveryTime <= 0 && !manager.isInteracting)
+                    {
+                        AttackTarget(manager);
+                        return combatStanceState;
+                    }
+                }
+            }
+        }
+        else
         {
-            AttackTarget(manager);
-            return combatStanceState;
+            GetNewAttack(manager);
         }
 
-        return this;
+        return combatStanceState;
     }
     
     private void GetNewAttack(EnemyManager manager)
@@ -42,9 +58,9 @@ public class EnemyStateAttack : EnemyState
         int maxScore = 0;
         foreach (EnemyActionAttack attack in manager.stats.enemyAttacks)
         {
-            if ((manager.distanceFromTarget >= attack.minDistance)
-                && (manager.distanceFromTarget <= attack.maxDistance)
-                && (manager.viewableAngle >= attack.minAngle && manager.viewableAngle <= attack.maxAngle))
+            if ((distanceFromTarget >= attack.minDistance)
+                && (distanceFromTarget <= attack.maxDistance)
+                && (viewableAngle >= attack.minAngle && viewableAngle <= attack.maxAngle))
             {
                 maxScore += attack.score;
             }
@@ -55,9 +71,9 @@ public class EnemyStateAttack : EnemyState
         
         foreach (EnemyActionAttack attack in manager.stats.enemyAttacks)
         {
-            if ((manager.distanceFromTarget >= attack.minDistance)
-                && (manager.distanceFromTarget <= attack.maxDistance)
-                && (manager.viewableAngle >= attack.minAngle && manager.viewableAngle <= attack.maxAngle))
+            if ((distanceFromTarget >= attack.minDistance)
+                && (distanceFromTarget <= attack.maxDistance)
+                && (viewableAngle >= attack.minAngle && viewableAngle <= attack.maxAngle))
             {
                 if (currentAttack != null)
                     return;
@@ -74,7 +90,7 @@ public class EnemyStateAttack : EnemyState
         manager.isInteracting = true;
         manager.animatorHandler.UpdateAnimatorValues(0, 0);
         manager.animatorHandler.PlayTargetAnimation(currentAttack.animation, true);
-        manager.currentRecoveryTime = currentAttack.recoveryTime;
+        manager.stats.currentRecoveryTime = currentAttack.recoveryTime;
         currentAttack = null;
     }
 }

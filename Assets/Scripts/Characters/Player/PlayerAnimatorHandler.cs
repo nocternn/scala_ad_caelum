@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class PlayerAnimatorHandler : CharacterAnimatorHandler
 {
@@ -21,12 +22,12 @@ public class PlayerAnimatorHandler : CharacterAnimatorHandler
 		_manager.SetPlayerVelocity(deltaPosition / delta);
 	}
 	*/
-	
-	public void SetManager(PlayerManager manager)
-	{
-		_manager = manager;
-	}
 
+	public override void Initialize()
+	{
+		base.Initialize();
+	}
+	
 	#region Play Animation
 
 	public void PlayTargetWeaponBasedAnimation(string targetAnimation, bool isInteracting, string[] weaponTypes)
@@ -44,6 +45,11 @@ public class PlayerAnimatorHandler : CharacterAnimatorHandler
 	#endregion
 	
 	#region Setters
+	
+	public void SetManager(PlayerManager manager)
+	{
+		_manager = manager;
+	}
 
 	public void SetUsedWeaponType(string currentWeaponType, string[] weaponTypes)
 	{
@@ -54,7 +60,14 @@ public class PlayerAnimatorHandler : CharacterAnimatorHandler
 		_animator.SetBool(String.Format("isUsing{0}", currentWeaponType), true);
 	}
 
+	public override void SetHandIK(LeftHandIKTarget leftHandTarget, RightHandIKTarget rightHandTarget, bool isTwoHanding)
+	{
+		base.SetHandIK(leftHandTarget, rightHandTarget, isTwoHanding);
+		_manager.rigBuilder.Build();
+	}
+
 	#endregion
+	
 	#region Getters
 
 

@@ -5,63 +5,72 @@ using UnityEngine;
 
 public class PlayerAttacker : MonoBehaviour
 {
-    private PlayerManager _manager;
+    [SerializeField] private PlayerManager _manager;
     
     private string lastAttack;
+    public WeaponItem currentWeapon;
 
     public void SetManager(PlayerManager manager)
     {
         _manager = manager;
+        currentWeapon = manager.weaponSlotManager.GetCurrentWeapon();
     }
 
-    public void HandleWeaponCombo(WeaponItem weaponItem)
+    public void HandleWeaponCombo()
     {
         if (!_manager.inputHandler.comboFlag)
             return;
         
         _manager.animatorHandler.SetBool("canDoCombo", false);
-        if (lastAttack.Equals(weaponItem.basic_attack_01))
+        if (lastAttack.Equals(currentWeapon.basic_attack_01))
         {
-            _manager.PlayTargetAnimation(weaponItem.basic_attack_02, true);
-            lastAttack = weaponItem.basic_attack_02;
+            _manager.PlayTargetAnimation(currentWeapon.basic_attack_02, true);
+            lastAttack = currentWeapon.basic_attack_02;
         }
-        else if (lastAttack.Equals(weaponItem.basic_attack_02))
+        else if (lastAttack.Equals(currentWeapon.basic_attack_02))
         {
-            _manager.PlayTargetAnimation(weaponItem.basic_attack_03, true);
-            lastAttack = weaponItem.basic_attack_03;
+            _manager.PlayTargetAnimation(currentWeapon.basic_attack_03, true);
+            lastAttack = currentWeapon.basic_attack_03;
         }
-        else if (lastAttack.Equals(weaponItem.basic_attack_03))
+        else if (lastAttack.Equals(currentWeapon.basic_attack_03))
         {
-            _manager.PlayTargetAnimation(weaponItem.basic_attack_04, true);
-            lastAttack = weaponItem.basic_attack_04;
+            _manager.PlayTargetAnimation(currentWeapon.basic_attack_04, true);
+            lastAttack = currentWeapon.basic_attack_04;
         }
     }
 
-	public void HandleActiveAttack(WeaponItem weaponItem)
+	public void HandleActiveAttack()
     {
 		Debug.Log("Use Active");
 /*
-        _manager.PlayTargetAnimation(weaponItem.active_attack, true);
+        _manager.PlayTargetAnimation(currentWeapon.active_attack, true);
 */
     }
     
-    public void HandleBasicAttack(WeaponItem weaponItem)
+    public void HandleBasicAttack()
     {
-        _manager.PlayTargetAnimation(weaponItem.basic_attack_01, true);
-        lastAttack = weaponItem.basic_attack_01;
+        _manager.PlayTargetAnimation(currentWeapon.basic_attack_01, true);
+        
+        // Shoot bullet if weapon is pistol
+        if (currentWeapon.name.Equals(_manager.weaponSlotManager.weaponTypes[0]))
+        {
+            ShootBullet();
+        }
+        
+        lastAttack = currentWeapon.basic_attack_01;
     }
 
-    public void HandleChargedAttack(WeaponItem weaponItem)
+    public void HandleChargedAttack()
     {
-        _manager.PlayTargetAnimation(weaponItem.charged_attack, true);
-        lastAttack = weaponItem.charged_attack;
+        _manager.PlayTargetAnimation(currentWeapon.charged_attack, true);
+        lastAttack = currentWeapon.charged_attack;
     }
 
-	public void HandleUltimateAttack(WeaponItem weaponItem)
+	public void HandleUltimateAttack()
     {
 		Debug.Log("Use Ultimate");
 /*
-        _manager.PlayTargetAnimation(weaponItem.ultimate_attack, true);
+        _manager.PlayTargetAnimation(currentWeapon.ultimate_attack, true);
 */
     }
 
@@ -69,4 +78,58 @@ public class PlayerAttacker : MonoBehaviour
 	{
 		return lastAttack.Contains("basic");
 	}
+    
+    private void ShootBullet()
+    {
+        // Get instantion location
+        AmmoInstantiationLocation instantiationLocation =
+            _manager.weaponSlotManager.rightHandSlot.GetComponentInChildren<AmmoInstantiationLocation>();
+
+        // Instantiate ammo
+        GameObject ammo = Instantiate(
+            currentWeapon.ammo.model,
+            instantiationLocation.transform.position,
+            _manager.GetCameraRotation("pivot")
+        );
+        Rigidbody rigidbody = ammo.GetComponent<Rigidbody>();
+        RangedDamageCollider damageCollider = ammo.GetComponentInChildren<RangedDamageCollider>();
+            
+        // Set ammo velocity
+        if (_manager.isAiming)
+        {
+            Ray ray = _manager.GetCamera().ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+            RaycastHit hitpoint;
+
+            if (Physics.Raycast(ray, out hitpoint, 100.0f))
+            {
+                ammo.transform.LookAt(hitpoint.point);
+            }
+            else
+            {
+                ammo.transform.rotation = Quaternion.Euler(
+                    _manager.GetCameraLocalEulerAngles().x,
+                    _manager.lockOnTransform.eulerAngles.y,
+                    0
+                );
+            }
+        }
+        else
+        {
+            ammo.transform.rotation = Quaternion.Euler(
+                _manager.GetCameraEulerAngles("pivot").x,
+                _manager.lockOnTransform.eulerAngles.y,
+                0
+            );
+        }
+        rigidbody.AddForce(ammo.transform.forward * currentWeapon.ammo.forwardVelocity);
+        rigidbody.AddForce(ammo.transform.up * currentWeapon.ammo.upwardVelocity);
+        rigidbody.useGravity = currentWeapon.ammo.useGravity;
+        rigidbody.mass = currentWeapon.ammo.mass;
+        ammo.transform.parent = null;
+
+        // Enable damage
+        damageCollider.ammoItem = currentWeapon.ammo;
+        _manager.weaponSlotManager.SetDamageCollider(false, damageCollider);
+        _manager.weaponSlotManager.EnableDamageCollider();
+    }
 }

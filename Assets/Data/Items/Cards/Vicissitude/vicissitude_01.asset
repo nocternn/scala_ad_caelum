@@ -13,13 +13,12 @@ MonoBehaviour:
   m_Name: vicissitude_01
   m_EditorClassIdentifier: 
   primaryIcon: {fileID: 21300000, guid: e7d276a4e8fbe03448cac59aed87291e, type: 3}
-  secondaryIcon: {fileID: 0}
   name: Long Trip LEVEL
   description: DMG increases by SCALAR% per second. DURATION stacks max. Taking DMG
     reduces COUNT stacks.
-  level: 0
   type: 4
   id: 1
+  level: 0
   count:
   - 10
   - 10

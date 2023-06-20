@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: deliverance_03
   m_EditorClassIdentifier: 
   primaryIcon: {fileID: 21300000, guid: ca9fc77da5da29542b0188d6cce7beaf, type: 3}
-  secondaryIcon: {fileID: 0}
   name: Mask of the Predator LEVEL
   description: Ultimate boosts DMG taken by all enemies by SCALAR% for DURATIONs.
-  level: 0
   type: 2
   id: 3
+  level: 0
   count: []
   duration:
   - 5

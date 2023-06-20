@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: gold_01
   m_EditorClassIdentifier: 
   primaryIcon: {fileID: 21300000, guid: 918baaf8a3234d548be726b23c2839ef, type: 3}
-  secondaryIcon: {fileID: 0}
   name: Recitatif of Eden LEVEL
   description: Every COUNT SP left boosts DMG by SCALAR%.
-  level: 0
   type: 3
   id: 1
+  level: 0
   count:
   - 10
   - 10
