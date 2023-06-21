@@ -20,7 +20,7 @@ public class InventoryMenuManager : MonoBehaviour
         
         foreach (WeaponItem weapon in weapons)
         {
-            CardController card = Instantiate(_prefab, _container.transform).GetComponent<CardController>();
+            CardWeaponController card = Instantiate(_prefab, _container.transform).GetComponent<CardWeaponController>();
             card.UpdateUI(weapon);
         }
     }
@@ -44,7 +44,7 @@ public class InventoryMenuManager : MonoBehaviour
         {
             if (child.GetComponent<Toggle>().isOn)
             {
-                CardController selectedCard = child.GetComponent<CardController>();
+                CardWeaponController selectedCard = child.GetComponent<CardWeaponController>();
                 selectedCard.transform.GetComponent<Toggle>().isOn = false;
 
                 _manager.sceneLoader.weapon = selectedCard.weapon;

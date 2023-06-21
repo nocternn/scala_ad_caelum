@@ -58,7 +58,19 @@ public class CardItem : Item
 	    {
 		    level++;
 		    GetLevelUpCondition(); // Set initial cost value
-		    effect.canBeApplied = true;
+
+		    switch (id)
+		    {
+			    case 1:
+				    effect.canBeApplied_01 = true;
+				    break;
+			    case 2:
+				    effect.canBeApplied_02 = true;
+				    break;
+			    case 3:
+				    effect.canBeApplied_03 = true;
+				    break;
+		    }
 	    }
 
 	    if (level == 3)

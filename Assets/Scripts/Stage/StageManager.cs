@@ -8,8 +8,8 @@ public class StageManager : MonoBehaviour
 
     public static StageManager Instance { get; private set; }
 
-    private bool _initialized;
-    private int _clearReward;
+    [SerializeField] private bool _initialized;
+    [SerializeField] private int _clearReward;
     
     public Enums.StageType stageType;
     public Enums.StageType previousStageType;
@@ -32,9 +32,6 @@ public class StageManager : MonoBehaviour
 
     private void Start()
     {
-        _clearReward = 100;
-        _initialized = false;
-        
         if (Instance == null)
         {
             Instance = this;
@@ -108,7 +105,7 @@ public class StageManager : MonoBehaviour
         }
         else
         {
-            
+            enemy.gameObject.SetActive(false);
         }
     }
     
@@ -121,7 +118,8 @@ public class StageManager : MonoBehaviour
 
         hud.SetManager(this);
         hud.Initialize();
-        
+
+        _clearReward = 100;
         _initialized = true;
     }
 

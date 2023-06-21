@@ -20,7 +20,7 @@ public class HUDManager : MonoBehaviour
     public HUDShopManager hudShop;
     public HUDStageManager hudStage;
 
-    private bool _initialized;
+    [SerializeField] private bool _initialized;
 
     #endregion
 
@@ -66,6 +66,8 @@ public class HUDManager : MonoBehaviour
             
             hudCombat = combat.GetComponent<HUDCombatManager>();
             hudCombat.Initialize();
+            
+            hudCombat.UpdateSkillButtonsUI(_stage.sceneLoader.weapon);
 
             hudStage.timer.gameObject.SetActive(true);
         }

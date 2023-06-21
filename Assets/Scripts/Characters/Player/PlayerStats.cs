@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerStats : CharacterStats
 {
+    #region Attributes
+
     private PlayerManager _manager;
     
     [Header("Fixed Stats")]
@@ -23,6 +25,8 @@ public class PlayerStats : CharacterStats
     [Header("Attack")]
     public int currentCharge;
     public int hitCount;
+
+    #endregion
 
     void Start()
     {

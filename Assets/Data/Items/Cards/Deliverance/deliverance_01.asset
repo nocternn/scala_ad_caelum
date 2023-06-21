@@ -15,9 +15,12 @@ MonoBehaviour:
   primaryIcon: {fileID: 21300000, guid: ca9fc77da5da29542b0188d6cce7beaf, type: 3}
   name: Goblet of the Giver LEVEL
   description: Ultimate boosts DMG by SCALAR% for DURATIONs.
+  canUpgrade: 0
   type: 2
   id: 1
-  level: 4
+  level: 0
+  cost: 0
+  costDescription: 
   count: []
   duration:
   - 5

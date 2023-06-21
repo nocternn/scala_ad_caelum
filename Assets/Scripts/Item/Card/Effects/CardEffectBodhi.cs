@@ -8,19 +8,16 @@ public class CardEffectBodhi : CardItemEffect
 {
     public override void Apply(CardItem card, PlayerManager player = null, EnemyManager enemy = null)
     {
-		if (!canBeApplied)
-			return;
-
         switch (card.id)
         {
             case 1:
-                MottoOfPubbeNivasanussati(card, player);
+	            if (canBeApplied_01) MottoOfPubbeNivasanussati(card, player);
                 break;
 			case 2:
-				MottoOfDibbaSota(card, player);
+				if (canBeApplied_02) MottoOfDibbaSota(card, player);
 				break;
 			case 3:
-				MottoOfAsavakkhaya(card, player);
+				if (canBeApplied_03) MottoOfAsavakkhaya(card, player);
 				break;
 			default:
 				UnityEngine.Debug.Log("Invalid Bodhi card ID");
@@ -37,7 +34,7 @@ public class CardEffectBodhi : CardItemEffect
         if (player.stats.hitCount < (int)Mathf.Round(count))
             return;
 		
-		canBeApplied = false;
+        canBeApplied_01 = false;
 
         player.stats.scaleAttack += scalar / 100.0f;
 
@@ -45,7 +42,7 @@ public class CardEffectBodhi : CardItemEffect
 		{
 			player.stats.hitCount = 0;
 			player.stats.scaleAttack -= scalar / 100.0f;
-			canBeApplied = true;
+			canBeApplied_01 = true;
 		});
     }
 
@@ -58,7 +55,7 @@ public class CardEffectBodhi : CardItemEffect
         if (player.stats.hitCount < (int)Mathf.Round(count))
             return;
 
-		canBeApplied = false;
+		canBeApplied_02 = false;
 
         player.stats.scaleDefense += scalar / 100.0f;
 
@@ -66,7 +63,7 @@ public class CardEffectBodhi : CardItemEffect
 		{
 			player.stats.hitCount = 0;
 			player.stats.scaleDefense -= scalar / 100.0f;
-			canBeApplied = true;
+			canBeApplied_02 = true;
 		});
 	}
 
@@ -75,13 +72,13 @@ public class CardEffectBodhi : CardItemEffect
 		float count = card.count[card.level];
         float duration = card.duration[card.level];
 
-		canBeApplied = false;
+		canBeApplied_03 = false;
 
 		player.stats.hitCount += (int)Mathf.Round(count);
 
 		Task.Delay((int)Mathf.Round(1000 * duration)).ContinueWith(t =>
 		{
-			canBeApplied = true;
+			canBeApplied_03 = true;
 		});
 	}
 }

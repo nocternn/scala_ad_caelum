@@ -17,9 +17,6 @@ public class CardEffectVicissitude : CardItemEffect
     
     public override void Apply(CardItem card, PlayerManager player = null, EnemyManager enemy = null)
     {
-        if (!canBeApplied)
-            return;
-
         if (!_isRunning)
         {
             _isRunning = true;
@@ -35,13 +32,13 @@ public class CardEffectVicissitude : CardItemEffect
         switch (card.id)
         {
             case 1:
-                LongTrip(card, player);
+                if (canBeApplied_01) LongTrip(card, player);
                 break;
             case 2:
-                NoOneToShare(card, enemy);
+                if (canBeApplied_02) NoOneToShare(card, enemy);
                 break;
             case 3:
-                LostAndFound(card, player);
+                if (canBeApplied_03) LostAndFound(card, player);
                 break;
             default:
                 UnityEngine.Debug.Log("Invalid Vicissitude card ID");

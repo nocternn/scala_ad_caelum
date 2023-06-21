@@ -5,9 +5,15 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Items/Weapon")]
 public class WeaponItem : Item
 {
+    #region Attributes
+
     public GameObject model;
-	public AmmoItem ammo;
+    public AmmoItem ammo;
     public Sprite secondaryIcon;
+
+    [Header("Descriptions")]
+    public string descriptionActive;
+    public string descriptionUltimate;
 
     [Header("Skill Info")]
     public int active_cost;
@@ -27,4 +33,20 @@ public class WeaponItem : Item
     
     [Header("Ultimate Attack Animations")]
     public string ultimate_attack;
+
+    #endregion
+
+    public string GetName()
+    {
+        return name;
+    }
+
+    public string GetDescription()
+    {
+        string updatedDescription = description;
+        updatedDescription += "\nActive: " + descriptionActive;
+        updatedDescription += "\nUltimate: " + descriptionUltimate;
+
+        return updatedDescription;
+    }
 }

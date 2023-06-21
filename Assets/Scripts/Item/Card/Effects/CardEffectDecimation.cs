@@ -11,19 +11,16 @@ public class CardEffectDecimation : CardItemEffect
     
     public override void Apply(CardItem card, PlayerManager player = null, EnemyManager enemy = null)
     {
-        if (!canBeApplied)
-            return;
-
         switch (card.id)
         {
             case 1:
-                BladeGraveAndScar(card, player);
+                if (canBeApplied_01) BladeGraveAndScar(card, player);
                 break;
             case 2:
-                PathMisfortuneAndWrittenFate(card, player);
+                if (canBeApplied_02) PathMisfortuneAndWrittenFate(card, player);
                 break;
             case 3:
-                DesirelessMindlessAndHomeless(card, player, enemy);
+                if (canBeApplied_03) DesirelessMindlessAndHomeless(card, player, enemy);
                 break;
             default:
                 UnityEngine.Debug.Log("Invalid Decimation card ID");
@@ -52,7 +49,7 @@ public class CardEffectDecimation : CardItemEffect
     {
         float scalar = card.scalar[card.level];
 
-        canBeApplied = false;
+        canBeApplied_02 = false;
 
         player.stats.scaleHealth = 1 + (scalar / 100.0f);
         player.stats.UpdateMaxHealth();

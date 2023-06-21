@@ -4,7 +4,9 @@ using UnityEngine;
 
 public abstract class CardItemEffect : MonoBehaviour
 {
-    public bool canBeApplied = true;
+    public bool canBeApplied_01 = true;
+    public bool canBeApplied_02 = true;
+    public bool canBeApplied_03 = true;
 
     public virtual void Apply(CardItem card, PlayerManager player = null, EnemyManager enemy = null)
     {

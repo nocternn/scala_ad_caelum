@@ -466,7 +466,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneLoader: {fileID: 0}
-  type: 0
+  menuType: 0
   mainMenu: {fileID: 0}
   inventoryMenu: {fileID: 0}
   quitMenu: {fileID: 0}
@@ -2453,7 +2453,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _manager: {fileID: 0}
-  _prefab: {fileID: 2560441174095320595, guid: 4e3ba9f4917e32c408146bff41321a13, type: 3}
+  _prefab: {fileID: 2560441174095320595, guid: f158a880ac6022c4999736fcd915946b, type: 3}
   _container: {fileID: 0}
   weapons:
   - {fileID: 11400000, guid: d160d35f6e760724ba6c3f75d2601762, type: 2}

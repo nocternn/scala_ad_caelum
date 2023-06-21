@@ -7,9 +7,9 @@ using UnityEngine.UI;
 
 public class HUDBuffManager : MonoBehaviour
 {
-    [SerializeField] private CardController _card01;
-    [SerializeField] private CardController _card02;
-    [SerializeField] private CardController _card03;
+    [SerializeField] private CardBuffController _card01;
+    [SerializeField] private CardBuffController _card02;
+    [SerializeField] private CardBuffController _card03;
 
     public HashSet<int> usedCardsByPlayer;
 
@@ -21,9 +21,9 @@ public class HUDBuffManager : MonoBehaviour
         usedCardsByPlayer = new HashSet<int>();
         selectedCard = null;
         
-        _card01 = transform.Find("Cards").Find("Card01").GetComponent<CardController>();
-        _card02 = transform.Find("Cards").Find("Card02").GetComponent<CardController>();
-        _card03 = transform.Find("Cards").Find("Card03").GetComponent<CardController>();
+        _card01 = transform.Find("Cards").Find("Card01").GetComponent<CardBuffController>();
+        _card02 = transform.Find("Cards").Find("Card02").GetComponent<CardBuffController>();
+        _card03 = transform.Find("Cards").Find("Card03").GetComponent<CardBuffController>();
 
         // Randomly retrieve 3 unused cards from the list of cards, with no repeats
         HashSet<int> usedCardsBySystem = new HashSet<int>();

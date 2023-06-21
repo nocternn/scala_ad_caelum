@@ -7,19 +7,16 @@ public class CardEffectDeliverance : CardItemEffect
 {
     public override void Apply(CardItem card, PlayerManager player = null, EnemyManager enemy = null)
     {
-        if (!canBeApplied)
-            return;
-
         switch (card.id)
         {
             case 1:
-                GobletOfTheGiver(card, player);
+                if (canBeApplied_01) GobletOfTheGiver(card, player);
                 break;
             case 2:
-                RochetOfThePilgrim(card, player);
+                if (canBeApplied_02) RochetOfThePilgrim(card, player);
                 break;
             case 3:
-                MaskOfThePredator(card, player, enemy);
+                if (canBeApplied_03) MaskOfThePredator(card, player, enemy);
                 break;
             default:
                 UnityEngine.Debug.Log("Invalid Deliverance card ID");
@@ -34,14 +31,14 @@ public class CardEffectDeliverance : CardItemEffect
 
         if (player.inputHandler.attackUltimateInput)
         {
-            canBeApplied = false;
+            canBeApplied_01 = false;
 
             player.stats.scaleAttack += scalar / 100.0f;
 
             Task.Delay((int)Mathf.Round(1000 * duration)).ContinueWith(t => 
             {
                 player.stats.scaleAttack -= scalar / 100.0f;
-                canBeApplied = true;
+                canBeApplied_01 = true;
             });
         }
     }
@@ -53,7 +50,7 @@ public class CardEffectDeliverance : CardItemEffect
         
         if (player.inputHandler.attackUltimateInput)
         {
-            canBeApplied = false;
+            canBeApplied_02 = false;
 
             IEnumerator addSP = AddSkillPoints(player, count, (int)Mathf.Round(duration));
             StartCoroutine(addSP);
@@ -61,7 +58,7 @@ public class CardEffectDeliverance : CardItemEffect
             Task.Delay((int)Mathf.Round(1000 * duration)).ContinueWith(t =>
             {
                 StopCoroutine(addSP);
-                canBeApplied = true;
+                canBeApplied_02 = true;
             });
         }
     }
@@ -73,13 +70,13 @@ public class CardEffectDeliverance : CardItemEffect
         
         if (player.inputHandler.attackUltimateInput)
         {
-            canBeApplied = false;
+            canBeApplied_03 = false;
 
             enemy.stats.scaleDefense -= scalar / 100.0f;
 
             Task.Delay((int)Mathf.Round(1000 * duration)).ContinueWith(t => 
             {
-                canBeApplied = true;
+                canBeApplied_03 = true;
             });
         }
     }

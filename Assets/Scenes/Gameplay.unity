@@ -3835,6 +3835,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 249c8b0d1eca9bc4494b540221b0de65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _initialized: 0
+  _clearReward: 0
   stageType: 0
   previousStageType: 0
   id: 1
@@ -6671,6 +6673,7 @@ MonoBehaviour:
   hudBuff: {fileID: 0}
   hudShop: {fileID: 0}
   hudStage: {fileID: 0}
+  _initialized: 0
 --- !u!1 &1004133821
 GameObject:
   m_ObjectHideFlags: 0
@@ -8926,8 +8929,8 @@ MonoBehaviour:
   door: {fileID: 0}
   shop: {fileID: 0}
   mask: {fileID: 0}
-  btnBack: {fileID: 143587941}
-  btnInteract: {fileID: 1490265312}
+  back: {fileID: 0}
+  interact: {fileID: 0}
   timer: {fileID: 0}
   quit: {fileID: 0}
   canInteract: 0

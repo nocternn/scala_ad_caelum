@@ -12,19 +12,16 @@ public class CardEffectGold : CardItemEffect
 
     public override void Apply(CardItem card, PlayerManager player = null, EnemyManager enemy = null)
     {
-        if (!canBeApplied)
-            return;
-
         switch (card.id)
         {
             case 1:
-                RecitatifOfEden(card, player);
+                if (canBeApplied_01) RecitatifOfEden(card, player);
                 break;
             case 2:
-                RecitatifOfBirds(card, player);
+                if (canBeApplied_02) RecitatifOfBirds(card, player);
                 break;
             case 3:
-                RecitatifOfGoodWine(card, player);
+                if (canBeApplied_03) RecitatifOfGoodWine(card, player);
                 break;
             default:
                 UnityEngine.Debug.Log("Invalid Gold card ID");
@@ -70,7 +67,7 @@ public class CardEffectGold : CardItemEffect
     {
         float count = card.count[card.level];
 
-        canBeApplied = false;
+        canBeApplied_03 = false;
         
         StartCoroutine(AddSkillPoints(player, count));
     }

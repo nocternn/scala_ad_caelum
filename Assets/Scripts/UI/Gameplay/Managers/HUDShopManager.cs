@@ -20,7 +20,7 @@ public class HUDShopManager : MonoBehaviour
         
         foreach (CardItem buff in _stage.selectedBuffs)
         {
-            CardController card = Instantiate(_prefab, _container.transform).GetComponent<CardController>();
+            CardBuffController card = Instantiate(_prefab, _container.transform).GetComponent<CardBuffController>();
             card.UpdateUI(buff);
         }
     }
@@ -32,7 +32,7 @@ public class HUDShopManager : MonoBehaviour
 
     public void Upgrade()
     {
-        CardController selectedCard = GetSelectedCard();
+        CardBuffController selectedCard = GetSelectedCard();
         if (selectedCard != null)
         {
             if (!selectedCard.card.canUpgrade)
@@ -52,13 +52,13 @@ public class HUDShopManager : MonoBehaviour
         }
     }
     
-    private CardController GetSelectedCard()
+    private CardBuffController GetSelectedCard()
     {
         foreach (Transform child in _container)
         {
             if (child.GetComponent<Toggle>().isOn)
             {
-                return child.GetComponent<CardController>();
+                return child.GetComponent<CardBuffController>();
             }
         }
         return null;

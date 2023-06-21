@@ -14,8 +14,8 @@ public class DamageCollider : MonoBehaviour
     {
         SetDamageCollider();
 
-        _player = GameObject.Find("Player").GetComponent<PlayerManager>();
-        _enemy = GameObject.Find("Enemy").GetComponent<EnemyManager>();
+        _player = GameObject.FindObjectsOfType<PlayerManager>(true)[0];
+        _enemy = GameObject.FindObjectsOfType<EnemyManager>(true)[0];
     }
 
     protected virtual void OnTriggerEnter(Collider collision)
@@ -43,6 +43,7 @@ public class DamageCollider : MonoBehaviour
             enemyManager.TakeDamage(damage);
 
             _player.stats.hitCount++;
+            _player.stats.currentSkillPoints += 0.5f;
 			if (_player.attacker.IsBasicAttack())
             	_player.stats.UpdateAttackCharge(true);
         }
@@ -54,13 +55,6 @@ public class DamageCollider : MonoBehaviour
         _damageCollider.gameObject.SetActive(true);
         _damageCollider.isTrigger = true;
         _damageCollider.enabled = false;
-    }
-    
-    protected void DestroyAmmo()
-    {
-        _player.weaponSlotManager.DisableDamageCollider();
-        _enemy.weaponSlotManager.DisableDamageCollider();
-        Destroy(transform.root.gameObject);
     }
     
     public void Enable()

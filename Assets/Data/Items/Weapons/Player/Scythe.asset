@@ -13,13 +13,17 @@ MonoBehaviour:
   m_Name: Scythe
   m_EditorClassIdentifier: 
   primaryIcon: {fileID: 21300000, guid: 1632d1f021cfa69468a4f0a97fd4d0d4, type: 3}
-  secondaryIcon: {fileID: 21300000, guid: 1ce575a89cacc434cb0afe3c4c47b7ee, type: 3}
   name: Scythe
-  description: 
-  level: 0
+  description: 'ATK: 450 | CRT: 41'
   model: {fileID: 8924068759846017593, guid: 3c441d1a214d92b4cbae07517a7b6466, type: 3}
-  active_cost: 0
-  ultimate_cost: 0
+  ammo: {fileID: 0}
+  secondaryIcon: {fileID: 21300000, guid: 1ce575a89cacc434cb0afe3c4c47b7ee, type: 3}
+  descriptionActive: Create petals that transform into 5 spikes around the target
+    hit, each dealing 76.4%/85.2%/100.0% ATK.
+  descriptionUltimate: Wielder restores 200 HP instantly and has 10% bonus Crit Rate
+    as well as 31.3%/33.5%/36.0% bonus DMG.
+  active_cost: 5
+  ultimate_cost: 70
   active_attack: 
   basic_attack_01: scythe_basic_attack_01
   basic_attack_02: scythe_basic_attack_02
