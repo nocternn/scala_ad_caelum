@@ -32,13 +32,13 @@ MonoBehaviour:
   skillActive: {fileID: 0}
   skillUltimate: {fileID: 0}
   activeCost: 20
-  activeCooldown: 35
-  ultimateCost: 100
+  activeCooldown: 10
+  ultimateCost: 50
   ultimateCooldown: 20
-  activeAttack: pistol_basic_attack_01
+  activeAttack: pistol_skill_attack
   basicAttack01: pistol_basic_attack_01
   basicAttack02: 
   basicAttack03: 
   basicAttack04: 
   chargedAttack: 
-  ultimateAttack: pistol_basic_attack_01
+  ultimateAttack: pistol_skill_attack

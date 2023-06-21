@@ -10,7 +10,7 @@ public class WeaponItem : Item
     public GameObject model;
     public AmmoItem ammo;
     public Sprite secondaryIcon;
-
+    
     public int id;
 
     [Header("Stats")]

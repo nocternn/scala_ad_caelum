@@ -11,9 +11,10 @@ public class HUDStageManager : MonoBehaviour
         
     [Header("Interactables")]
     public CoinManager coin;
+    public DialogueManager dialogue;
     public Door door;
     public Shop shop;
-    
+
     [Header("Transforms")]
     public Transform mask;
     public Transform back;
@@ -43,9 +44,10 @@ public class HUDStageManager : MonoBehaviour
 
     public void Initialize()
     {
-        coin = GetComponentInChildren<CoinManager>();
-        door = GameObject.FindObjectsOfType<Door>(true)[0];
-        shop = GameObject.FindObjectsOfType<Shop>(true)[0];
+        coin     = GetComponentInChildren<CoinManager>();
+        dialogue = GetComponentInChildren<DialogueManager>();
+        door     = GameObject.FindObjectsOfType<Door>(true)[0];
+        shop     = GameObject.FindObjectsOfType<Shop>(true)[0];
 
         mask     = transform.GetChild(0);
         back     = transform.GetChild(2);
@@ -54,8 +56,11 @@ public class HUDStageManager : MonoBehaviour
         quit     = transform.GetChild(5);
 
         coin.Initialize();
+        dialogue.Initialize();
         door.Initialize();
         shop.Initialize();
+        
+        dialogue.SetManager(_stage);
 
         ShowDoor(false);
         ShowShop(false);

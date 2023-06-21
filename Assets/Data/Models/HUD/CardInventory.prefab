@@ -228,8 +228,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 10
-  m_fontSizeBase: 10
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -424,6 +424,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0b48eaa8c65d1347b458b170b919111, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weapon: {fileID: 0}
 --- !u!1 &5431450265605243659
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,8 +518,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 18
+  m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

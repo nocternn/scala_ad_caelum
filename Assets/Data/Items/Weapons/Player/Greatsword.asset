@@ -29,12 +29,12 @@ MonoBehaviour:
   skillUltimate: {fileID: 0}
   activeCost: 50
   activeCooldown: 20
-  ultimateCost: 100
+  ultimateCost: 80
   ultimateCooldown: 20
-  activeAttack: 
+  activeAttack: PowerUp
   basicAttack01: greatsword_basic_attack_01
   basicAttack02: greatsword_basic_attack_02
   basicAttack03: greatsword_basic_attack_03
   basicAttack04: greatsword_basic_attack_04
   chargedAttack: greatsword_charged_attack
-  ultimateAttack: 
+  ultimateAttack: PowerUp

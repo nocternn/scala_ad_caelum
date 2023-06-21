@@ -30,6 +30,8 @@ public class StageManager : MonoBehaviour
 
     #endregion
 
+    #region Lifecycle
+    
     private void Start()
     {
         if (Instance == null)
@@ -57,6 +59,24 @@ public class StageManager : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Initiate
+    
+    public void Initialize()
+    {
+        sceneLoader = GameObject.Find("SceneLoader").GetComponent<SceneLoader>();
+
+        camera = GameObject.Find("Camera Holder").GetComponent<CameraHandler>();
+        hud    = GameObject.Find("HUD").GetComponent<HUDManager>();
+
+        hud.SetManager(this);
+        hud.Initialize();
+
+        _clearReward = 100;
+        _initialized = true;
+    }
+    
     private void Reset()
     {
         _clearReward = 100;
@@ -78,6 +98,10 @@ public class StageManager : MonoBehaviour
             }
         }
     }
+
+    #endregion
+
+    #region Toggles
 
     private void TogglePlayer(bool show)
     {
@@ -108,21 +132,16 @@ public class StageManager : MonoBehaviour
             enemy.gameObject.SetActive(false);
         }
     }
-    
-    public void Initialize()
+
+    #endregion
+
+    #region SwitchStages
+
+    public void SwitchToBuff()
     {
-        sceneLoader = GameObject.Find("SceneLoader").GetComponent<SceneLoader>();
-
-        camera = GameObject.Find("Camera Holder").GetComponent<CameraHandler>();
-        hud    = GameObject.Find("HUD").GetComponent<HUDManager>();
-
-        hud.SetManager(this);
-        hud.Initialize();
-
-        _clearReward = 100;
-        _initialized = true;
+        
     }
-
+    
     public void SwitchToCombat(CardItem selectedBuff)
     {
         selectedBuff.EnableEffect(buffHolder);
@@ -150,6 +169,10 @@ public class StageManager : MonoBehaviour
         hud.Initialize();
     }
 
+    #endregion
+
+    #region SwitchScenes
+    
     public void SwitchToNextStage()
     {
         id++;
@@ -194,6 +217,10 @@ public class StageManager : MonoBehaviour
     {
         Quit();
     }
+
+    #endregion
+
+    #region Actions
 
     public void Interact()
     {
@@ -266,4 +293,6 @@ public class StageManager : MonoBehaviour
         sceneLoader.sceneType = Enums.SceneType.Menu;
         StartCoroutine(sceneLoader.LoadScene(-1));
     }
+
+    #endregion
 }

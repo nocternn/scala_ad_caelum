@@ -35,6 +35,8 @@ public class PlayerStats : CharacterStats
 
         currentHealth = maxHealth;
         currentSkillPoints = maxSkillPoints / 3;
+
+		StartCoroutine(RechargeSP());
     }
     
     public void SetManager(PlayerManager manager)
@@ -79,5 +81,14 @@ public class PlayerStats : CharacterStats
 	public void UpdateMaxHealth()
 	{
 		maxHealth = ScaleStat(baseHealth, scaleHealth);
+	}
+
+	private IEnumerator RechargeSP()
+	{
+		while (true)
+    	{
+      		currentSkillPoints = Mathf.Min(currentSkillPoints + 1.5f, maxSkillPoints);
+      		yield return new WaitForSeconds(1.0f);
+    	}
 	}
 }

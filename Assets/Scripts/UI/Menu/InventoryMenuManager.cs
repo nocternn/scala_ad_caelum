@@ -22,6 +22,7 @@ public class InventoryMenuManager : MonoBehaviour
         {
             CardWeaponController card = Instantiate(_prefab, _container.transform).GetComponent<CardWeaponController>();
             card.UpdateUI(weapon);
+            card.transform.GetComponent<Toggle>().group = _container.transform.GetComponent<ToggleGroup>();
         }
     }
 

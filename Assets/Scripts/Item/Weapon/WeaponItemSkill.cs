@@ -9,19 +9,28 @@ public class WeaponItemSkill : MonoBehaviour
     protected PlayerManager _player;
     protected EnemyManager _enemy;
 
-    public bool isUsable;
 
-    public void Initialize(WeaponItem weapon, PlayerManager player = null, EnemyManager enemy = null)
+    [Header("Properties")]
+    public bool onCooldown;
+    public int currentCooldown;
+
+    public virtual void Initialize(WeaponItem weapon, PlayerManager player = null, EnemyManager enemy = null)
     {
         _weapon = weapon;
 
         _player = player;
         _enemy  = enemy;
 
-        isUsable = true;
+        onCooldown = false;
+    }
+    
+    public void Cooldown()
+    {
+        onCooldown = true;
+        StartCoroutine(CooldownTimer(currentCooldown));
     }
 
-    public void UseSkill()
+    public virtual void UseSkill()
     {
       switch (_weapon.id)
       {
@@ -46,9 +55,42 @@ public class WeaponItemSkill : MonoBehaviour
       }
     }
 
+    #region SkilsByWeapon
+
     protected virtual void Pistol() { }
     protected virtual void Greatsword() { }
     protected virtual void Gauntlet() { }
     protected virtual void Katana() { }
     protected virtual void Scythe() { }
+
+    #endregion
+
+    #region Coroutines
+
+    protected IEnumerator ApplyEffect(int damage, int duration)
+    {
+        for (int i = 1; i <= duration; i++)
+        {
+            _enemy.stats.currentHealth -= damage;
+            yield return new WaitForSeconds(1.0f);
+        }
+    }
+    
+    private IEnumerator CooldownTimer(int initialCooldown)
+    {
+        while (currentCooldown >= 0)
+        {
+            _player.UpdateUI(_weapon);
+            currentCooldown--;
+            yield return new WaitForSeconds(1.0f);
+        }
+        
+        onCooldown = false;
+        currentCooldown = initialCooldown;
+        _player.UpdateUI(_weapon);
+
+        yield break;
+    }
+
+    #endregion
 }

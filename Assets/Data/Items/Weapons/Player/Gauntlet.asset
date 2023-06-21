@@ -27,14 +27,14 @@ MonoBehaviour:
     20.0 HP and 3 SP per second.
   skillActive: {fileID: 0}
   skillUltimate: {fileID: 0}
-  activeCost: 50
+  activeCost: 25
   activeCooldown: 20
-  ultimateCost: 100
+  ultimateCost: 75
   ultimateCooldown: 20
-  activeAttack: 
+  activeAttack: PowerUp
   basicAttack01: gauntlet_basic_attack_01
   basicAttack02: gauntlet_basic_attack_02
   basicAttack03: gauntlet_basic_attack_03
   basicAttack04: gauntlet_basic_attack_04
   chargedAttack: gauntlet_charged_attack
-  ultimateAttack: 
+  ultimateAttack: PowerUp

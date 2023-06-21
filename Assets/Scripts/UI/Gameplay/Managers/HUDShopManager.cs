@@ -22,6 +22,7 @@ public class HUDShopManager : MonoBehaviour
         {
             CardBuffController card = Instantiate(_prefab, _container.transform).GetComponent<CardBuffController>();
             card.UpdateUI(buff);
+            card.transform.GetComponent<Toggle>().group = _container.transform.GetComponent<ToggleGroup>();
         }
     }
     

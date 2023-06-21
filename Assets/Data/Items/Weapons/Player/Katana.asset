@@ -27,12 +27,12 @@ MonoBehaviour:
   skillUltimate: {fileID: 0}
   activeCost: 50
   activeCooldown: 30
-  ultimateCost: 300
+  ultimateCost: 200
   ultimateCooldown: 15
-  activeAttack: 
+  activeAttack: PowerUp
   basicAttack01: katana_basic_attack_01
   basicAttack02: katana_basic_attack_02
   basicAttack03: katana_basic_attack_03
   basicAttack04: katana_basic_attack_04
   chargedAttack: katana_charged_attack
-  ultimateAttack: katana_basic_attack_01
+  ultimateAttack: katana_ultimate_attack

@@ -5,6 +5,19 @@ using UnityEngine;
 
 public class WeaponItemSkillUltimate : WeaponItemSkill
 {
+  public override void Initialize(WeaponItem weapon, PlayerManager player = null, EnemyManager enemy = null)
+  {
+    base.Initialize(weapon, player, enemy);
+
+    currentCooldown = weapon.ultimateCooldown;
+  }
+  
+  public override void UseSkill()
+  {
+    _player.PlayTargetAnimation(_weapon.ultimateAttack, true);
+    base.UseSkill();
+  }
+  
   #region Skill Overrides
 
   protected override void Pistol()
@@ -25,7 +38,6 @@ public class WeaponItemSkillUltimate : WeaponItemSkill
     _player.weaponSlotManager.SetDamage(damageOriginal + damageExtra);
 
     // Shoot in front
-    _player.PlayTargetAnimation(_weapon.ultimateAttack, true);
     _player.attacker.ShootBullet();
 
     // Revert damage
@@ -93,9 +105,6 @@ public class WeaponItemSkillUltimate : WeaponItemSkill
     // Set damage
     _player.weaponSlotManager.SetDamage(damage);
 
-    // Play strike animation
-    _player.PlayTargetAnimation(_weapon.activeAttack, true);
-
     // Reset damage
     Task.Delay((int)Mathf.Round(1000 * duration)).ContinueWith(t =>
 		{
@@ -105,21 +114,16 @@ public class WeaponItemSkillUltimate : WeaponItemSkill
 
   protected override void Scythe()
   {
-  Debug.Log("Use Scythe Ultimate");
+    int hpRestore = 300;
+    float dmgBonus = 0.25f;
+
+    _player.stats.currentHealth = Mathf.Min(_player.stats.currentHealth + hpRestore, _player.stats.maxHealth);
+    _player.stats.scaleAttack += dmgBonus;
   }
 
   #endregion
 
   #region Helpers
-
-  private IEnumerator ApplyEffect(int damage, int duration)
-  {
-    for (int i = 1; i <= duration; i++)
-    {
-        _enemy.stats.currentHealth -= damage;
-        yield return new WaitForSeconds(1.0f);
-    }
-  }
 
   private IEnumerator ApplyEffect(float scalar, int duration)
   {

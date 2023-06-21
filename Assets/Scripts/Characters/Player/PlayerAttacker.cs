@@ -43,18 +43,14 @@ public class PlayerAttacker : MonoBehaviour
 	public void HandleActiveAttack()
     {
         bool hasEnoughSP = _manager.stats.currentSkillPoints >= currentWeapon.activeCost;
-        bool canUseSkill = currentWeapon.skillActive.isUsable;
+        bool canUseSkill = !currentWeapon.skillActive.onCooldown;
 
         if (hasEnoughSP && canUseSkill)
         {
-            currentWeapon.skillActive.isUsable = false;
-            Task.Delay((int)Mathf.Round(1000 * currentWeapon.activeCooldown)).ContinueWith(t =>
-            {
-                currentWeapon.skillActive.isUsable = true;
-            });
-
             _manager.stats.currentSkillPoints -= currentWeapon.activeCost;
+            
             currentWeapon.skillActive.UseSkill();
+            currentWeapon.skillActive.Cooldown();
 
             lastAttack = currentWeapon.activeAttack;
         }
@@ -82,18 +78,14 @@ public class PlayerAttacker : MonoBehaviour
 	public void HandleUltimateAttack()
     {
         bool hasEnoughSP = _manager.stats.currentSkillPoints >= currentWeapon.ultimateCost;
-        bool canUseSkill = currentWeapon.skillUltimate.isUsable;
+        bool canUseSkill = !currentWeapon.skillUltimate.onCooldown;
 
         if (hasEnoughSP && canUseSkill)
         {
-            currentWeapon.skillUltimate.isUsable = false;
-            Task.Delay((int)Mathf.Round(1000 * currentWeapon.activeCooldown)).ContinueWith(t =>
-            {
-                currentWeapon.skillUltimate.isUsable = true;
-            });
-
             _manager.stats.currentSkillPoints -= currentWeapon.ultimateCost;
+            
             currentWeapon.skillUltimate.UseSkill();
+            currentWeapon.skillUltimate.Cooldown();
 
             lastAttack = currentWeapon.ultimateAttack;
         }

@@ -5,6 +5,20 @@ using UnityEngine;
 
 public class WeaponItemSkillActive : WeaponItemSkill
 {
+  public override void Initialize(WeaponItem weapon, PlayerManager player = null, EnemyManager enemy = null)
+  {
+    base.Initialize(weapon, player, enemy);
+
+    currentCooldown = weapon.activeCooldown;
+  }
+
+  public override void UseSkill()
+  {
+    if (_weapon.id != 1)
+      _player.PlayTargetAnimation(_weapon.activeAttack, true);
+    base.UseSkill();
+  }
+  
   #region Skill Overrides
 
   protected override void Pistol()
@@ -45,6 +59,9 @@ public class WeaponItemSkillActive : WeaponItemSkill
     // If current health is below 33% then don't attack
     if (_player.stats.currentHealth < _player.stats.ScaleStat(_player.stats.maxHealth, threshold))
       return;
+    
+    // Play power-up animation
+    _player.PlayTargetAnimation(_weapon.activeAttack, true);
 
     // Lost half of current health
     _player.stats.currentHealth /= 2;
@@ -69,6 +86,9 @@ public class WeaponItemSkillActive : WeaponItemSkill
     int maxStacks = 10;
     int duration = 10;
     float dmgBoost = 0.2f;
+    
+    // Play power-up animation
+    _player.PlayTargetAnimation(_weapon.activeAttack, true);
 
     // Get dmg multiplier
     int multiplier = Mathf.Min(_player.stats.hitCount / gap, maxStacks);
@@ -87,6 +107,9 @@ public class WeaponItemSkillActive : WeaponItemSkill
   {
     float dmgBoost = 0.5f;
     int duration = 20;
+    
+    // Play power-up animation
+    _player.PlayTargetAnimation(_weapon.activeAttack, true);
 
     // Gain dmg bonus
     _player.stats.scaleAttack += dmgBoost;
@@ -100,7 +123,10 @@ public class WeaponItemSkillActive : WeaponItemSkill
 
   protected override void Scythe()
   {
-  Debug.Log("Use Scythe Active");
+    int damageOriginal = _player.weaponSlotManager.GetDamage();
+    int duration = 10;
+
+    StartCoroutine(ApplyEffect(damageOriginal, duration));
   }
 
   #endregion
