@@ -13,17 +13,22 @@ MonoBehaviour:
   m_Name: Katana
   m_EditorClassIdentifier: 
   primaryIcon: {fileID: 0}
-  secondaryIcon: {fileID: 0}
   name: Katana
   description: 
-  level: 0
   model: {fileID: 4433377978238520628, guid: f966f9602598101449fb0ec1ce899ce2, type: 3}
-  active_cost: 0
-  ultimate_cost: 0
-  active_attack: 
-  basic_attack_01: katana_attack_01
-  basic_attack_02: katana_attack_02
-  basic_attack_03: katana_attack_03
-  basic_attack_04: katana_attack_04
-  charged_attack: 
-  ultimate_attack: 
+  ammo: {fileID: 0}
+  secondaryIcon: {fileID: 0}
+  id: 0
+  descriptionActive: 
+  descriptionUltimate: 
+  skillActive: {fileID: 0}
+  skillUltimate: {fileID: 0}
+  activeCost: 0
+  ultimateCost: 0
+  activeAttack: 
+  basicAttack01: katana_attack_01
+  basicAttack02: katana_attack_02
+  basicAttack03: katana_attack_03
+  basicAttack04: 
+  chargedAttack: 
+  ultimateAttack: 

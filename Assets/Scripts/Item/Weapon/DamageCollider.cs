@@ -7,8 +7,6 @@ public class DamageCollider : MonoBehaviour
     protected BoxCollider _damageCollider;
     protected PlayerManager _player;
     protected EnemyManager _enemy;
-    
-    public int currentWeaponDamage = 100;
 
     private void Awake()
     {
@@ -22,8 +20,12 @@ public class DamageCollider : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            int damage = _enemy.stats.GetOutgoingDamage(currentWeaponDamage);
-            damage = _player.stats.GetIncomingDamage(damage);
+            int enemyATK = _enemy.weaponSlotManager.GetDamage();
+            int enemyCRT = _enemy.weaponSlotManager.GetCrit();
+
+            int damage = 0;
+            damage += _enemy.stats.GetOutgoingDamage(enemyATK, enemyCRT);
+            damage += _player.stats.GetIncomingDamage(damage);
 
             Debug.Log("Player incoming damage = " + damage.ToString());
             
@@ -34,9 +36,13 @@ public class DamageCollider : MonoBehaviour
             EnemyManager enemyManager = collision.GetComponent<EnemyManager>();
             if (enemyManager == null)
                 return;
+            
+            int playerATK = _player.weaponSlotManager.GetDamage();
+            int playerCRT = _player.weaponSlotManager.GetCrit();
 
-            int damage = _player.stats.GetOutgoingDamage(currentWeaponDamage);
-            damage = enemyManager.stats.GetIncomingDamage(damage);
+            int damage = 0;
+            damage += _player.stats.GetOutgoingDamage(playerATK, playerCRT);
+            damage += enemyManager.stats.GetIncomingDamage(damage);
 
             Debug.Log("Enemy incoming damage = " + damage.ToString());
             

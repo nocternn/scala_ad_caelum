@@ -18,12 +18,17 @@ MonoBehaviour:
   model: {fileID: 6449960425678237739, guid: e73e14e40fec31f43a8f349d391139ae, type: 3}
   ammo: {fileID: 11400000, guid: b4cecc4708eedb4499de5b125aca404b, type: 2}
   secondaryIcon: {fileID: 0}
-  active_cost: 0
-  ultimate_cost: 0
-  active_attack: 
-  basic_attack_01: crossbow_attack_01
-  basic_attack_02: 
-  basic_attack_03: 
-  basic_attack_04: 
-  charged_attack: 
-  ultimate_attack: 
+  id: 0
+  descriptionActive: 
+  descriptionUltimate: 
+  skillActive: {fileID: 0}
+  skillUltimate: {fileID: 0}
+  activeCost: 0
+  ultimateCost: 0
+  activeAttack: 
+  basicAttack01: crossbow_attack_01
+  basicAttack02: 
+  basicAttack03: 
+  basicAttack04: 
+  chargedAttack: 
+  ultimateAttack: 

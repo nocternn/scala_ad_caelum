@@ -94,6 +94,17 @@ public class CharacterWeaponSlotManager : MonoBehaviour
             rightHandDamageCollider = damageCollider;
         }
     }
+    public void SetDamage(int damage)
+    {
+        if (isUsingLeftHand)
+        {
+            leftHandWeapon.atk = damage;
+        }
+        else
+        {
+            rightHandWeapon.atk = damage;
+        }
+    }
 
     #endregion
 
@@ -117,6 +128,19 @@ public class CharacterWeaponSlotManager : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public int GetDamage()
+    {
+        if (isUsingLeftHand)
+            return leftHandWeapon.atk;
+        return rightHandWeapon.atk;
+    }
+    public int GetCrit()
+    {
+        if (isUsingLeftHand)
+            return leftHandWeapon.crt;
+        return rightHandWeapon.crt;
     }
 
     #endregion

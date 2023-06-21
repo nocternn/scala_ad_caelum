@@ -18,16 +18,19 @@ MonoBehaviour:
   model: {fileID: 8924068759846017593, guid: 3c441d1a214d92b4cbae07517a7b6466, type: 3}
   ammo: {fileID: 0}
   secondaryIcon: {fileID: 21300000, guid: 1ce575a89cacc434cb0afe3c4c47b7ee, type: 3}
+  id: 5
   descriptionActive: Create petals that transform into 5 spikes around the target
     hit, each dealing 76.4%/85.2%/100.0% ATK.
   descriptionUltimate: Wielder restores 200 HP instantly and has 10% bonus Crit Rate
     as well as 31.3%/33.5%/36.0% bonus DMG.
-  active_cost: 5
-  ultimate_cost: 70
-  active_attack: 
-  basic_attack_01: scythe_basic_attack_01
-  basic_attack_02: scythe_basic_attack_02
-  basic_attack_03: scythe_basic_attack_03
-  basic_attack_04: scythe_basic_attack_04
-  charged_attack: scythe_charged_attack
-  ultimate_attack: 
+  skillActive: {fileID: 0}
+  skillUltimate: {fileID: 0}
+  activeCost: 5
+  ultimateCost: 70
+  activeAttack: 
+  basicAttack01: scythe_basic_attack_01
+  basicAttack02: scythe_basic_attack_02
+  basicAttack03: scythe_basic_attack_03
+  basicAttack04: scythe_basic_attack_04
+  chargedAttack: scythe_charged_attack
+  ultimateAttack: 

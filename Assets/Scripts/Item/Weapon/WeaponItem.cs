@@ -11,28 +11,38 @@ public class WeaponItem : Item
     public AmmoItem ammo;
     public Sprite secondaryIcon;
 
+    public int id;
+
+    [Header("Stats")]
+    public int atk;
+    public int crt;
+
     [Header("Descriptions")]
     public string descriptionActive;
     public string descriptionUltimate;
 
     [Header("Skill Info")]
-    public int active_cost;
-    public int ultimate_cost;
+    public WeaponItemSkillActive skillActive; 
+    public WeaponItemSkillUltimate skillUltimate; 
+    public int activeCost;
+    public int activeCooldown;
+    public int ultimateCost;
+    public int ultimateCooldown;
     
     [Header("Active Attack Animations")]
-    public string active_attack;
+    public string activeAttack;
     
     [Header("Basic Attack Animations")]
-    public string basic_attack_01;
-    public string basic_attack_02;
-    public string basic_attack_03;
-    public string basic_attack_04;
+    public string basicAttack01;
+    public string basicAttack02;
+    public string basicAttack03;
+    public string basicAttack04;
     
     [Header("Charged Attack Animations")]
-    public string charged_attack;
+    public string chargedAttack;
     
     [Header("Ultimate Attack Animations")]
-    public string ultimate_attack;
+    public string ultimateAttack;
 
     #endregion
 
@@ -48,5 +58,22 @@ public class WeaponItem : Item
         updatedDescription += "\nUltimate: " + descriptionUltimate;
 
         return updatedDescription;
+    }
+
+    public void SetSkills(GameObject holder, PlayerManager player, EnemyManager enemy)
+    {
+        foreach (var comp in holder.GetComponents<Component>())
+        {
+            if (!(comp is Transform))
+            {
+                Destroy(comp);
+            }
+        }
+
+        skillActive = holder.AddComponent<WeaponItemSkillActive>() as WeaponItemSkillActive;
+        skillUltimate = holder.AddComponent<WeaponItemSkillUltimate>() as WeaponItemSkillUltimate;
+
+        skillActive.Initialize(this, player, enemy);
+        skillUltimate.Initialize(this, player, enemy);
     }
 }

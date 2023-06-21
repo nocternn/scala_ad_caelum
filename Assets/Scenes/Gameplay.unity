@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.41227594, g: 0.48922887, b: 0.603285, a: 1}
+  m_IndirectSpecularColor: {r: 0.41227734, g: 0.48923123, b: 0.60328853, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2960,7 +2960,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a37b0f8e223b6ba4c90b40df17b36a88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 150000
+  baseHealth: 1500000
   baseAttack: 440
   baseDefense: 330
   baseCritical: 40
@@ -3789,7 +3789,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07ab864a64a887d468423c7e778af730, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentWeaponDamage: 100
 --- !u!114 &295267231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4576,7 +4575,7 @@ Transform:
   - {fileID: 897004580}
   - {fileID: 2091708468}
   m_Father: {fileID: 1251242610}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &529665681
 MonoBehaviour:
@@ -5025,7 +5024,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07ab864a64a887d468423c7e778af730, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentWeaponDamage: 100
 --- !u!1 &707962853 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2715566404302941441, guid: cb82df163e3a7fd44970f51c5c4903be,
@@ -6020,7 +6018,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a37b0f8e223b6ba4c90b40df17b36a88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 1
+  baseHealth: 500000
   baseAttack: 202
   baseDefense: 235
   baseCritical: 45
@@ -7293,7 +7291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a37b0f8e223b6ba4c90b40df17b36a88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 300000
+  baseHealth: 3000000
   baseAttack: 256
   baseDefense: 294
   baseCritical: 30
@@ -7764,6 +7762,7 @@ Transform:
   m_Children:
   - {fileID: 1137888657}
   - {fileID: 829732174}
+  - {fileID: 1390854118}
   - {fileID: 1652555812}
   - {fileID: 529665680}
   m_Father: {fileID: 543450653438250103}
@@ -8494,6 +8493,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1004133822}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1390854117
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1390854118}
+  m_Layer: 7
+  m_Name: SkillsHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1390854118
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1390854117}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1251242610}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1429199502
 GameObject:
@@ -11350,7 +11380,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a37b0f8e223b6ba4c90b40df17b36a88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 100000
+  baseHealth: 1000000
   baseAttack: 385
   baseDefense: 310
   baseCritical: 30
@@ -11802,7 +11832,7 @@ Transform:
   m_Children:
   - {fileID: 1128783207}
   m_Father: {fileID: 1251242610}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1652694650
 GameObject:
@@ -14119,7 +14149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a37b0f8e223b6ba4c90b40df17b36a88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 1
+  baseHealth: 300000
   baseAttack: 165
   baseDefense: 200
   baseCritical: 55

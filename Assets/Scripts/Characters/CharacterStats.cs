@@ -20,18 +20,22 @@ public class CharacterStats : MonoBehaviour
     public float scaleDefense = 1;
     public float scaleHealth = 1;
 
-	private int _critChance = 0;
+	private float _critChance = 0;
+	private float _critBase = 0;
 	
 	public void CalculateCritChance(int stageID)
     {
-		_critChance = (baseCritical / (stageID * 5 + 75)) * 100;
+		_critBase = stageID * 5 + 75;
+		_critChance = (baseCritical / _critBase) * 100;
     }
 
-	public int GetOutgoingDamage(int atk)
+	public int GetOutgoingDamage(int atk, int crt)
 	{
 		int currentDamage = baseAttack + atk;
 		
-		if (Random.Range(1, 100) <= _critChance)
+		_critChance += (crt / _critBase) * 100;
+
+		if (Random.Range(1, 100) <= (int)Mathf.Round(_critChance))
 		{
 			scaleCritical = 2;
 		}

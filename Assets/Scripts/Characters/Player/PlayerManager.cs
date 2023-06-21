@@ -81,6 +81,7 @@ public class PlayerManager : CharacterManager
         weaponSlotManager.SetUsedWeaponType();
         weaponSlotManager.LoadTwoHandIK();
 
+        weapon.SetSkills(transform.Find("Helpers").Find("SkillsHolder").gameObject, _stage.player, _stage.enemy);
         attacker.currentWeapon = weapon;
     }
 

@@ -14,7 +14,7 @@ public class MainMenuManager : MonoBehaviour
     public void Play()
     {
         if (_manager.sceneLoader.weapon == null)
-            _manager.sceneLoader.weapon = _manager.inventoryMenu.weapons[1];
+            _manager.sceneLoader.weapon = _manager.inventoryMenu.weapons[0];
         
         _manager.sceneLoader.sceneType = Enums.SceneType.Game;
         StartCoroutine(_manager.sceneLoader.LoadScene(1));

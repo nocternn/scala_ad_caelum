@@ -18,20 +18,27 @@ MonoBehaviour:
   model: {fileID: 7632030922130552699, guid: d1db24bca7eebcc488d915dcb4fad59f, type: 3}
   ammo: {fileID: 11400000, guid: 4d7a1a3f89f30a6418a390c2744d123f, type: 2}
   secondaryIcon: {fileID: 21300000, guid: e8978fac14e296145a7d4a0f952ba819, type: 3}
-  descriptionActive: "Lose half of current HP and continuously fire in front of the
-    wielder, each hit dealing 100% ATK + 1088/1566/1984 \xD7 2 DMG for 5s. Skill
-    cannot be cast when HP is below 33%."
+  id: 1
+  atk: 390
+  crt: 45
+  descriptionActive: 'Lose half of current HP and continuously fire in front of the
+    wielder, each hit dealing 100% ATK + 1088 DMG for 5s. Skill cannot be cast when
+    HP is below 33%. '
   descriptionUltimate: "Unleash a powerful blast in front of the wielder. Enemies
-    take 100% ATK + 1088/1566/1984 \xD7 2 DMG, take 7%/10%/15% bonus DMG for 8s,
-    and take 266/584/936 DMG per second for 5s. While activated, wielder gains 80%
-    DMG Reduction. After activation, lose 13% of max HP per second for 5s, but will
-    not die from this effect. Skill cannot be cast when HP is below 33%."
-  active_cost: 20
-  ultimate_cost: 100
-  active_attack: pistol_basic_attack_01
-  basic_attack_01: pistol_basic_attack_01
-  basic_attack_02: 
-  basic_attack_03: 
-  basic_attack_04: 
-  charged_attack: 
-  ultimate_attack: pistol_basic_attack_01
+    take 100% ATK + 1088 \xD7 2 DMG, and take 266 DMG per second for 5s. While activated,
+    wielder gains 80% DMG Reduction. After activation, lose 13% of max HP per second
+    for 5s, but will not die from this effect. Skill cannot be cast when HP is below
+    33%. "
+  skillActive: {fileID: 0}
+  skillUltimate: {fileID: 0}
+  activeCost: 20
+  activeCooldown: 35
+  ultimateCost: 100
+  ultimateCooldown: 20
+  activeAttack: pistol_basic_attack_01
+  basicAttack01: pistol_basic_attack_01
+  basicAttack02: 
+  basicAttack03: 
+  basicAttack04: 
+  chargedAttack: 
+  ultimateAttack: pistol_basic_attack_01

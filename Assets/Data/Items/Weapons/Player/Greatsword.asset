@@ -18,17 +18,23 @@ MonoBehaviour:
   model: {fileID: 4378240966591519852, guid: 92ff518d80e138448b5511aca0251988, type: 3}
   ammo: {fileID: 0}
   secondaryIcon: {fileID: 21300000, guid: 86f42235806fd1f4992d8f5db7fbaf3f, type: 3}
-  descriptionActive: Consume 50% HP, deal each hit from Basic ATK, Charged ATK deals
-    12.1%/15.6%/20.0% ATK more DMG, and create a shield that can absorb damage equal
-    to 80% of max base HP (5000 max).
-  descriptionUltimate: Wielder gains 20% SP recovery, 20% Attack Speed, and 10%/20%/30%
-    DMG.
-  active_cost: 10
-  ultimate_cost: 100
-  active_attack: 
-  basic_attack_01: greatsword_basic_attack_01
-  basic_attack_02: greatsword_basic_attack_02
-  basic_attack_03: greatsword_basic_attack_03
-  basic_attack_04: greatsword_basic_attack_04
-  charged_attack: greatsword_charged_attack
-  ultimate_attack: 
+  id: 2
+  atk: 500
+  crt: 43
+  descriptionActive: Consume 50% HP, each hit from Basic ATK, Charged ATK deals 50%
+    ATK more DMG, and create a shield that can absorb damage equal to 80% of max
+    HP for 10s. Skill cannot be cast when HP is below 33%.
+  descriptionUltimate: Wielder gains 100% DMG boost and 50% DMG reduction for 10s.
+  skillActive: {fileID: 0}
+  skillUltimate: {fileID: 0}
+  activeCost: 50
+  activeCooldown: 20
+  ultimateCost: 100
+  ultimateCooldown: 20
+  activeAttack: 
+  basicAttack01: greatsword_basic_attack_01
+  basicAttack02: greatsword_basic_attack_02
+  basicAttack03: greatsword_basic_attack_03
+  basicAttack04: greatsword_basic_attack_04
+  chargedAttack: greatsword_charged_attack
+  ultimateAttack: 

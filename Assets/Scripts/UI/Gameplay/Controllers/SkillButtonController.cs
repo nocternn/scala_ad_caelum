@@ -22,12 +22,12 @@ public class SkillButtonController : MonoBehaviour
         if (type.Equals("active"))
         {
             _skillIcon.sprite = weaponItem.primaryIcon;
-            _skillCost.text   = weaponItem.active_cost.ToString() + " SP";
+            _skillCost.text   = weaponItem.activeCost.ToString() + " SP";
         }
         else
         {
             _skillIcon.sprite = weaponItem.secondaryIcon;
-            _skillCost.text   = weaponItem.ultimate_cost.ToString() + " SP";
+            _skillCost.text   = weaponItem.ultimateCost.ToString() + " SP";
         }
         _skillIcon.enabled = true;
     }

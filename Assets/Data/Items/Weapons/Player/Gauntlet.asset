@@ -18,17 +18,23 @@ MonoBehaviour:
   model: {fileID: 4527068538015241186, guid: 2b9507c87cddb56459a866eb09d08b0a, type: 3}
   ammo: {fileID: 0}
   secondaryIcon: {fileID: 21300000, guid: 4fcbdd08490792549b597ecb4355b3b6, type: 3}
-  descriptionActive: Every 3 hits boosts DMG by 13.3%/15.5%/18.0% for 15.6s/16.4%/18.0s
-    (stacks up to 3 times). This effect can be triggered once every 2s; triggering
-    it again resets the duration.
-  descriptionUltimate: The wielder gains 100%/130%/150% ATK for 10s, during which
-    he restores 20.0 HP and 3 SP per 0.5s.
-  active_cost: 10
-  ultimate_cost: 25
-  active_attack: 
-  basic_attack_01: gauntlet_basic_attack_01
-  basic_attack_02: gauntlet_basic_attack_02
-  basic_attack_03: gauntlet_basic_attack_03
-  basic_attack_04: gauntlet_basic_attack_04
-  charged_attack: gauntlet_charged_attack
-  ultimate_attack: 
+  id: 3
+  atk: 350
+  crt: 27
+  descriptionActive: Every 3 hits boosts DMG by 20.0% for 10.0s (stacks up to 10
+    times).
+  descriptionUltimate: The wielder gains 150% ATK for 10s, during which he restores
+    20.0 HP and 3 SP per second.
+  skillActive: {fileID: 0}
+  skillUltimate: {fileID: 0}
+  activeCost: 50
+  activeCooldown: 20
+  ultimateCost: 100
+  ultimateCooldown: 20
+  activeAttack: 
+  basicAttack01: gauntlet_basic_attack_01
+  basicAttack02: gauntlet_basic_attack_02
+  basicAttack03: gauntlet_basic_attack_03
+  basicAttack04: gauntlet_basic_attack_04
+  chargedAttack: gauntlet_charged_attack
+  ultimateAttack: 

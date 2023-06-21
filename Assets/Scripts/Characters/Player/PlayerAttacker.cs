@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class PlayerAttacker : MonoBehaviour
@@ -22,34 +23,46 @@ public class PlayerAttacker : MonoBehaviour
             return;
         
         _manager.animatorHandler.SetBool("canDoCombo", false);
-        if (lastAttack.Equals(currentWeapon.basic_attack_01))
+        if (lastAttack.Equals(currentWeapon.basicAttack01))
         {
-            _manager.PlayTargetAnimation(currentWeapon.basic_attack_02, true);
-            lastAttack = currentWeapon.basic_attack_02;
+            _manager.PlayTargetAnimation(currentWeapon.basicAttack02, true);
+            lastAttack = currentWeapon.basicAttack02;
         }
-        else if (lastAttack.Equals(currentWeapon.basic_attack_02))
+        else if (lastAttack.Equals(currentWeapon.basicAttack02))
         {
-            _manager.PlayTargetAnimation(currentWeapon.basic_attack_03, true);
-            lastAttack = currentWeapon.basic_attack_03;
+            _manager.PlayTargetAnimation(currentWeapon.basicAttack03, true);
+            lastAttack = currentWeapon.basicAttack03;
         }
-        else if (lastAttack.Equals(currentWeapon.basic_attack_03))
+        else if (lastAttack.Equals(currentWeapon.basicAttack03))
         {
-            _manager.PlayTargetAnimation(currentWeapon.basic_attack_04, true);
-            lastAttack = currentWeapon.basic_attack_04;
+            _manager.PlayTargetAnimation(currentWeapon.basicAttack04, true);
+            lastAttack = currentWeapon.basicAttack04;
         }
     }
 
 	public void HandleActiveAttack()
     {
-		Debug.Log("Use Active");
-/*
-        _manager.PlayTargetAnimation(currentWeapon.active_attack, true);
-*/
+        bool hasEnoughSP = _manager.stats.currentSkillPoints >= currentWeapon.activeCost;
+        bool canUseSkill = currentWeapon.skillActive.isUsable;
+
+        if (hasEnoughSP && canUseSkill)
+        {
+            currentWeapon.skillActive.isUsable = false;
+            Task.Delay((int)Mathf.Round(1000 * currentWeapon.activeCooldown)).ContinueWith(t =>
+            {
+                currentWeapon.skillActive.isUsable = true;
+            });
+
+            _manager.stats.currentSkillPoints -= currentWeapon.activeCost;
+            currentWeapon.skillActive.UseSkill();
+
+            lastAttack = currentWeapon.activeAttack;
+        }
     }
     
     public void HandleBasicAttack()
     {
-        _manager.PlayTargetAnimation(currentWeapon.basic_attack_01, true);
+        _manager.PlayTargetAnimation(currentWeapon.basicAttack01, true);
         
         // Shoot bullet if weapon is pistol
         if (currentWeapon.name.Equals(_manager.weaponSlotManager.weaponTypes[0]))
@@ -57,21 +70,33 @@ public class PlayerAttacker : MonoBehaviour
             ShootBullet();
         }
         
-        lastAttack = currentWeapon.basic_attack_01;
+        lastAttack = currentWeapon.basicAttack01;
     }
 
     public void HandleChargedAttack()
     {
-        _manager.PlayTargetAnimation(currentWeapon.charged_attack, true);
-        lastAttack = currentWeapon.charged_attack;
+        _manager.PlayTargetAnimation(currentWeapon.chargedAttack, true);
+        lastAttack = currentWeapon.chargedAttack;
     }
 
 	public void HandleUltimateAttack()
     {
-		Debug.Log("Use Ultimate");
-/*
-        _manager.PlayTargetAnimation(currentWeapon.ultimate_attack, true);
-*/
+        bool hasEnoughSP = _manager.stats.currentSkillPoints >= currentWeapon.ultimateCost;
+        bool canUseSkill = currentWeapon.skillUltimate.isUsable;
+
+        if (hasEnoughSP && canUseSkill)
+        {
+            currentWeapon.skillUltimate.isUsable = false;
+            Task.Delay((int)Mathf.Round(1000 * currentWeapon.activeCooldown)).ContinueWith(t =>
+            {
+                currentWeapon.skillUltimate.isUsable = true;
+            });
+
+            _manager.stats.currentSkillPoints -= currentWeapon.ultimateCost;
+            currentWeapon.skillUltimate.UseSkill();
+
+            lastAttack = currentWeapon.ultimateAttack;
+        }
     }
 
 	public bool IsBasicAttack()
@@ -79,7 +104,7 @@ public class PlayerAttacker : MonoBehaviour
 		return lastAttack.Contains("basic");
 	}
     
-    private void ShootBullet()
+    public void ShootBullet()
     {
         // Get instantion location
         AmmoInstantiationLocation instantiationLocation =
