@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class HUDBuffManager : MonoBehaviour
 {
+    [SerializeField] private HUDManager _manager;
+
     [SerializeField] private CardBuffController _card01;
     [SerializeField] private CardBuffController _card02;
     [SerializeField] private CardBuffController _card03;
@@ -15,6 +17,8 @@ public class HUDBuffManager : MonoBehaviour
 
     public CardItem[] cards;
     public CardItem selectedCard;
+
+    public Button btnConfirm;
 
     public void Initialize()
     {
@@ -40,6 +44,15 @@ public class HUDBuffManager : MonoBehaviour
         _card01.UpdateUI(card01.Item1);
         _card02.UpdateUI(card02.Item1);
         _card03.UpdateUI(card03.Item1);
+
+        btnConfirm = GetComponentInChildren<Button>();
+        btnConfirm.onClick.RemoveAllListeners();
+        btnConfirm.onClick.AddListener(delegate { _manager.Action(Enums.HUDAction.SwitchCombat); });
+    }
+
+    public void SetManager(HUDManager manager)
+    {
+        _manager = manager;
     }
 
     public Tuple<CardItem, int> GetRandomCardItem(HashSet<int> usedCardsID)

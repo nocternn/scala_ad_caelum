@@ -5,27 +5,21 @@ using UnityEngine;
 [System.Serializable]
 public class Dialogue
 {
-    [SerializeField] private string _name;
-    [SerializeField] private Queue<string> _sentences;
+    public string name;
+    public List<string> sentences;
 
-    public Dialogue(string name)
-    {
-        _name = name;
-    }
+    [SerializeField] private int _sentenceID = -1;
 
-    public void Add(string sentence)
-    {
-        _sentences.Enqueue(sentence);
-    }
-
-    public string GetSpeaker()
-    {
-        return _name;
-    }
     public string GetNextSentence()
     {
-        if (_sentences.Count == 0)
+        _sentenceID++;
+        
+        if (_sentenceID >= sentences.Count)
+        {
+            _sentenceID = -1;
             return null;
-        return _sentences.Dequeue();
+        }
+
+        return sentences[_sentenceID];
     }
 }

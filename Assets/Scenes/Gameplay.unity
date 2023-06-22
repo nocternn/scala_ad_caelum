@@ -3907,6 +3907,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CardDialogue
       objectReference: {fileID: 0}
+    - target: {fileID: 3183933262914535659, guid: b072217ea4e409042b40abdd9369d6ff,
+        type: 3}
+      propertyPath: _currentDialogue._name
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b072217ea4e409042b40abdd9369d6ff, type: 3}
 --- !u!224 &234796696 stripped
@@ -3941,6 +3946,7 @@ GameObject:
   m_Component:
   - component: {fileID: 299512138}
   - component: {fileID: 299512137}
+  - component: {fileID: 299512139}
   m_Layer: 0
   m_Name: StageManager
   m_TagString: Untagged
@@ -3962,8 +3968,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _initialized: 0
   _clearReward: 0
-  stageType: 0
-  previousStageType: 0
+  dialogue: {fileID: 0}
+  stageType: 2
+  previousStageType: 2
   id: 1
   coinsAvailable: 0
   sceneLoader: {fileID: 0}
@@ -3991,6 +3998,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &299512139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 299512136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbd98f4acb99c3341a18f9e7a00632d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _file: 
+  _iterationID: 0
+  _iteration:
+    stage01: []
+    stage02: []
+    stage03: []
+    stage04: []
+    stage05: []
+    stageEnd: []
 --- !u!1 &305234333
 GameObject:
   m_ObjectHideFlags: 0
@@ -6789,6 +6817,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d927e4f8b07c44345b57907e0289bc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stage: {fileID: 0}
   combat: {fileID: 0}
   buff: {fileID: 0}
   shop: {fileID: 0}
@@ -9081,7 +9110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe844f9ee4b1af74eb5cb9d88374910b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stage: {fileID: 0}
+  _manager: {fileID: 0}
   coin: {fileID: 0}
   dialogue: {fileID: 0}
   door: {fileID: 0}
@@ -11766,9 +11795,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1001558565}
+      - m_Target: {fileID: 1001558560}
         m_TargetAssemblyTypeName: HUDManager, Assembly-CSharp
-        m_MethodName: SwitchToCombat
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

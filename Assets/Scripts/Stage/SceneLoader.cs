@@ -46,14 +46,17 @@ public class SceneLoader : MonoBehaviour
         }
         else
         {
+            bool reset = false;
             if (_stage == null)
             {
                 _stage = GameObject.Find("StageManager");
+                reset = true;
             }
 
             _stage.SetActive(true);
             
             StageManager stageManager = _stage.GetComponent<StageManager>();
+            if (reset) { stageManager.Reset(); }
             stageManager.Initialize();
         }
     }

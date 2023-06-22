@@ -1,73 +1,59 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
+using System.IO;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
-    [SerializeField] private StageManager _stage;
-    
-    [Header("Data")]
-    [SerializeField] private Queue<Dialogue> _dialogues;
-    [SerializeField] private Dialogue _currentDialogue;
-
-    [Header("UI")]
-    [SerializeField] private TMP_Text _txtName;
-    [SerializeField] private TMP_Text _txtSentence;
+    [Header("JSON")]
+    [SerializeField] private string _file;
+    [SerializeField] private int _iterationID;
+    [SerializeField] DialogueIteration _iteration;
 
     public void Initialize()
     {
-        _dialogues = new Queue<Dialogue>();
-
-        _txtName     = transform.Find("Name").GetComponent<TMP_Text>();
-        _txtSentence = transform.Find("Sentence").GetComponent<TMP_Text>();
-
-        ReadDialogues();
+        _file = Application.dataPath + "/Data/Dialogues/iteration_1.json";
     }
 
-    public void SetManager(StageManager stage)
+    public void ReadDialogues()
     {
-        _stage = stage;
-    }
-
-    public void StartDialogue()
-    {
-        if (_dialogues.Count == 0)
+        if (!File.Exists(_file))
         {
-            EndDialogue();
+            Debug.Log("No dialogue file found");
             return;
         }
 
-        _currentDialogue = _dialogues.Dequeue();
-        
-        _txtName.text = _currentDialogue.GetSpeaker();
-        
-        ContinueDialogue();
-    }
-    
-    public void ContinueDialogue()
-    {
-        _txtSentence.text = _currentDialogue.GetNextSentence();
-        if (_txtSentence.text == null)
-            EndDialogue();
-    }
-    
-    public void EndDialogue()
-    {
-        if (_dialogues.Count == 0)
+        using (StreamReader reader = new StreamReader(_file))
         {
-            _stage.SwitchToBuff();
-            this.gameObject.SetActive(false);
-        }
-        else
-        {
-            StartDialogue();
+            _iteration = JsonUtility.FromJson<DialogueIteration>(reader.ReadToEnd());
+            Debug.Log("Read dialogues");
         }
     }
 
-    private void ReadDialogues()
+    public Queue<Dialogue> GetDialogues(int id)
     {
-        _dialogues.Clear();
+        List<Dialogue> currentStage;
+        switch (id)
+        {
+            case 1:
+                currentStage = _iteration.stage01;
+                break;
+            case 2:
+                currentStage = _iteration.stage02;
+                break;
+            case 3:
+                currentStage = _iteration.stage03;
+                break;
+            case 4:
+                currentStage = _iteration.stage04;
+                break;
+            case 5:
+                currentStage = _iteration.stage05;
+                break;
+            default:
+                currentStage = _iteration.stageEnd;
+                break;
+        }
+        return new Queue<Dialogue>(currentStage);
     }
 }

@@ -7,11 +7,11 @@ public class HUDStageManager : MonoBehaviour
 {
     #region Attibutes
     
-    [SerializeField] private StageManager _stage;
+    [SerializeField] private HUDManager _manager;
         
     [Header("Interactables")]
     public CoinManager coin;
-    public DialogueManager dialogue;
+    public DialogueUIManager dialogue;
     public Door door;
     public Shop shop;
 
@@ -45,7 +45,7 @@ public class HUDStageManager : MonoBehaviour
     public void Initialize()
     {
         coin     = GetComponentInChildren<CoinManager>();
-        dialogue = GetComponentInChildren<DialogueManager>();
+        dialogue = GameObject.FindObjectsOfType<DialogueUIManager>(true)[0];
         door     = GameObject.FindObjectsOfType<Door>(true)[0];
         shop     = GameObject.FindObjectsOfType<Shop>(true)[0];
 
@@ -56,34 +56,40 @@ public class HUDStageManager : MonoBehaviour
         quit     = transform.GetChild(5);
 
         coin.Initialize();
-        dialogue.Initialize();
         door.Initialize();
         shop.Initialize();
         
-        dialogue.SetManager(_stage);
+        dialogue.SetManager(this);
 
         ShowDoor(false);
         ShowShop(false);
 
         Button btnBack = back.GetComponent<Button>();
         btnBack.onClick.RemoveAllListeners();
-        btnBack.onClick.AddListener(_stage.Back);
+        btnBack.onClick.AddListener(delegate { _manager.Action(Enums.HUDAction.Back); });
         
         Button btnInteract = interact.GetComponent<Button>();
         btnInteract.onClick.RemoveAllListeners();
-        btnInteract.onClick.AddListener(_stage.Interact);
+        btnInteract.onClick.AddListener(delegate { _manager.Action(Enums.HUDAction.Interact); });
 
         Button btnQuit = quit.GetChild(0).GetComponent<Button>();
         btnQuit.onClick.RemoveAllListeners();
-        btnQuit.onClick.AddListener(_stage.Quit);
+        btnQuit.onClick.AddListener(delegate { _manager.Action(Enums.HUDAction.Quit); });
 
         _initialized = true;
     }
     
-    public void SetManager(StageManager stage)
+    public void SetManager(HUDManager manager)
     {
-        _stage = stage;
+        _manager = manager;
     }
+
+    public void SwitchToBuff()
+    {
+        _manager.Action(Enums.HUDAction.SwitchBuff);
+    }
+
+    #region Coin
 
     public void AddCoins(bool hasReward, int amount = 0)
     {
@@ -93,6 +99,17 @@ public class HUDStageManager : MonoBehaviour
         coin.AddCoins(reward + amount);
     }
 
+    #endregion
+
+    #region Dialogue
+
+    public void ShowDialogue(bool visible)
+    {
+        dialogue.gameObject.SetActive(visible);
+    }
+
+    #endregion
+
     #region Door
     
     public void ShowDoor(bool show)
@@ -101,7 +118,7 @@ public class HUDStageManager : MonoBehaviour
     }
     public void OpenDoor()
     {
-        door.Open(_stage.player.transform.position);
+        door.Open(_manager.GetPlayerPosition());
     }
     public void CloseDoor()
     {

@@ -1,0 +1,68 @@
+{
+    "stage01" : [
+        {
+            "name" : "David",
+            "sentences" : ["Iteration 1, Stage 1, Dialogue 1, Sentence 1"]
+        },
+        {
+            "name" : "???",
+            "sentences" : ["Iteration 1, Stage 1, Dialogue 2, Sentence 1"]
+        }
+    ],
+    "stage02": [
+        {
+            "name" : "David",
+            "sentences" : [
+                "Iteration 1, Stage 2, Dialogue 1, Sentence 1",
+                "Iteration 1, Stage 1, Dialogue 1, Sentence 2"
+            ]
+        },
+        {
+            "name" : "???",
+            "sentences" : [
+                "Iteration 1, Stage 2, Dialogue 2, Sentence 1",
+                "Iteration 1, Stage 2, Dialogue 2, Sentence 2"
+            ]
+        }
+    ],
+    "stage03" : [
+        {
+            "name" : "David",
+            "sentences" : []
+        },
+        {
+            "name" : "???",
+            "sentences" : []
+        }
+    ],
+    "stage04" : [
+        {
+            "name" : "David",
+            "sentences" : []
+        },
+        {
+            "name" : "David",
+            "sentences" : []
+        }
+    ],
+    "stage05" : [
+        {
+            "name" : "David",
+            "sentences" : []
+        },
+        {
+            "name" : "David",
+            "sentences" : []
+        }
+    ],
+    "stageEnd" : [
+        {
+            "name" : "David",
+            "sentences" : []
+        },
+        {
+            "name" : "David",
+            "sentences" : []
+        }
+    ]
+}

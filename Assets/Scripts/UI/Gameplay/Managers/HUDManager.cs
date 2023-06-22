@@ -6,7 +6,7 @@ public class HUDManager : MonoBehaviour
 {
     #region Attributes
     
-    private StageManager _stage;
+    [SerializeField] private StageManager _stage;
     
     [Header("HUDs")]
     public Transform combat;
@@ -24,9 +24,16 @@ public class HUDManager : MonoBehaviour
 
     #endregion
 
-    void Start()
+    void Awake()
     {
         _initialized = false;
+
+        combat = transform.GetChild(0);
+        buff = transform.GetChild(1);
+        shop = transform.GetChild(2);
+        stage = transform.GetChild(3);
+
+        hudStage = stage.GetComponent<HUDStageManager>();
     }
     
     void Update()
@@ -42,21 +49,14 @@ public class HUDManager : MonoBehaviour
             hudCombat.UpdatePlayerAttackCharge(_stage.player.stats.currentCharge, PlayerStats.MaxCharge);
         }
     }
-    
 
     public void Initialize()
     {
-        combat = transform.GetChild(0);
-        buff = transform.GetChild(1);
-        shop = transform.GetChild(2);
-        stage = transform.GetChild(3);
-        
         combat.gameObject.SetActive(false);
         buff.gameObject.SetActive(false);
         shop.gameObject.SetActive(false);
         
-        hudStage = stage.GetComponent<HUDStageManager>();
-        hudStage.SetManager(_stage);
+        hudStage.SetManager(this);
         hudStage.Initialize();
         hudStage.coin.SetCoins(_stage.coinsAvailable);
         
@@ -71,11 +71,17 @@ public class HUDManager : MonoBehaviour
 
             hudStage.timer.gameObject.SetActive(true);
         }
+        else if (_stage.stageType == Enums.StageType.Dialogue)
+        {
+            hudStage.dialogue.SetDialogues(_stage.dialogue.GetDialogues(_stage.id));
+            hudStage.dialogue.StartDialogue();
+        }
         else if (_stage.stageType == Enums.StageType.Buff)
         {
             buff.gameObject.SetActive(true);
 
             hudBuff = buff.GetComponent<HUDBuffManager>();
+            hudBuff.SetManager(this);
             hudBuff.Initialize();
         }
         else if (_stage.stageType == Enums.StageType.Shop)
@@ -100,11 +106,36 @@ public class HUDManager : MonoBehaviour
         hudCombat.UpdateSkillButtonsUI(weapon);
     }
 
-    public void SwitchToCombat()
+    public void Action(Enums.HUDAction action)
     {
-        if (hudBuff.selectedCard != null)
+        switch (action)
         {
-            _stage.SwitchToCombat(hudBuff.selectedCard);
+            case Enums.HUDAction.Back:
+                _stage.Back();
+                break;
+            case Enums.HUDAction.Interact:
+                _stage.Interact();
+                break;
+            case Enums.HUDAction.Quit:
+                _stage.Quit();
+                break;
+            case Enums.HUDAction.SwitchBuff:
+                _stage.SwitchToBuff();
+                break;
+            case Enums.HUDAction.SwitchCombat:
+                if (hudBuff.selectedCard != null)
+                {
+                    _stage.SwitchToCombat(hudBuff.selectedCard);
+                }
+                break;
+            default:
+                Debug.Log("Invalid HUD action");
+                break;
         }
+    }
+
+    public Vector3 GetPlayerPosition()
+    {
+        return _stage.player.transform.position;
     }
 }

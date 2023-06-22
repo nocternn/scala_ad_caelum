@@ -10,11 +10,13 @@ public class StageManager : MonoBehaviour
 
     [SerializeField] private bool _initialized;
     [SerializeField] private int _clearReward;
+
+    public DialogueManager dialogue;
     
     public Enums.StageType stageType;
     public Enums.StageType previousStageType;
     
-    public int id = 1;
+    public int id;
     public int coinsAvailable;
     
     public SceneLoader sceneLoader;
@@ -32,12 +34,16 @@ public class StageManager : MonoBehaviour
 
     #region Lifecycle
     
-    private void Start()
+    private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
+
+            dialogue = GetComponent<DialogueManager>();
+            dialogue.Initialize();
+            dialogue.ReadDialogues();
         }
         else
         {
@@ -73,17 +79,16 @@ public class StageManager : MonoBehaviour
         hud.SetManager(this);
         hud.Initialize();
 
-        _clearReward = 100;
         _initialized = true;
     }
     
-    private void Reset()
+    public void Reset()
     {
+        stageType = Enums.StageType.Dialogue;
+        previousStageType = Enums.StageType.Dialogue;
+
         _clearReward = 100;
         _initialized = false;
-
-        stageType = Enums.StageType.Buff;
-        previousStageType = Enums.StageType.Buff;
 
         id = 1;
         coinsAvailable = 0;
@@ -139,7 +144,15 @@ public class StageManager : MonoBehaviour
 
     public void SwitchToBuff()
     {
-        
+        previousStageType = stageType;
+        stageType = Enums.StageType.Buff;
+
+        if (previousStageType == Enums.StageType.Dialogue)
+        {
+            hud.hudStage.ShowDialogue(false);
+        }
+
+        hud.Initialize();
     }
     
     public void SwitchToCombat(CardItem selectedBuff)
@@ -182,8 +195,8 @@ public class StageManager : MonoBehaviour
 
         if (id < 5)
         {
-            stageType = Enums.StageType.Buff;
-            previousStageType = Enums.StageType.Buff;
+            stageType = Enums.StageType.Dialogue;
+            previousStageType = Enums.StageType.Dialogue;
             
             StartCoroutine(sceneLoader.LoadScene(0));
         }
@@ -264,6 +277,10 @@ public class StageManager : MonoBehaviour
                     ToggleEnemy(true);
                 }
             }
+            else if (stageType == Enums.StageType.Dialogue)
+            {
+                hud.hudStage.ShowDialogue(true);
+            }
             
             hud.hudStage.ShowQuitConfirmation(false);
         }
@@ -280,6 +297,10 @@ public class StageManager : MonoBehaviour
 
                 if (enemy != null)
                     ToggleEnemy(false);
+            }
+            else if (previousStageType == Enums.StageType.Dialogue)
+            {
+                hud.hudStage.ShowDialogue(false);
             }
             
             hud.hudStage.ShowQuitConfirmation(true);

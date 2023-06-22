@@ -24,6 +24,7 @@ public class Enums : MonoBehaviour
     {
         Buff,
         Combat,
+        Dialogue,
         Shop,
         Quit
     }
@@ -39,5 +40,14 @@ public class Enums : MonoBehaviour
     {
         Menu,
         Game
+    }
+
+    public enum HUDAction
+    {
+        Back,
+        Interact,
+        Quit,
+        SwitchBuff,
+        SwitchCombat
     }
 }
