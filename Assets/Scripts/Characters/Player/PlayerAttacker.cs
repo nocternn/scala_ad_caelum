@@ -6,48 +6,45 @@ using UnityEngine;
 
 public class PlayerAttacker : MonoBehaviour
 {
-    [SerializeField] private PlayerManager _manager;
-    
     private string lastAttack;
     public WeaponItem currentWeapon;
 
-    public void SetManager(PlayerManager manager)
+    public void Initialize()
     {
-        _manager = manager;
-        currentWeapon = manager.weaponSlotManager.GetCurrentWeapon();
+        currentWeapon = PlayerManager.Instance.weaponSlotManager.GetCurrentWeapon();
     }
 
     public void HandleWeaponCombo()
     {
-        if (!_manager.inputHandler.comboFlag)
+        if (!PlayerManager.Instance.inputHandler.comboFlag)
             return;
         
-        _manager.animatorHandler.SetBool("canDoCombo", false);
+        PlayerManager.Instance.animatorHandler.SetBool("canDoCombo", false);
         if (lastAttack.Equals(currentWeapon.basicAttack01))
         {
-            _manager.PlayTargetAnimation(currentWeapon.basicAttack02, true);
+            PlayerManager.Instance.PlayTargetAnimation(currentWeapon.basicAttack02, true);
             lastAttack = currentWeapon.basicAttack02;
         }
         else if (lastAttack.Equals(currentWeapon.basicAttack02))
         {
-            _manager.PlayTargetAnimation(currentWeapon.basicAttack03, true);
+            PlayerManager.Instance.PlayTargetAnimation(currentWeapon.basicAttack03, true);
             lastAttack = currentWeapon.basicAttack03;
         }
         else if (lastAttack.Equals(currentWeapon.basicAttack03))
         {
-            _manager.PlayTargetAnimation(currentWeapon.basicAttack04, true);
+            PlayerManager.Instance.PlayTargetAnimation(currentWeapon.basicAttack04, true);
             lastAttack = currentWeapon.basicAttack04;
         }
     }
 
 	public void HandleActiveAttack()
     {
-        bool hasEnoughSP = _manager.stats.currentSkillPoints >= currentWeapon.activeCost;
+        bool hasEnoughSP = PlayerManager.Instance.stats.currentSkillPoints >= currentWeapon.activeCost;
         bool canUseSkill = !currentWeapon.skillActive.onCooldown;
 
         if (hasEnoughSP && canUseSkill)
         {
-            _manager.stats.currentSkillPoints -= currentWeapon.activeCost;
+            PlayerManager.Instance.stats.currentSkillPoints -= currentWeapon.activeCost;
             
             currentWeapon.skillActive.UseSkill();
             currentWeapon.skillActive.Cooldown();
@@ -58,10 +55,10 @@ public class PlayerAttacker : MonoBehaviour
     
     public void HandleBasicAttack()
     {
-        _manager.PlayTargetAnimation(currentWeapon.basicAttack01, true);
+        PlayerManager.Instance.PlayTargetAnimation(currentWeapon.basicAttack01, true);
         
         // Shoot bullet if weapon is pistol
-        if (currentWeapon.name.Equals(_manager.weaponSlotManager.weaponTypes[0]))
+        if (currentWeapon.name.Equals(PlayerManager.Instance.weaponSlotManager.weaponTypes[0]))
         {
             ShootBullet();
         }
@@ -71,18 +68,18 @@ public class PlayerAttacker : MonoBehaviour
 
     public void HandleChargedAttack()
     {
-        _manager.PlayTargetAnimation(currentWeapon.chargedAttack, true);
+        PlayerManager.Instance.PlayTargetAnimation(currentWeapon.chargedAttack, true);
         lastAttack = currentWeapon.chargedAttack;
     }
 
 	public void HandleUltimateAttack()
     {
-        bool hasEnoughSP = _manager.stats.currentSkillPoints >= currentWeapon.ultimateCost;
+        bool hasEnoughSP = PlayerManager.Instance.stats.currentSkillPoints >= currentWeapon.ultimateCost;
         bool canUseSkill = !currentWeapon.skillUltimate.onCooldown;
 
         if (hasEnoughSP && canUseSkill)
         {
-            _manager.stats.currentSkillPoints -= currentWeapon.ultimateCost;
+            PlayerManager.Instance.stats.currentSkillPoints -= currentWeapon.ultimateCost;
             
             currentWeapon.skillUltimate.UseSkill();
             currentWeapon.skillUltimate.Cooldown();
@@ -100,21 +97,21 @@ public class PlayerAttacker : MonoBehaviour
     {
         // Get instantion location
         AmmoInstantiationLocation instantiationLocation =
-            _manager.weaponSlotManager.rightHandSlot.GetComponentInChildren<AmmoInstantiationLocation>();
+            PlayerManager.Instance.weaponSlotManager.rightHandSlot.GetComponentInChildren<AmmoInstantiationLocation>();
 
         // Instantiate ammo
         GameObject ammo = Instantiate(
             currentWeapon.ammo.model,
             instantiationLocation.transform.position,
-            _manager.GetCameraRotation("pivot")
+            PlayerManager.Instance.GetCameraRotation("pivot")
         );
         Rigidbody rigidbody = ammo.GetComponent<Rigidbody>();
         RangedDamageCollider damageCollider = ammo.GetComponentInChildren<RangedDamageCollider>();
             
         // Set ammo velocity
-        if (_manager.isAiming)
+        if (PlayerManager.Instance.isAiming)
         {
-            Ray ray = _manager.GetCamera().ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+            Ray ray = CameraHandler.Instance.camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
             RaycastHit hitpoint;
 
             if (Physics.Raycast(ray, out hitpoint, 100.0f))
@@ -124,8 +121,8 @@ public class PlayerAttacker : MonoBehaviour
             else
             {
                 ammo.transform.rotation = Quaternion.Euler(
-                    _manager.GetCameraLocalEulerAngles().x,
-                    _manager.lockOnTransform.eulerAngles.y,
+                    PlayerManager.Instance.GetCameraLocalEulerAngles().x,
+                    PlayerManager.Instance.lockOnTransform.eulerAngles.y,
                     0
                 );
             }
@@ -133,8 +130,8 @@ public class PlayerAttacker : MonoBehaviour
         else
         {
             ammo.transform.rotation = Quaternion.Euler(
-                _manager.GetCameraEulerAngles("pivot").x,
-                _manager.lockOnTransform.eulerAngles.y,
+                PlayerManager.Instance.GetCameraEulerAngles("pivot").x,
+                PlayerManager.Instance.lockOnTransform.eulerAngles.y,
                 0
             );
         }
@@ -146,7 +143,7 @@ public class PlayerAttacker : MonoBehaviour
 
         // Enable damage
         damageCollider.ammoItem = currentWeapon.ammo;
-        _manager.weaponSlotManager.SetDamageCollider(false, damageCollider);
-        _manager.weaponSlotManager.EnableDamageCollider();
+        PlayerManager.Instance.weaponSlotManager.SetDamageCollider(false, damageCollider);
+        PlayerManager.Instance.weaponSlotManager.EnableDamageCollider();
     }
 }

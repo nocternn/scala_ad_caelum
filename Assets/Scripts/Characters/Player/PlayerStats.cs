@@ -6,8 +6,6 @@ public class PlayerStats : CharacterStats
 {
     #region Attributes
 
-    private PlayerManager _manager;
-    
     [Header("Fixed Stats")]
     public const int MaxCharge = 100;
     public const int StepCharge = 25;
@@ -38,25 +36,22 @@ public class PlayerStats : CharacterStats
 
 		StartCoroutine(RechargeSP());
     }
-    
-    public void SetManager(PlayerManager manager)
-    {
-        _manager = manager;
-    }
 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        _manager.PlayTargetAnimation("damage", true, true);
+        PlayerManager.Instance.PlayTargetAnimation("damage", true, true);
 
         if (currentHealth <= 0)
         {
             currentHealth = 0;
-            _manager.PlayTargetAnimation("death", true, true);
-            _manager.Lose();
+            
+            PlayerManager.Instance.PlayTargetAnimation("death", true, true);
+
+            StageManager.Instance.EndStageLoss();
         }
 
-        _manager.isHit = true;
+        PlayerManager.Instance.isHit = true;
     }
 
     public void UpdateAttackCharge(bool isGain)

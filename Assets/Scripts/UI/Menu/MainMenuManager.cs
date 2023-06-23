@@ -4,35 +4,30 @@ using UnityEngine;
 
 public class MainMenuManager : MonoBehaviour
 {
-    [SerializeField] private MenuManager _manager;
-
-    public void SetManager(MenuManager manager)
-    {
-        _manager = manager;
-    }
-
     public void Play()
     {
-        if (_manager.sceneLoader.weapon == null)
-            _manager.sceneLoader.weapon = _manager.inventoryMenu.weapons[0];
+        if (SceneLoader.Instance.weapon == null)
+            SceneLoader.Instance.weapon = MenuManager.Instance.inventoryMenu.weapons[0];
         
-        _manager.sceneLoader.sceneType = Enums.SceneType.Game;
-        StartCoroutine(_manager.sceneLoader.LoadScene(1));
+        SceneLoader.Instance.sceneType = Enums.SceneType.Game;
+        SceneLoader.Instance.previousSceneType = Enums.SceneType.Menu;
+        
+        StartCoroutine(SceneLoader.Instance.LoadScene(1));
     }
 
     public void Inventory()
     {
-        _manager.menuType = Enums.MenuType.Inventory;
+        MenuManager.Instance.menuType = Enums.MenuType.Inventory;
 
-        _manager.mainMenu.gameObject.SetActive(false);
-        _manager.inventoryMenu.gameObject.SetActive(true);
+        MenuManager.Instance.mainMenu.gameObject.SetActive(false);
+        MenuManager.Instance.inventoryMenu.gameObject.SetActive(true);
     }
 
     public void Quit()
     {
-        _manager.menuType = Enums.MenuType.Quit;
+        MenuManager.Instance.menuType = Enums.MenuType.Quit;
 
-        _manager.mainMenu.gameObject.SetActive(false);
-        _manager.quitMenu.gameObject.SetActive(true);
+        MenuManager.Instance.mainMenu.gameObject.SetActive(false);
+        MenuManager.Instance.quitMenu.gameObject.SetActive(true);
     }
 }

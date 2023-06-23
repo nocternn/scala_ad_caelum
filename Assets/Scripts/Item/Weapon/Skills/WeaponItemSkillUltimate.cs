@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class WeaponItemSkillUltimate : WeaponItemSkill
 {
-  public override void Initialize(WeaponItem weapon, PlayerManager player = null, EnemyManager enemy = null)
+  public override void Initialize(WeaponItem weapon)
   {
-    base.Initialize(weapon, player, enemy);
+    base.Initialize(weapon);
 
     currentCooldown = weapon.ultimateCooldown;
   }
   
   public override void UseSkill()
   {
-    _player.PlayTargetAnimation(_weapon.ultimateAttack, true);
+    PlayerManager.Instance.PlayTargetAnimation(_weapon.ultimateAttack, true);
     base.UseSkill();
   }
   
@@ -22,7 +22,7 @@ public class WeaponItemSkillUltimate : WeaponItemSkill
 
   protected override void Pistol()
   {
-    int damageOriginal = _player.weaponSlotManager.GetDamage();
+    int damageOriginal = PlayerManager.Instance.weaponSlotManager.GetDamage();
     int damageExtra    = 1088 * 2;
     int damageOverTime = 266;
     int duration = 5;
@@ -31,20 +31,20 @@ public class WeaponItemSkillUltimate : WeaponItemSkill
     float threshold = 0.33f;
 
     // If current health is below 33% then don't attack
-    if (_player.stats.currentHealth < _player.stats.ScaleStat(_player.stats.maxHealth, threshold))
+    if (PlayerManager.Instance.stats.currentHealth < PlayerManager.Instance.stats.ScaleStat(PlayerManager.Instance.stats.maxHealth, threshold))
       return;
 
     // Set damage
-    _player.weaponSlotManager.SetDamage(damageOriginal + damageExtra);
+    PlayerManager.Instance.weaponSlotManager.SetDamage(damageOriginal + damageExtra);
 
     // Shoot in front
-    _player.attacker.ShootBullet();
+    PlayerManager.Instance.attacker.ShootBullet();
 
     // Revert damage
-    _player.weaponSlotManager.SetDamage(damageOriginal);
+    PlayerManager.Instance.weaponSlotManager.SetDamage(damageOriginal);
 
     // Get damage reduction
-    _player.stats.scaleDefense += dmgReduction;
+    PlayerManager.Instance.stats.scaleDefense += dmgReduction;
 
     // Enemmy takes damage per second for duration seconds
     StartCoroutine(ApplyEffect(damageOverTime, duration));
@@ -53,7 +53,7 @@ public class WeaponItemSkillUltimate : WeaponItemSkill
     Task.Delay((int)Mathf.Round(1000 * duration)).ContinueWith(t =>
 		{
       StartCoroutine(ApplyEffect(hpLossOverTime, duration));
-      _player.stats.scaleDefense -= dmgReduction;
+      PlayerManager.Instance.stats.scaleDefense -= dmgReduction;
 		});
   }
 
@@ -64,27 +64,27 @@ public class WeaponItemSkillUltimate : WeaponItemSkill
     int duration = 10;
 
     // Gain stats
-    _player.stats.scaleAttack += dmgBoost;
-    _player.stats.scaleDefense += dmgReduction;
+    PlayerManager.Instance.stats.scaleAttack += dmgBoost;
+    PlayerManager.Instance.stats.scaleDefense += dmgReduction;
 
     // Reset stats after duration seconds
     Task.Delay((int)Mathf.Round(1000 * duration)).ContinueWith(t =>
 		{
-      _player.stats.scaleAttack -= dmgBoost;
-      _player.stats.scaleDefense -= dmgReduction;
+      PlayerManager.Instance.stats.scaleAttack -= dmgBoost;
+      PlayerManager.Instance.stats.scaleDefense -= dmgReduction;
 		});
   }
 
   protected override void Gauntlet()
   {
-    int damageOriginal = _player.weaponSlotManager.GetDamage();
-    int damageExtra    = _player.stats.ScaleStat(damageOriginal, 1.5f);
+    int damageOriginal = PlayerManager.Instance.weaponSlotManager.GetDamage();
+    int damageExtra    = PlayerManager.Instance.stats.ScaleStat(damageOriginal, 1.5f);
     int duration = 10;
     int hpRestore = 20;
     int spRestore = 3;
 
     // Set damage
-    _player.weaponSlotManager.SetDamage(damageOriginal + damageExtra);
+    PlayerManager.Instance.weaponSlotManager.SetDamage(damageOriginal + damageExtra);
 
     // Restore HP and SP
     StartCoroutine(ApplyEffect(hpRestore, spRestore, duration));
@@ -92,23 +92,23 @@ public class WeaponItemSkillUltimate : WeaponItemSkill
     // Reset damage
     Task.Delay((int)Mathf.Round(1000 * duration)).ContinueWith(t =>
 		{
-      _player.weaponSlotManager.SetDamage(damageOriginal);
+      PlayerManager.Instance.weaponSlotManager.SetDamage(damageOriginal);
 		});
   }
 
   protected override void Katana()
   {
-    int damageOriginal = _player.weaponSlotManager.GetDamage();
-    int damage = _player.stats.ScaleStat(damageOriginal, 150f);
+    int damageOriginal = PlayerManager.Instance.weaponSlotManager.GetDamage();
+    int damage = PlayerManager.Instance.stats.ScaleStat(damageOriginal, 150f);
     int duration = 2;
 
     // Set damage
-    _player.weaponSlotManager.SetDamage(damage);
+    PlayerManager.Instance.weaponSlotManager.SetDamage(damage);
 
     // Reset damage
     Task.Delay((int)Mathf.Round(1000 * duration)).ContinueWith(t =>
 		{
-      _player.weaponSlotManager.SetDamage(damageOriginal);
+      PlayerManager.Instance.weaponSlotManager.SetDamage(damageOriginal);
 		});
   }
 
@@ -117,8 +117,11 @@ public class WeaponItemSkillUltimate : WeaponItemSkill
     int hpRestore = 300;
     float dmgBonus = 0.25f;
 
-    _player.stats.currentHealth = Mathf.Min(_player.stats.currentHealth + hpRestore, _player.stats.maxHealth);
-    _player.stats.scaleAttack += dmgBonus;
+    PlayerManager.Instance.stats.currentHealth = Mathf.Min(
+        PlayerManager.Instance.stats.currentHealth + hpRestore,
+        PlayerManager.Instance.stats.maxHealth
+      );
+    PlayerManager.Instance.stats.scaleAttack += dmgBonus;
   }
 
   #endregion
@@ -127,11 +130,11 @@ public class WeaponItemSkillUltimate : WeaponItemSkill
 
   private IEnumerator ApplyEffect(float scalar, int duration)
   {
-    int damage = _player.stats.ScaleStat(_player.stats.maxHealth, scalar);
+    int damage = PlayerManager.Instance.stats.ScaleStat(PlayerManager.Instance.stats.maxHealth, scalar);
     for (int i = 1; i <= duration; i++)
     {
-        if (_player.stats.currentHealth - damage > 0)
-          _player.stats.currentHealth -= damage;
+        if (PlayerManager.Instance.stats.currentHealth - damage > 0)
+          PlayerManager.Instance.stats.currentHealth -= damage;
         yield return new WaitForSeconds(1.0f);
     }
   }
@@ -140,8 +143,8 @@ public class WeaponItemSkillUltimate : WeaponItemSkill
   {
     for (int i = 1; i <= duration; i++)
     {
-      _player.stats.currentHealth = Mathf.Min(_player.stats.currentHealth + hp, _player.stats.maxHealth);
-      _player.stats.currentSkillPoints = Mathf.Min(_player.stats.currentSkillPoints + sp, _player.stats.maxSkillPoints);
+      PlayerManager.Instance.stats.currentHealth = Mathf.Min(PlayerManager.Instance.stats.currentHealth + hp, PlayerManager.Instance.stats.maxHealth);
+      PlayerManager.Instance.stats.currentSkillPoints = Mathf.Min(PlayerManager.Instance.stats.currentSkillPoints + sp, PlayerManager.Instance.stats.maxSkillPoints);
       yield return new WaitForSeconds(1.0f);
     }
   }

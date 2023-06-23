@@ -6,20 +6,18 @@ using UnityEngine.Animations.Rigging;
 
 public class PlayerAnimatorHandler : CharacterAnimatorHandler
 {
-	private PlayerManager _manager;
-
 	/*
 	private void OnAnimatorMove()
 	{
-		if (_manager.isInteracting)
+		if (PlayerManager.Instance.isInteracting)
 			return;
 
 		float delta = Time.deltaTime;
-		_manager.SetPlayerDrag(0);
+		PlayerManager.Instance.SetPlayerDrag(0);
 
-		Vector3 deltaPosition = _manager.GetAnimatorDeltaPosition();
+		Vector3 deltaPosition = PlayerManager.Instance.GetAnimatorDeltaPosition();
 		deltaPosition.y = 0;
-		_manager.SetPlayerVelocity(deltaPosition / delta);
+		PlayerManager.Instance.SetPlayerVelocity(deltaPosition / delta);
 	}
 	*/
 
@@ -45,11 +43,6 @@ public class PlayerAnimatorHandler : CharacterAnimatorHandler
 	#endregion
 	
 	#region Setters
-	
-	public void SetManager(PlayerManager manager)
-	{
-		_manager = manager;
-	}
 
 	public void SetUsedWeaponType(string currentWeaponType, string[] weaponTypes)
 	{
@@ -63,7 +56,7 @@ public class PlayerAnimatorHandler : CharacterAnimatorHandler
 	public override void SetHandIK(LeftHandIKTarget leftHandTarget, RightHandIKTarget rightHandTarget, bool isTwoHanding)
 	{
 		base.SetHandIK(leftHandTarget, rightHandTarget, isTwoHanding);
-		_manager.rigBuilder.Build();
+		PlayerManager.Instance.rigBuilder.Build();
 	}
 
 	#endregion

@@ -8,9 +8,9 @@ using UnityEngine.Animations.Rigging;
 public class EnemyManager : CharacterManager
 {
     #region Attributes
-
-    public static string[] Types = new[] { "Archer", "Spearwoman", "Crossbowman", "Ninja", "Paladin" };
-
+    
+    public static EnemyManager Instance { get; private set; }
+    
     [Header("Components")]
     public EnemyAnimatorHandler animatorHandler;
     public EnemyLocomotion locomotion;
@@ -24,7 +24,42 @@ public class EnemyManager : CharacterManager
     public CharacterManager currentTarget;
     public EnemyState currentState;
 
-    private bool hasDied = false;
+    [Header("Properties")]
+    [SerializeField] private bool hasDied = false;
+    public static string[] Types = new[] { "Archer", "Spearwoman", "Crossbowman", "Ninja", "Paladin" };
+
+    #endregion
+    
+    #region Lifecycle
+
+    protected override void Awake()
+    {
+        base.Awake();
+        
+        Instance = this;
+        Instance.gameObject.SetActive(false);
+    }
+    
+    private void Update()
+    {
+        if (hasDied)
+            return;
+        
+        HandleRecoveryTime();
+    }
+    
+    private void FixedUpdate()
+    {
+        if (hasDied)
+            return;
+        
+        float delta = Time.deltaTime;
+
+        isInteracting = animatorHandler.GetBool("isInteracting");
+        canRotate     = animatorHandler.GetBool("canRotate");
+        
+        HandleStateMachine();
+    }
 
     #endregion
     
@@ -57,30 +92,7 @@ public class EnemyManager : CharacterManager
     }
 
     #endregion
-    #region Updates
-    
-    private void Update()
-    {
-        if (hasDied)
-            return;
-        
-        HandleRecoveryTime();
-    }
-    
-    private void FixedUpdate()
-    {
-        if (hasDied)
-            return;
-        
-        float delta = Time.deltaTime;
 
-        isInteracting = animatorHandler.GetBool("isInteracting");
-        canRotate     = animatorHandler.GetBool("canRotate");
-        
-        HandleStateMachine();
-    }
-
-    #endregion
 
     private void SwitchToNextState(EnemyState nextState)
     {
@@ -96,7 +108,6 @@ public class EnemyManager : CharacterManager
         navMeshAgent.enabled = false;
         rigidbody.isKinematic = false;
 
-        locomotion.SetManager(this);
         locomotion.Initialize();
     }
 
@@ -118,15 +129,13 @@ public class EnemyManager : CharacterManager
                 
                 animatorHandler = currentEnemy.GetComponent<EnemyAnimatorHandler>();
                 animatorHandler.Initialize();
-                animatorHandler.SetManager(this);
                 animatorHandler.SetEnemyType(EnemyManager.Types[i]);
                 
                 stats = enemy.GetComponent<EnemyStats>();
-                stats.CalculateCritChance(_stage.id);
+                stats.CalculateCritChance(StageManager.Instance.id);
                 
                 weaponSlotManager = currentEnemy.GetComponent<EnemyWeaponSlotManager>();
                 weaponSlotManager.Initialize();
-                weaponSlotManager.SetManager(this);
                 weaponSlotManager.SetUsedWeaponType();
                 weaponSlotManager.LoadTwoHandIK();
 
@@ -157,7 +166,7 @@ public class EnemyManager : CharacterManager
         {
             animatorHandler.PlayTargetAnimation(String.Format("{0}_death", currentEnemy.name.ToLower()), true);
             hasDied = true;
-            _stage.EndStageWin();
+            StageManager.Instance.EndStageWin();
         }
     }
 

@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class WeaponItemSkillActive : WeaponItemSkill
 {
-  public override void Initialize(WeaponItem weapon, PlayerManager player = null, EnemyManager enemy = null)
+  public override void Initialize(WeaponItem weapon)
   {
-    base.Initialize(weapon, player, enemy);
+    base.Initialize(weapon);
 
     currentCooldown = weapon.activeCooldown;
   }
@@ -15,7 +15,7 @@ public class WeaponItemSkillActive : WeaponItemSkill
   public override void UseSkill()
   {
     if (_weapon.id != 1)
-      _player.PlayTargetAnimation(_weapon.activeAttack, true);
+      PlayerManager.Instance.PlayTargetAnimation(_weapon.activeAttack, true);
     base.UseSkill();
   }
   
@@ -23,20 +23,20 @@ public class WeaponItemSkillActive : WeaponItemSkill
 
   protected override void Pistol()
   {
-    int damageOriginal = _player.weaponSlotManager.GetDamage();
+    int damageOriginal = PlayerManager.Instance.weaponSlotManager.GetDamage();
     int damageExtra    = 1088;
     int duration = 5;
     float threshold = 0.33f;
 
     // If current health is below 33% then don't attack
-    if (_player.stats.currentHealth < _player.stats.ScaleStat(_player.stats.maxHealth, threshold))
+    if (PlayerManager.Instance.stats.currentHealth < PlayerManager.Instance.stats.ScaleStat(PlayerManager.Instance.stats.maxHealth, threshold))
       return;
 
     // Lost half of current health
-    _player.stats.currentHealth /= 2;
+    PlayerManager.Instance.stats.currentHealth /= 2;
 
     // Set damage
-    _player.weaponSlotManager.SetDamage(damageOriginal + damageExtra);
+    PlayerManager.Instance.weaponSlotManager.SetDamage(damageOriginal + damageExtra);
 
     // Shoot 1 bullet per second for duration seconds
     StartCoroutine(ShootBullets(duration));
@@ -44,39 +44,39 @@ public class WeaponItemSkillActive : WeaponItemSkill
     // Set damage to original damage after duration seconds
     Task.Delay((int)Mathf.Round(1000 * duration)).ContinueWith(t =>
 		{
-      _player.weaponSlotManager.SetDamage(damageOriginal);
+      PlayerManager.Instance.weaponSlotManager.SetDamage(damageOriginal);
 		});
   }
 
   protected override void Greatsword()
   {
-    int damageOriginal = _player.weaponSlotManager.GetDamage();
-    int damageExtra = _player.stats.ScaleStat(damageOriginal, 0.5f);
-    int shield = _player.stats.ScaleStat(_player.stats.maxHealth, 0.8f);
+    int damageOriginal = PlayerManager.Instance.weaponSlotManager.GetDamage();
+    int damageExtra = PlayerManager.Instance.stats.ScaleStat(damageOriginal, 0.5f);
+    int shield = PlayerManager.Instance.stats.ScaleStat(PlayerManager.Instance.stats.maxHealth, 0.8f);
     int duration = 10;
     float threshold = 0.33f;
 
     // If current health is below 33% then don't attack
-    if (_player.stats.currentHealth < _player.stats.ScaleStat(_player.stats.maxHealth, threshold))
+    if (PlayerManager.Instance.stats.currentHealth < PlayerManager.Instance.stats.ScaleStat(PlayerManager.Instance.stats.maxHealth, threshold))
       return;
     
     // Play power-up animation
-    _player.PlayTargetAnimation(_weapon.activeAttack, true);
+    PlayerManager.Instance.PlayTargetAnimation(_weapon.activeAttack, true);
 
     // Lost half of current health
-    _player.stats.currentHealth /= 2;
+    PlayerManager.Instance.stats.currentHealth /= 2;
 
-    int healthOriginal = _player.stats.currentHealth;
+    int healthOriginal = PlayerManager.Instance.stats.currentHealth;
 
     // Gain extra damage and shield
-    _player.weaponSlotManager.SetDamage(damageOriginal + damageExtra);
-    _player.stats.currentHealth += shield;
+    PlayerManager.Instance.weaponSlotManager.SetDamage(damageOriginal + damageExtra);
+    PlayerManager.Instance.stats.currentHealth += shield;
 
     // Remove bonuses after duration seconds
     Task.Delay((int)Mathf.Round(1000 * duration)).ContinueWith(t =>
 		{
-      _player.weaponSlotManager.SetDamage(damageOriginal);
-      _player.stats.currentHealth = Mathf.Min(_player.stats.currentHealth, healthOriginal);
+      PlayerManager.Instance.weaponSlotManager.SetDamage(damageOriginal);
+      PlayerManager.Instance.stats.currentHealth = Mathf.Min(PlayerManager.Instance.stats.currentHealth, healthOriginal);
 		});  
   }
 
@@ -88,18 +88,18 @@ public class WeaponItemSkillActive : WeaponItemSkill
     float dmgBoost = 0.2f;
     
     // Play power-up animation
-    _player.PlayTargetAnimation(_weapon.activeAttack, true);
+    PlayerManager.Instance.PlayTargetAnimation(_weapon.activeAttack, true);
 
     // Get dmg multiplier
-    int multiplier = Mathf.Min(_player.stats.hitCount / gap, maxStacks);
+    int multiplier = Mathf.Min(PlayerManager.Instance.stats.hitCount / gap, maxStacks);
 
     // Gain dmg bonus
-    _player.stats.scaleAttack += multiplier * dmgBoost;
+    PlayerManager.Instance.stats.scaleAttack += multiplier * dmgBoost;
 
     // Remove bonuses after duration seconds
     Task.Delay((int)Mathf.Round(1000 * duration)).ContinueWith(t =>
 		{
-      _player.stats.scaleAttack -= multiplier * dmgBoost;
+      PlayerManager.Instance.stats.scaleAttack -= multiplier * dmgBoost;
 		}); 
   }
 
@@ -109,21 +109,21 @@ public class WeaponItemSkillActive : WeaponItemSkill
     int duration = 20;
     
     // Play power-up animation
-    _player.PlayTargetAnimation(_weapon.activeAttack, true);
+    PlayerManager.Instance.PlayTargetAnimation(_weapon.activeAttack, true);
 
     // Gain dmg bonus
-    _player.stats.scaleAttack += dmgBoost;
+    PlayerManager.Instance.stats.scaleAttack += dmgBoost;
 
     // Remove bonuses after duration seconds
     Task.Delay((int)Mathf.Round(1000 * duration)).ContinueWith(t =>
 		{
-      _player.stats.scaleAttack -= dmgBoost;
+      PlayerManager.Instance.stats.scaleAttack -= dmgBoost;
 		}); 
   }
 
   protected override void Scythe()
   {
-    int damageOriginal = _player.weaponSlotManager.GetDamage();
+    int damageOriginal = PlayerManager.Instance.weaponSlotManager.GetDamage();
     int duration = 10;
 
     StartCoroutine(ApplyEffect(damageOriginal, duration));
@@ -137,8 +137,8 @@ public class WeaponItemSkillActive : WeaponItemSkill
   {
     for (int i = 1; i <= duration; i++)
     {
-      _player.PlayTargetAnimation(_weapon.activeAttack, true);
-      _player.attacker.ShootBullet();
+      PlayerManager.Instance.PlayTargetAnimation(_weapon.activeAttack, true);
+      PlayerManager.Instance.attacker.ShootBullet();
       yield return new WaitForSeconds(1.0f);
     }
   }

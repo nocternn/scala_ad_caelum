@@ -5,21 +5,14 @@ using UnityEngine;
 public class WeaponItemSkill : MonoBehaviour
 {
     protected WeaponItem _weapon;
-
-    protected PlayerManager _player;
-    protected EnemyManager _enemy;
-
-
+    
     [Header("Properties")]
     public bool onCooldown;
     public int currentCooldown;
 
-    public virtual void Initialize(WeaponItem weapon, PlayerManager player = null, EnemyManager enemy = null)
+    public virtual void Initialize(WeaponItem weapon)
     {
         _weapon = weapon;
-
-        _player = player;
-        _enemy  = enemy;
 
         onCooldown = false;
     }
@@ -71,7 +64,7 @@ public class WeaponItemSkill : MonoBehaviour
     {
         for (int i = 1; i <= duration; i++)
         {
-            _enemy.stats.currentHealth -= damage;
+            EnemyManager.Instance.stats.currentHealth -= damage;
             yield return new WaitForSeconds(1.0f);
         }
     }
@@ -80,14 +73,14 @@ public class WeaponItemSkill : MonoBehaviour
     {
         while (currentCooldown >= 0)
         {
-            _player.UpdateUI(_weapon);
+            HUDManager.Instance.hudCombat.UpdateSkillButtonsUI(_weapon);
             currentCooldown--;
             yield return new WaitForSeconds(1.0f);
         }
         
         onCooldown = false;
         currentCooldown = initialCooldown;
-        _player.UpdateUI(_weapon);
+        HUDManager.Instance.hudCombat.UpdateSkillButtonsUI(_weapon);
 
         yield break;
     }

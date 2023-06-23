@@ -10,18 +10,18 @@ public class CardEffectGold : CardItemEffect
     private float lastBoostATK = 0;
     private float lastBoostDEF = 0;
 
-    public override void Apply(CardItem card, PlayerManager player = null, EnemyManager enemy = null)
+    public override void Apply(CardItem card)
     {
         switch (card.id)
         {
             case 1:
-                if (canBeApplied_01) RecitatifOfEden(card, player);
+                if (canBeApplied_01) RecitatifOfEden(card);
                 break;
             case 2:
-                if (canBeApplied_02) RecitatifOfBirds(card, player);
+                if (canBeApplied_02) RecitatifOfBirds(card);
                 break;
             case 3:
-                if (canBeApplied_03) RecitatifOfGoodWine(card, player);
+                if (canBeApplied_03) RecitatifOfGoodWine(card);
                 break;
             default:
                 UnityEngine.Debug.Log("Invalid Gold card ID");
@@ -29,46 +29,46 @@ public class CardEffectGold : CardItemEffect
         }
     }
     
-    private void RecitatifOfEden(CardItem card, PlayerManager player)
+    private void RecitatifOfEden(CardItem card)
     {
         float count = card.count[card.level];
         float scalar = card.scalar[card.level];
         
-        int deltaSP = player.stats.maxSkillPoints - player.stats.maxSkillPoints;
+        int deltaSP = PlayerManager.Instance.stats.maxSkillPoints - PlayerManager.Instance.stats.maxSkillPoints;
         if (deltaSP != deltaSPPlayer)
         {
             float boost = (deltaSP / count) * (scalar / 100.0f);
-            player.stats.scaleAttack -= lastBoostATK;
-            player.stats.scaleAttack += boost;
+            PlayerManager.Instance.stats.scaleAttack -= lastBoostATK;
+            PlayerManager.Instance.stats.scaleAttack += boost;
             
             deltaSPPlayer = deltaSP;
             lastBoostATK = boost;
         }
     }
     
-    private void RecitatifOfBirds(CardItem card, PlayerManager player)
+    private void RecitatifOfBirds(CardItem card)
     {
         float count = card.count[card.level];
         float scalar = card.scalar[card.level];
         
-        int deltaSP = player.stats.maxSkillPoints - player.stats.maxSkillPoints;
+        int deltaSP = PlayerManager.Instance.stats.maxSkillPoints - PlayerManager.Instance.stats.maxSkillPoints;
         if (deltaSP != deltaSPPlayer)
         {
             float boost = (deltaSP / count) * (scalar / 100.0f);
-            player.stats.scaleDefense -= lastBoostDEF;
-            player.stats.scaleDefense += boost;
+            PlayerManager.Instance.stats.scaleDefense -= lastBoostDEF;
+            PlayerManager.Instance.stats.scaleDefense += boost;
             
             deltaSPPlayer = deltaSP;
             lastBoostDEF = boost;
         }
     }
     
-    private void RecitatifOfGoodWine(CardItem card, PlayerManager player)
+    private void RecitatifOfGoodWine(CardItem card)
     {
         float count = card.count[card.level];
 
         canBeApplied_03 = false;
         
-        StartCoroutine(AddSkillPoints(player, count));
+        StartCoroutine(AddSkillPoints(count));
     }
 }

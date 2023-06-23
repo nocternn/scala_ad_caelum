@@ -5,30 +5,25 @@ using UnityEngine;
 public class StageManager : MonoBehaviour
 {
     #region Attributes
-
+    
     public static StageManager Instance { get; private set; }
-
-    [SerializeField] private bool _initialized;
-    [SerializeField] private int _clearReward;
-
+    
+    [Header("Stage elements")]
     public DialogueManager dialogue;
-    
-    public Enums.StageType stageType;
-    public Enums.StageType previousStageType;
-    
-    public int id;
-    public int coinsAvailable;
-    
-    public SceneLoader sceneLoader;
+    public Door door;
+    public Shop shop;
 
-    public PlayerManager player;
-    public EnemyManager enemy;
-    
-    public HUDManager hud;
-    public new CameraHandler camera;
-
+    [Header("Buffs")]
     public List<CardItem> selectedBuffs;
     public GameObject buffHolder;
+
+    [Header("Properties")]
+    [SerializeField] private bool _initialized;
+    [SerializeField] private int _clearReward;
+    public int id;
+    public int coinsAvailable;
+    public Enums.StageType stageType;
+    public Enums.StageType previousStageType;
 
     #endregion
 
@@ -40,15 +35,17 @@ public class StageManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
-
-            dialogue = GetComponent<DialogueManager>();
-            dialogue.Initialize();
-            dialogue.ReadDialogues();
         }
         else
         {
             Destroy(this.gameObject);
+            return;
         }
+
+        dialogue = GetComponent<DialogueManager>();
+
+        door = GameObject.FindObjectsOfType<Door>(true)[0];
+        shop = GameObject.FindObjectsOfType<Shop>(true)[0];
     }
     
     private void Update()
@@ -61,7 +58,7 @@ public class StageManager : MonoBehaviour
     
         foreach (CardItem buff in selectedBuffs)
         {
-            buff.effect.Apply(buff, player, enemy);
+            buff.effect.Apply(buff);
         }
     }
 
@@ -71,14 +68,12 @@ public class StageManager : MonoBehaviour
     
     public void Initialize()
     {
-        sceneLoader = GameObject.Find("SceneLoader").GetComponent<SceneLoader>();
+        HUDManager.Instance.Initialize();
+        door.Initialize();
+        shop.Initialize();
 
-        camera = GameObject.Find("Camera Holder").GetComponent<CameraHandler>();
-        hud    = GameObject.Find("HUD").GetComponent<HUDManager>();
-
-        hud.SetManager(this);
-        hud.Initialize();
-
+        ShowShop(false);
+        
         _initialized = true;
     }
     
@@ -94,7 +89,7 @@ public class StageManager : MonoBehaviour
         coinsAvailable = 0;
         
         selectedBuffs.Clear();
-        
+
         foreach (var comp in buffHolder.GetComponents<Component>())
         {
             if (!(comp is Transform))
@@ -112,14 +107,13 @@ public class StageManager : MonoBehaviour
     {
         if (show)
         {
-            player.gameObject.SetActive(true);
-            player.SetManager(this);
-            player.Initialize();
-            player.SetWeapon(sceneLoader.weapon);
+            PlayerManager.Instance.gameObject.SetActive(true);
+            PlayerManager.Instance.Initialize();
+            PlayerManager.Instance.SetWeapon(SceneLoader.Instance.weapon);
         }
         else
         {
-            player.gameObject.SetActive(false);
+            PlayerManager.Instance.gameObject.SetActive(false);
         }
     }
 
@@ -127,14 +121,13 @@ public class StageManager : MonoBehaviour
     {
         if (show)
         {
-            enemy.gameObject.SetActive(true);
-            enemy.SetManager(this);
-            enemy.Initialize();
-            enemy.SetEnemyType(EnemyManager.Types[id - 1]);
+            EnemyManager.Instance.gameObject.SetActive(true);
+            EnemyManager.Instance.Initialize();
+            EnemyManager.Instance.SetEnemyType(EnemyManager.Types[id - 1]);
         }
         else
         {
-            enemy.gameObject.SetActive(false);
+            EnemyManager.Instance.gameObject.SetActive(false);
         }
     }
 
@@ -149,10 +142,10 @@ public class StageManager : MonoBehaviour
 
         if (previousStageType == Enums.StageType.Dialogue)
         {
-            hud.hudStage.ShowDialogue(false);
+            HUDManager.Instance.hudStage.ShowDialogue(false);
         }
 
-        hud.Initialize();
+        HUDManager.Instance.Initialize();
     }
     
     public void SwitchToCombat(CardItem selectedBuff)
@@ -160,16 +153,13 @@ public class StageManager : MonoBehaviour
         selectedBuff.EnableEffect(buffHolder);
         selectedBuffs.Add(selectedBuff);
 
-        player = GameObject.FindObjectsOfType<PlayerManager>(true)[0];
-        enemy = GameObject.FindObjectsOfType<EnemyManager>(true)[0];
-
         TogglePlayer(true);
         ToggleEnemy(true);
         
         previousStageType = stageType;
         stageType = Enums.StageType.Combat;
         
-        hud.Initialize();
+        HUDManager.Instance.Initialize();
     }
 
     public void SwitchToShop()
@@ -179,7 +169,7 @@ public class StageManager : MonoBehaviour
 
         TogglePlayer(false);
         
-        hud.Initialize();
+        HUDManager.Instance.Initialize();
     }
 
     #endregion
@@ -191,39 +181,39 @@ public class StageManager : MonoBehaviour
         id++;
         _initialized = false;
 
-        hud.hudStage.OpenDoor();
+        StageManager.Instance.OpenDoor();
 
         if (id < 5)
         {
             stageType = Enums.StageType.Dialogue;
             previousStageType = Enums.StageType.Dialogue;
             
-            StartCoroutine(sceneLoader.LoadScene(0));
+            StartCoroutine(SceneLoader.Instance.LoadScene(0));
         }
         else
         {
+            dialogue.WriteProgress();
             Quit();
         }
     }
 
     public void EndStageWin()
     {
-        hud.hudStage.ToggleTimer(false);
-        hud.hudStage.CloseDoor();
-        hud.hudStage.ShowDoor(true);
+        HUDManager.Instance.hudStage.ToggleTimer(false);
+        StageManager.Instance.ShowDoor(true);
 
         if (id % 2 == 0)
-            hud.hudStage.ShowShop(true);
+            StageManager.Instance.ShowShop(true);
 
         // Lock off target
-        player.inputHandler.lockOnInput = true;
-        player.inputHandler.lockOnFlag = true;
-        player.inputHandler.HandleLockOnInput();
+        PlayerManager.Instance.inputHandler.lockOnInput = true;
+        PlayerManager.Instance.inputHandler.lockOnFlag = true;
+        PlayerManager.Instance.inputHandler.HandleLockOnInput();
 
         // Spawn coin rewards
-        hud.hudStage.coin.Spawn(10);
-        hud.hudStage.AddCoins(true, _clearReward);
-        coinsAvailable = hud.hudStage.coin.GetCoins();
+        HUDManager.Instance.hudStage.coin.Spawn(10);
+        HUDManager.Instance.hudStage.AddCoins(true, _clearReward);
+        coinsAvailable = HUDManager.Instance.hudStage.coin.GetCoins();
     }
 
     public void EndStageLoss()
@@ -237,11 +227,11 @@ public class StageManager : MonoBehaviour
 
     public void Interact()
     {
-        if (hud.hudStage.door.isOpenable)
+        if (door.isOpenable)
         {
             SwitchToNextStage();
         }
-        else if (hud.hudStage.shop.isOpenable)
+        else if (shop.isOpenable)
         {
             SwitchToShop();
         }
@@ -256,10 +246,10 @@ public class StageManager : MonoBehaviour
 
             TogglePlayer(true);
 
-            hud.hudStage.ShowDoor(true);
-            hud.hudStage.ShowShop(true);
+            ShowDoor(true);
+            ShowShop(true);
             
-            hud.shop.gameObject.SetActive(false);
+            HUDManager.Instance.shop.gameObject.SetActive(false);
         }
         else if (stageType == Enums.StageType.Quit)
         {
@@ -270,19 +260,19 @@ public class StageManager : MonoBehaviour
             {
                 TogglePlayer(true);
 
-                if (enemy != null)
+                if (EnemyManager.Instance != null)
                 {
-                    hud.hudStage.ToggleTimer(true);
+                    HUDManager.Instance.hudStage.ToggleTimer(true);
 
                     ToggleEnemy(true);
                 }
             }
             else if (stageType == Enums.StageType.Dialogue)
             {
-                hud.hudStage.ShowDialogue(true);
+                HUDManager.Instance.hudStage.ShowDialogue(true);
             }
             
-            hud.hudStage.ShowQuitConfirmation(false);
+            HUDManager.Instance.hudStage.ShowQuitConfirmation(false);
         }
         else
         {
@@ -291,19 +281,19 @@ public class StageManager : MonoBehaviour
 
             if (previousStageType == Enums.StageType.Combat)
             {
-                hud.hudStage.ToggleTimer(false);
+                HUDManager.Instance.hudStage.ToggleTimer(false);
 
                 TogglePlayer(false);
 
-                if (enemy != null)
+                if (EnemyManager.Instance != null)
                     ToggleEnemy(false);
             }
             else if (previousStageType == Enums.StageType.Dialogue)
             {
-                hud.hudStage.ShowDialogue(false);
+                HUDManager.Instance.hudStage.ShowDialogue(false);
             }
             
-            hud.hudStage.ShowQuitConfirmation(true);
+            HUDManager.Instance.hudStage.ShowQuitConfirmation(true);
         }
     }
 
@@ -311,8 +301,36 @@ public class StageManager : MonoBehaviour
     {
         Reset();
         
-        sceneLoader.sceneType = Enums.SceneType.Menu;
-        StartCoroutine(sceneLoader.LoadScene(-1));
+        SceneLoader.Instance.sceneType = Enums.SceneType.Menu;
+        SceneLoader.Instance.previousSceneType = Enums.SceneType.Game;
+        
+        StartCoroutine(SceneLoader.Instance.LoadScene(-1));
+    }
+
+    #endregion
+    
+    #region Door
+    
+    public void ShowDoor(bool show)
+    {
+        door.gameObject.SetActive(show);
+    }
+    public void OpenDoor()
+    {
+        door.Open(PlayerManager.Instance.transform.position);
+    }
+    public void CloseDoor()
+    {
+        door.Close();
+    }
+
+    #endregion
+    
+    #region Shop
+    
+    public void ShowShop(bool show)
+    {
+        shop.gameObject.SetActive(show);
     }
 
     #endregion

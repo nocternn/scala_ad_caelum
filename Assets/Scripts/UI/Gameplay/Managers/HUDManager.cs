@@ -6,8 +6,8 @@ public class HUDManager : MonoBehaviour
 {
     #region Attributes
     
-    [SerializeField] private StageManager _stage;
-    
+    public static HUDManager Instance { get; private set; }
+
     [Header("HUDs")]
     public Transform combat;
     public Transform buff;
@@ -26,6 +26,8 @@ public class HUDManager : MonoBehaviour
 
     void Awake()
     {
+        Instance = this;
+        
         _initialized = false;
 
         combat = transform.GetChild(0);
@@ -41,12 +43,21 @@ public class HUDManager : MonoBehaviour
         if (!_initialized)
             return;
         
-        if (_stage.stageType == Enums.StageType.Combat)
+        if (StageManager.Instance.stageType == Enums.StageType.Combat)
         {
-            hudCombat.UpdateHealthUI("player", _stage.player.stats.currentHealth, _stage.player.stats.maxHealth);
-            hudCombat.UpdateHealthUI("enemy", _stage.enemy.stats.currentHealth, _stage.enemy.stats.maxHealth);
-            hudCombat.UpdatePlayerSkillPointsUI((int)Mathf.Round(_stage.player.stats.currentSkillPoints), _stage.player.stats.maxSkillPoints);
-            hudCombat.UpdatePlayerAttackCharge(_stage.player.stats.currentCharge, PlayerStats.MaxCharge);
+            hudCombat.UpdateHealthUI("player",
+                    PlayerManager.Instance.stats.currentHealth,
+                    PlayerManager.Instance.stats.maxHealth
+                );
+            hudCombat.UpdateHealthUI("enemy",
+                    EnemyManager.Instance.stats.currentHealth,
+                    EnemyManager.Instance.stats.maxHealth
+                );
+            hudCombat.UpdatePlayerSkillPointsUI(
+                    (int)Mathf.Round(PlayerManager.Instance.stats.currentSkillPoints),
+                    PlayerManager.Instance.stats.maxSkillPoints
+                );
+            hudCombat.UpdatePlayerAttackCharge(PlayerManager.Instance.stats.currentCharge, PlayerStats.MaxCharge);
         }
     }
 
@@ -56,54 +67,43 @@ public class HUDManager : MonoBehaviour
         buff.gameObject.SetActive(false);
         shop.gameObject.SetActive(false);
         
-        hudStage.SetManager(this);
         hudStage.Initialize();
-        hudStage.coin.SetCoins(_stage.coinsAvailable);
+        hudStage.coin.SetCoins(StageManager.Instance.coinsAvailable);
         
-        if (_stage.stageType == Enums.StageType.Combat)
+        if (StageManager.Instance.stageType == Enums.StageType.Combat)
         {
             combat.gameObject.SetActive(true);
             
             hudCombat = combat.GetComponent<HUDCombatManager>();
             hudCombat.Initialize();
             
-            hudCombat.UpdateSkillButtonsUI(_stage.sceneLoader.weapon);
+            hudCombat.UpdateSkillButtonsUI(SceneLoader.Instance.weapon);
 
             hudStage.timer.gameObject.SetActive(true);
         }
-        else if (_stage.stageType == Enums.StageType.Dialogue)
+        else if (StageManager.Instance.stageType == Enums.StageType.Dialogue)
         {
-            hudStage.dialogue.SetDialogues(_stage.dialogue.GetDialogues(_stage.id));
+            hudStage.dialogue.SetDialogues(StageManager.Instance.dialogue.GetDialogues(StageManager.Instance.id));
             hudStage.dialogue.StartDialogue();
         }
-        else if (_stage.stageType == Enums.StageType.Buff)
+        else if (StageManager.Instance.stageType == Enums.StageType.Buff)
         {
             buff.gameObject.SetActive(true);
 
             hudBuff = buff.GetComponent<HUDBuffManager>();
-            hudBuff.SetManager(this);
             hudBuff.Initialize();
         }
-        else if (_stage.stageType == Enums.StageType.Shop)
+        else if (StageManager.Instance.stageType == Enums.StageType.Shop)
         {
             shop.gameObject.SetActive(true);
+
+            StageManager.Instance.shop.isOpenable = false;
             
             hudShop = shop.GetComponent<HUDShopManager>();
-            hudShop.SetManager(_stage);
             hudShop.Initialize();
         }
 
         _initialized = true;
-    }
-    
-    public void SetManager(StageManager stage)
-    {
-        _stage = stage;
-    }
-    
-    public void UpdateUI(WeaponItem weapon)
-    {
-        hudCombat.UpdateSkillButtonsUI(weapon);
     }
 
     public void Action(Enums.HUDAction action)
@@ -111,21 +111,21 @@ public class HUDManager : MonoBehaviour
         switch (action)
         {
             case Enums.HUDAction.Back:
-                _stage.Back();
+                StageManager.Instance.Back();
                 break;
             case Enums.HUDAction.Interact:
-                _stage.Interact();
+                StageManager.Instance.Interact();
                 break;
             case Enums.HUDAction.Quit:
-                _stage.Quit();
+                StageManager.Instance.Quit();
                 break;
             case Enums.HUDAction.SwitchBuff:
-                _stage.SwitchToBuff();
+                StageManager.Instance.SwitchToBuff();
                 break;
             case Enums.HUDAction.SwitchCombat:
                 if (hudBuff.selectedCard != null)
                 {
-                    _stage.SwitchToCombat(hudBuff.selectedCard);
+                    StageManager.Instance.SwitchToCombat(hudBuff.selectedCard);
                 }
                 break;
             default:
@@ -136,6 +136,6 @@ public class HUDManager : MonoBehaviour
 
     public Vector3 GetPlayerPosition()
     {
-        return _stage.player.transform.position;
+        return PlayerManager.Instance.transform.position;
     }
 }

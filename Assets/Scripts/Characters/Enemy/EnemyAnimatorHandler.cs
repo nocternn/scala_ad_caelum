@@ -6,18 +6,16 @@ using UnityEngine.Animations.Rigging;
 
 public class EnemyAnimatorHandler : CharacterAnimatorHandler
 {
-    private EnemyManager _manager;
-
     private void OnAnimatorMove()
     {
         float delta = Time.deltaTime;
 
-        _manager.rigidbody.drag = 0;
+        EnemyManager.Instance.rigidbody.drag = 0;
 
         Vector3 deltaPosition = GetDeltaPosition();
         deltaPosition.y = 0;
 
-        _manager.rigidbody.velocity = deltaPosition / delta;
+        EnemyManager.Instance.rigidbody.velocity = deltaPosition / delta;
     }
     
     public override void Initialize()
@@ -30,12 +28,7 @@ public class EnemyAnimatorHandler : CharacterAnimatorHandler
     public override void SetHandIK(LeftHandIKTarget leftHandTarget, RightHandIKTarget rightHandTarget, bool isTwoHanding)
     {
         base.SetHandIK(leftHandTarget, rightHandTarget, isTwoHanding);
-        _manager.rigBuilder.Build();
-    }
-    
-    public void SetManager(EnemyManager manager)
-    {
-        _manager = manager;
+        EnemyManager.Instance.rigBuilder.Build();
     }
     
     public void SetEnemyType(String enemyName)

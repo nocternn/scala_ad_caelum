@@ -427,17 +427,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 391342aac3e281f49bc0ed28eba9dc99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camera: {fileID: 0}
   targetTransform: {fileID: 543450653438250103}
   cameraTransform: {fileID: 330585546}
   cameraPivotTransform: {fileID: 339748266}
+  _cameraTransformPosition: {x: 0, y: 0, z: 0}
   horizontalSpeed: 250
   horizontalAimSpeed: 25
   verticalSpeed: 250
   verticalAimSpeed: 25
   followSpeed: 1
+  _followVelocity: {x: 0, y: 0, z: 0}
   cameraSphereRadius: 0.2
   cameraCollisionOffset: 0.2
   minimumCollisionOffset: 0.2
+  ignoreLayers:
+    serializedVersion: 2
+    m_Bits: 0
   minimumViewableAngle: -50
   maximumViewableAngle: 50
   nearestLockOnTarget: {fileID: 0}
@@ -584,9 +590,10 @@ MonoBehaviour:
   locomotion: {fileID: 0}
   stats: {fileID: 0}
   weaponSlotManager: {fileID: 0}
+  aimTarget: {fileID: 0}
+  skillsHolder: {fileID: 0}
   canDoCombo: 0
   isHit: 0
-  aimTarget: {fileID: 0}
 --- !u!114 &119843242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -689,7 +696,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 061644239345fc64a8f4babb5878b8f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _manager: {fileID: 0}
   currentWeapon: {fileID: 0}
 --- !u!114 &119843252
 MonoBehaviour:
@@ -703,7 +709,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e005472b3763b148805b2d46c180657, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 4000
+  baseHealth: 10000
   baseAttack: 500
   baseDefense: 180
   baseCritical: 40
@@ -3325,13 +3331,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 155637337}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1004133822}
-  m_RootOrder: 2
+  m_Father: {fileID: 731171461}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &155637339
 NavMeshAgent:
@@ -3757,7 +3763,7 @@ Transform:
   - {fileID: 524637075}
   - {fileID: 1990960016}
   m_Father: {fileID: 1004133822}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &229382622 stripped
 GameObject:
@@ -3966,20 +3972,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 249c8b0d1eca9bc4494b540221b0de65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _initialized: 0
-  _clearReward: 0
   dialogue: {fileID: 0}
-  stageType: 2
-  previousStageType: 2
-  id: 1
-  coinsAvailable: 0
-  sceneLoader: {fileID: 0}
-  player: {fileID: 119843241}
-  enemy: {fileID: 1004133826}
-  hud: {fileID: 0}
-  camera: {fileID: 0}
+  door: {fileID: 0}
+  shop: {fileID: 0}
   selectedBuffs: []
   buffHolder: {fileID: 1184316799}
+  _initialized: 0
+  _clearReward: 0
+  id: 1
+  coinsAvailable: 0
+  stageType: 2
+  previousStageType: 2
 --- !u!4 &299512138
 Transform:
   m_ObjectHideFlags: 0
@@ -4010,8 +4013,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbd98f4acb99c3341a18f9e7a00632d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _file: 
-  _iterationID: 0
+  _fileProgress: 
   _iteration:
     stage01: []
     stage02: []
@@ -4019,6 +4021,8 @@ MonoBehaviour:
     stage04: []
     stage05: []
     stageEnd: []
+  _iterationProgress:
+    currentIteration: 0
 --- !u!1 &305234333
 GameObject:
   m_ObjectHideFlags: 0
@@ -5206,6 +5210,40 @@ MonoBehaviour:
   isLeftHandSlot: 0
   isRightHandSlot: 1
   currentWeaponModel: {fileID: 0}
+--- !u!1 &731171460
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 731171461}
+  m_Layer: 7
+  m_Name: Helpers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &731171461
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 731171460}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1366540599}
+  - {fileID: 155637338}
+  - {fileID: 1263695957}
+  m_Father: {fileID: 1004133822}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &762760274 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7115303183698423564, guid: 5ef7b22193986484593103f743fbefa2,
@@ -6817,7 +6855,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d927e4f8b07c44345b57907e0289bc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stage: {fileID: 0}
   combat: {fileID: 0}
   buff: {fileID: 0}
   shop: {fileID: 0}
@@ -6846,7 +6883,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1004133822
 Transform:
   m_ObjectHideFlags: 0
@@ -6860,10 +6897,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1766778746}
-  - {fileID: 1366540599}
-  - {fileID: 155637338}
   - {fileID: 228732875}
-  - {fileID: 1263695957}
+  - {fileID: 731171461}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
@@ -6925,6 +6960,7 @@ MonoBehaviour:
   currentEnemy: {fileID: 0}
   currentTarget: {fileID: 0}
   currentState: {fileID: 163301242}
+  hasDied: 0
 --- !u!114 &1004133827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7996,14 +8032,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1263695956}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 817190731}
-  m_Father: {fileID: 1004133822}
-  m_RootOrder: 4
+  m_Father: {fileID: 731171461}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1312047879
 GameObject:
@@ -8641,13 +8677,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1366540598}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1004133822}
-  m_RootOrder: 1
+  m_Father: {fileID: 731171461}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1390854117
 GameObject:
@@ -9110,11 +9146,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe844f9ee4b1af74eb5cb9d88374910b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _manager: {fileID: 0}
   coin: {fileID: 0}
   dialogue: {fileID: 0}
-  door: {fileID: 0}
-  shop: {fileID: 0}
   mask: {fileID: 0}
   back: {fileID: 0}
   interact: {fileID: 0}
@@ -15513,6 +15546,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5d26dd5f71168384294f312b54620aab, type: 2}
   - {fileID: 11400000, guid: 31ff895d113f04e43a9e9646f7acb523, type: 2}
   selectedCard: {fileID: 0}
+  btnConfirm: {fileID: 0}
 --- !u!4 &2024930643 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -6803169544883306252, guid: 333a48060170b3f47bfb4b4c47dded6a,
@@ -15890,7 +15924,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &963128845897942871
 GameObject:
   m_ObjectHideFlags: 0

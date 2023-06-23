@@ -10,14 +10,10 @@ public class SceneLoader : MonoBehaviour
     public float transitionTime = 1.0f;
     public WeaponItem weapon;
     public Enums.SceneType sceneType;
+    public Enums.SceneType previousSceneType;
 
-    private GameObject _stage;
-
-    void OnEnable()
+    void Awake()
     {
-        //Tell our 'OnLevelFinishedLoading' function to start listening for a scene change as soon as this script is enabled.
-        SceneManager.sceneLoaded += OnLevelFinishedLoading;
-        
         if (Instance == null)
         {
             Instance = this;
@@ -26,7 +22,15 @@ public class SceneLoader : MonoBehaviour
         else
         {
             Destroy(this.gameObject);
+            return;
         }
+    }
+
+    void OnEnable()
+    {
+        //Tell our 'OnLevelFinishedLoading' function to start listening for a scene change as soon as this script is enabled.
+        SceneManager.sceneLoaded += OnLevelFinishedLoading;
+        
     }
         
     void OnDisable()
@@ -41,23 +45,19 @@ public class SceneLoader : MonoBehaviour
 
         if (sceneType == Enums.SceneType.Menu)
         {
-            if (_stage != null)
-                _stage.SetActive(false);
+            if (StageManager.Instance != null)
+            {
+                StageManager.Instance.gameObject.SetActive(false);
+            }
         }
         else
         {
-            bool reset = false;
-            if (_stage == null)
+            StageManager.Instance.gameObject.SetActive(true);
+            if (previousSceneType == Enums.SceneType.Menu)
             {
-                _stage = GameObject.Find("StageManager");
-                reset = true;
+                StageManager.Instance.dialogue.Initialize();
             }
-
-            _stage.SetActive(true);
-            
-            StageManager stageManager = _stage.GetComponent<StageManager>();
-            if (reset) { stageManager.Reset(); }
-            stageManager.Initialize();
+            StageManager.Instance.Initialize();
         }
     }
 

@@ -6,17 +6,14 @@ public class CameraHandler : MonoBehaviour
 {
     #region Attributes
     
-    public static CameraHandler singleton;
-    private PlayerManager _playerManager;
-    
-    private Vector3 cameraTransformPosition;
-    private Vector3 cameraFollowVelocity = Vector3.zero;
-    private LayerMask ignoreLayers;
-    
+    public static CameraHandler Instance { get; private set; }
+
     [Header("Objects")]
+    public new Camera camera;
     public Transform targetTransform;
     public Transform cameraTransform;
     public Transform cameraPivotTransform;
+    [SerializeField] private Vector3 _cameraTransformPosition;
 
     [Header("Properties - Follow")]
     public float horizontalSpeed;
@@ -24,15 +21,16 @@ public class CameraHandler : MonoBehaviour
     public float verticalSpeed;
     public float verticalAimSpeed;
     public float followSpeed;
-    
     private float defaultPosition;
     private float horizontalAngle;
     private float verticalAngle;
+    [SerializeField] private Vector3 _followVelocity = Vector3.zero;
     
     [Header("Properties - Collision")]
     public float cameraSphereRadius;
     public float cameraCollisionOffset;
     public float minimumCollisionOffset;
+    [SerializeField] private LayerMask ignoreLayers;
 
     [Header("Properties - Lock On")]
     public float minimumViewableAngle;
@@ -51,8 +49,10 @@ public class CameraHandler : MonoBehaviour
     
     void Awake()
     {
-        singleton = this;
-        
+        Instance = this;
+
+        camera = cameraTransform.GetComponent<Camera>();
+
         defaultPosition = cameraTransform.localPosition.z;
         ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);
         
@@ -76,26 +76,21 @@ public class CameraHandler : MonoBehaviour
         minimumVerticalAngle = -35;
         maximumVerticalAngle = 35;
         lockedPivotPosition = 5f;
-        unlockedPivotPosition = 2f;
-    }
-    
-    public void SetPlayerManager(PlayerManager manager)
-    {
-        _playerManager = manager;
+        unlockedPivotPosition = 5f;
     }
 
     public void FollowTarget(float delta)
     {
         Vector3 targetPosition;
-        if (_playerManager.isAiming)
+        if (PlayerManager.Instance.isAiming)
         {
             targetPosition = Vector3.SmoothDamp(transform.position, currentLockOnTarget.position,
-                ref cameraFollowVelocity, delta * followSpeed);
+                ref _followVelocity, delta * followSpeed);
         }
         else
         {
             targetPosition = Vector3.SmoothDamp(transform.position, targetTransform.position,
-                ref cameraFollowVelocity, delta * followSpeed);
+                ref _followVelocity, delta * followSpeed);
         }
         transform.position = targetPosition;
         HandleCollisions(delta);
@@ -103,13 +98,13 @@ public class CameraHandler : MonoBehaviour
 
     public void HandleRotation(float delta, float horizontalCameraInput, float verticalCameraInput)
     {
-        if (!_playerManager.IsLockingOnTarget())
+        if (!PlayerManager.Instance.IsLockingOnTarget())
         {
             HandleStandardRotation(delta, horizontalCameraInput, verticalCameraInput);
         }
         else
         {
-            if (_playerManager.isAiming)
+            if (PlayerManager.Instance.isAiming)
             {
                 HandleAimedRotation(delta, horizontalCameraInput, verticalCameraInput);
             }
@@ -194,15 +189,15 @@ public class CameraHandler : MonoBehaviour
             targetPosition = -minimumCollisionOffset;
         }
 
-        cameraTransformPosition.z = Mathf.Lerp(cameraTransform.localPosition.z, targetPosition, delta / 0.2f);
-        cameraTransform.localPosition = cameraTransformPosition;
+        _cameraTransformPosition.z = Mathf.Lerp(cameraTransform.localPosition.z, targetPosition, delta / 0.2f);
+        cameraTransform.localPosition = _cameraTransformPosition;
     }
 
     public void HandleLockOn()
     {
-        if (_playerManager.isAiming)
+        if (PlayerManager.Instance.isAiming)
         {
-            nearestLockOnTarget = _playerManager.aimTarget;
+            nearestLockOnTarget = PlayerManager.Instance.aimTarget;
             return;
         }
         
@@ -252,7 +247,7 @@ public class CameraHandler : MonoBehaviour
         Vector3 newLockedPosition = new Vector3(0, lockedPivotPosition);
         Vector3 newUnlockedPosition = new Vector3(0, unlockedPivotPosition);
 
-        if (_playerManager.isAiming)
+        if (PlayerManager.Instance.isAiming)
         {
             cameraPivotTransform.transform.localPosition = Vector3.SmoothDamp(
                 cameraPivotTransform.transform.localPosition, newUnlockedPosition,

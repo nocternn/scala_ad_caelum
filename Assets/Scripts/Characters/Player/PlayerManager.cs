@@ -7,24 +7,88 @@ public class PlayerManager : CharacterManager
 {
     #region Attributes
     
+    public static PlayerManager Instance { get; private set; }
+    
+    [Header("Components")]
     public PlayerAnimatorHandler animatorHandler;
     public PlayerAttacker attacker;
     public PlayerInputHandler inputHandler;
     public PlayerLocomotion locomotion;
     public PlayerStats stats;
     public PlayerWeaponSlotManager weaponSlotManager;
-
+    
+    [Header("Helpers")]
+    public Transform aimTarget;
+    public Transform skillsHolder;
+    
+    [Header("Properties")]
     public bool canDoCombo;
     public bool isHit = false;
 
-    public Transform aimTarget;
+    #endregion
 
+    #region Lifecycle
+    
+    protected override void Awake()
+    {
+        var foundAims = GameObject.FindObjectsOfType<MultiAimConstraint>(true);
+        foreach (MultiAimConstraint foundAim in foundAims)
+        {
+            if (foundAim.transform.root.name.Equals("Player"))
+            {
+                aim = foundAim; 
+                break;
+            }
+        }
+        aimTarget    = transform.GetChild(2).GetChild(1);
+        skillsHolder = transform.GetChild(2).GetChild(2);
+        
+        Instance = this;
+        Instance.gameObject.SetActive(false);
+    }
+    
+    private void Update()
+    {
+        inputHandler.HandleAllInputs(Time.deltaTime);
+
+        if (IsLockingOnTarget())
+        {
+            animatorHandler.UpdateAnimatorValues(inputHandler.horizontalMovementInput, inputHandler.verticalMovementInput);
+        }
+        else
+        {
+            animatorHandler.UpdateAnimatorValues(0, inputHandler.moveAmount);
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        float delta = Time.deltaTime;
+
+        isInteracting = animatorHandler.GetBool("isInteracting");
+        canRotate     = animatorHandler.GetBool("canRotate");
+        canDoCombo    = animatorHandler.GetBool("canDoCombo");
+        
+        locomotion.HandleAllMovements(delta);
+        
+        if (CameraHandler.Instance != null)
+        {
+            CameraHandler.Instance.FollowTarget(delta);
+            CameraHandler.Instance.HandleRotation(delta, inputHandler.horizontalCameraInput, inputHandler.verticalCameraInput);
+        }
+    }
+
+    private void LateUpdate()
+    {
+        inputHandler.attackActiveInput = false;
+        inputHandler.attackBasicInput = false;
+        inputHandler.attackChargedInput = false;
+        inputHandler.attackUltimateInput = false;
+    }
     #endregion
 
     public void Initialize()
     {
-        _stage.camera.SetPlayerManager(this);
-
         animatorHandler   = GetComponent<PlayerAnimatorHandler>();
         attacker          = GetComponent<PlayerAttacker>();
         inputHandler      = GetComponent<PlayerInputHandler>();
@@ -36,28 +100,10 @@ public class PlayerManager : CharacterManager
         
         animatorHandler.Initialize();
         weaponSlotManager.Initialize();
-
-        animatorHandler.SetManager(this);
-        attacker.SetManager(this);
-        inputHandler.SetManager(this);
-        locomotion.SetManager(this);
-        stats.SetManager(this);
-        weaponSlotManager.SetManager(this);
-
+        attacker.Initialize();
         locomotion.Initialize();
 
-        stats.CalculateCritChance(_stage.id);
-
-        var foundAims = GameObject.FindObjectsOfType<MultiAimConstraint>(true);
-        foreach (MultiAimConstraint foundAim in foundAims)
-        {
-            if (foundAim.transform.root.name.Equals("Player"))
-            {
-                aim = foundAim; 
-                break;
-            }
-        }
-        aimTarget = transform.Find("Helpers").Find("AimTarget").transform;
+        stats.CalculateCritChance(StageManager.Instance.id);
     }
 
     #region Setters
@@ -81,72 +127,62 @@ public class PlayerManager : CharacterManager
         weaponSlotManager.SetUsedWeaponType();
         weaponSlotManager.LoadTwoHandIK();
 
-        weapon.SetSkills(transform.Find("Helpers").Find("SkillsHolder").gameObject, _stage.player, _stage.enemy);
+        weapon.SetSkills(skillsHolder.gameObject);
         attacker.currentWeapon = weapon;
-    }
-
-    public void SetCameraHeight()
-    {
-        _stage.camera.SetCameraHeight(Time.deltaTime);
     }
 
     public void ToggleCrosshair()
     {
         aimTarget.gameObject.SetActive(isAiming);
-        _stage.hud.hudCombat.ToggleCrosshair(isAiming);
+        HUDManager.Instance.hudCombat.ToggleCrosshair(isAiming);
     }
     
     #endregion
     
     #region Getters
 
-    public Camera GetCamera()
-    {
-        return _stage.camera.cameraTransform.GetComponent<Camera>();
-    }
-
     public Vector3 GetCameraDirection(string direction = "none")
     {
         if (direction.Equals("forward"))
-            return _stage.camera.cameraTransform.forward;
+            return CameraHandler.Instance.cameraTransform.forward;
         if (direction.Equals("right"))
-            return _stage.camera.cameraTransform.right;
+            return CameraHandler.Instance.cameraTransform.right;
         return Vector3.zero;
     }
 
     public Quaternion GetCameraRotation(string target = "camera")
     {
         if (target.Equals("pivot"))
-            return _stage.camera.cameraPivotTransform.rotation;
+            return CameraHandler.Instance.cameraPivotTransform.rotation;
         if (target.Equals("lockOn"))
-            return _stage.camera.currentLockOnTarget.rotation;
-        return _stage.camera.cameraTransform.rotation;
+            return CameraHandler.Instance.currentLockOnTarget.rotation;
+        return CameraHandler.Instance.cameraTransform.rotation;
     }
     
     public Vector3 GetCameraEulerAngles(string target = "camera")
     {
         if (target.Equals("pivot"))
-            return _stage.camera.cameraPivotTransform.eulerAngles;
+            return CameraHandler.Instance.cameraPivotTransform.eulerAngles;
         if (target.Equals("lockOn"))
-            return _stage.camera.currentLockOnTarget.eulerAngles;
-        return _stage.camera.cameraTransform.eulerAngles;
+            return CameraHandler.Instance.currentLockOnTarget.eulerAngles;
+        return CameraHandler.Instance.cameraTransform.eulerAngles;
     }
     public Vector3 GetCameraLocalEulerAngles(string target = "camera")
     {
         if (target.Equals("pivot"))
-            return _stage.camera.cameraPivotTransform.localEulerAngles;
+            return CameraHandler.Instance.cameraPivotTransform.localEulerAngles;
         if (target.Equals("lockOn"))
-            return _stage.camera.currentLockOnTarget.localEulerAngles;
-        return _stage.camera.cameraTransform.localEulerAngles;
+            return CameraHandler.Instance.currentLockOnTarget.localEulerAngles;
+        return CameraHandler.Instance.cameraTransform.localEulerAngles;
     }
     
     public Vector3 GetCameraPosition(string target = "camera")
     {
         if (target.Equals("pivot"))
-            return _stage.camera.cameraPivotTransform.position;
+            return CameraHandler.Instance.cameraPivotTransform.position;
         if (target.Equals("lockOn"))
-            return _stage.camera.currentLockOnTarget.position;
-        return _stage.camera.cameraTransform.position;
+            return CameraHandler.Instance.currentLockOnTarget.position;
+        return CameraHandler.Instance.cameraTransform.position;
     }
 
     public float GetMovementInput(string direction)
@@ -160,7 +196,7 @@ public class PlayerManager : CharacterManager
     
     public bool IsLockingOnTarget()
     {
-        return (inputHandler.lockOnFlag || _stage.camera.currentLockOnTarget != null);
+        return (inputHandler.lockOnFlag || CameraHandler.Instance.currentLockOnTarget != null);
     }
 
     #endregion
@@ -204,84 +240,17 @@ public class PlayerManager : CharacterManager
         }
     }
 
-    public void UpdateUI(WeaponItem weapon)
-    {
-        _stage.hud.UpdateUI(weapon);
-    }
-
-    public void OpenDoor()
-    {
-        _stage.hud.hudStage.OpenDoor();
-    }
-
     public void HandleLockOn()
     {
-        _stage.camera.HandleLockOn();
+        CameraHandler.Instance.HandleLockOn();
 
-        if (_stage.camera.nearestLockOnTarget != null)
+        if (CameraHandler.Instance.nearestLockOnTarget != null)
         {
-            _stage.camera.currentLockOnTarget = _stage.camera.nearestLockOnTarget;
+            CameraHandler.Instance.currentLockOnTarget = CameraHandler.Instance.nearestLockOnTarget;
             inputHandler.lockOnFlag = true;
         }
     }
 
-    public void ClearLockOnTargets()
-    {
-        _stage.camera.ClearLockOnTargets();
-    }
-
-    public void Interact()
-    {
-        _stage.Interact();
-    }
-
-    public void Lose()
-    {
-        _stage.EndStageLoss();
-    }
-
-    #endregion
-
-    #region Updates
-    
-    private void Update()
-    {
-        inputHandler.HandleAllInputs(Time.deltaTime);
-
-        if (IsLockingOnTarget())
-        {
-            animatorHandler.UpdateAnimatorValues(inputHandler.horizontalMovementInput, inputHandler.verticalMovementInput);
-        }
-        else
-        {
-            animatorHandler.UpdateAnimatorValues(0, inputHandler.moveAmount);
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        float delta = Time.deltaTime;
-
-        isInteracting = animatorHandler.GetBool("isInteracting");
-        canRotate     = animatorHandler.GetBool("canRotate");
-        canDoCombo    = animatorHandler.GetBool("canDoCombo");
-        
-        locomotion.HandleAllMovements(delta);
-        
-        if (_stage.camera != null)
-        {
-            _stage.camera.FollowTarget(delta);
-            _stage.camera.HandleRotation(delta, inputHandler.horizontalCameraInput, inputHandler.verticalCameraInput);
-        }
-    }
-
-    private void LateUpdate()
-    {
-        inputHandler.attackActiveInput = false;
-        inputHandler.attackBasicInput = false;
-        inputHandler.attackChargedInput = false;
-        inputHandler.attackUltimateInput = false;
-    }
     #endregion
 
 }

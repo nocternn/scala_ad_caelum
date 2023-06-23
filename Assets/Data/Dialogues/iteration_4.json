@@ -1,5 +1,5 @@
 {
-    "stage_1" : [
+    "stage01" : [
         {
             "name" : "David",
             "sentences" : ["Iteration 4, Stage 1, Dialogue 1, Sentence 1"]
@@ -9,7 +9,7 @@
             "sentences" : ["Iteration 4, Stage 1, Dialogue 2, Sentence 1"]
         }
     ],
-    "stage_2": [
+    "stage02": [
         {
             "name" : "David",
             "sentences" : [
@@ -25,7 +25,7 @@
             ]
         }
     ],
-    "stage_3" : [
+    "stage03" : [
         {
             "name" : "David",
             "sentences" : []
@@ -35,7 +35,7 @@
             "sentences" : []
         }
     ],
-    "stage_4" : [
+    "stage04" : [
         {
             "name" : "David",
             "sentences" : []
@@ -45,7 +45,7 @@
             "sentences" : []
         }
     ],
-    "stage_5" : [
+    "stage05" : [
         {
             "name" : "David",
             "sentences" : []
@@ -55,7 +55,7 @@
             "sentences" : []
         }
     ],
-    "stage_end" : [
+    "stageEnd" : [
         {
             "name" : "David",
             "sentences" : []

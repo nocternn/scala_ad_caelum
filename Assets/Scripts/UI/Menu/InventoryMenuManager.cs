@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class InventoryMenuManager : MonoBehaviour
 {
-    [SerializeField] private MenuManager _manager;
-    
     [SerializeField] private GameObject _prefab;
     [SerializeField] private Transform _container;
 
@@ -26,17 +24,12 @@ public class InventoryMenuManager : MonoBehaviour
         }
     }
 
-    public void SetManager(MenuManager manager)
-    {
-        _manager = manager;
-    }
-
     public void Back()
     {
-        _manager.menuType = Enums.MenuType.Main;
+        MenuManager.Instance.menuType = Enums.MenuType.Main;
 
-        _manager.inventoryMenu.gameObject.SetActive(false);
-        _manager.mainMenu.gameObject.SetActive(true);
+        MenuManager.Instance.inventoryMenu.gameObject.SetActive(false);
+        MenuManager.Instance.mainMenu.gameObject.SetActive(true);
     }
 
     public void Choose()
@@ -48,7 +41,7 @@ public class InventoryMenuManager : MonoBehaviour
                 CardWeaponController selectedCard = child.GetComponent<CardWeaponController>();
                 selectedCard.transform.GetComponent<Toggle>().isOn = false;
 
-                _manager.sceneLoader.weapon = selectedCard.weapon;
+                SceneLoader.Instance.weapon = selectedCard.weapon;
                 
                 break;
             }

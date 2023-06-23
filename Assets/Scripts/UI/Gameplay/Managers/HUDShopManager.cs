@@ -7,8 +7,6 @@ using UnityEngine.UI;
 
 public class HUDShopManager : MonoBehaviour
 {
-    private StageManager _stage;
-    
     [SerializeField] private GameObject _prefab;
     [SerializeField] private Transform _container;
 
@@ -18,17 +16,12 @@ public class HUDShopManager : MonoBehaviour
         foreach (Transform child in _container.transform)
             Destroy(child.gameObject);
         
-        foreach (CardItem buff in _stage.selectedBuffs)
+        foreach (CardItem buff in StageManager.Instance.selectedBuffs)
         {
             CardBuffController card = Instantiate(_prefab, _container.transform).GetComponent<CardBuffController>();
             card.UpdateUI(buff);
             card.transform.GetComponent<Toggle>().group = _container.transform.GetComponent<ToggleGroup>();
         }
-    }
-    
-    public void SetManager(StageManager stage)
-    {
-        _stage = stage;
     }
 
     public void Upgrade()
@@ -40,11 +33,11 @@ public class HUDShopManager : MonoBehaviour
                 return;
             
             int coinsRequired = selectedCard.card.GetLevelUpCondition();
-            if (_stage.coinsAvailable < coinsRequired)
+            if (StageManager.Instance.coinsAvailable < coinsRequired)
                 return;
             
-            _stage.coinsAvailable -= coinsRequired;
-            _stage.hud.hudStage.AddCoins(false, -coinsRequired);
+            StageManager.Instance.coinsAvailable -= coinsRequired;
+            HUDManager.Instance.hudStage.AddCoins(false, -coinsRequired);
             
             selectedCard.card.LevelUp();
             selectedCard.UpdateUI(selectedCard.card);

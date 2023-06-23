@@ -60,7 +60,7 @@ public class WeaponItem : Item
         return updatedDescription;
     }
 
-    public void SetSkills(GameObject holder, PlayerManager player, EnemyManager enemy)
+    public void SetSkills(GameObject holder)
     {
         foreach (var comp in holder.GetComponents<Component>())
         {
@@ -73,7 +73,7 @@ public class WeaponItem : Item
         skillActive = holder.AddComponent<WeaponItemSkillActive>() as WeaponItemSkillActive;
         skillUltimate = holder.AddComponent<WeaponItemSkillUltimate>() as WeaponItemSkillUltimate;
 
-        skillActive.Initialize(this, player, enemy);
-        skillUltimate.Initialize(this, player, enemy);
+        skillActive.Initialize(this);
+        skillUltimate.Initialize(this);
     }
 }

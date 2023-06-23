@@ -15,7 +15,7 @@ public class CardEffectVicissitude : CardItemEffect
     private float lastBoostPlayerDEF = 0;
     private float lastBoostEnemy = 0;
     
-    public override void Apply(CardItem card, PlayerManager player = null, EnemyManager enemy = null)
+    public override void Apply(CardItem card)
     {
         if (!_isRunning)
         {
@@ -23,22 +23,22 @@ public class CardEffectVicissitude : CardItemEffect
             StartCoroutine(AddStacks());
         }
         
-        if (player.isHit)
+        if (PlayerManager.Instance.isHit)
         {
-            player.isHit = false;
+            PlayerManager.Instance.isHit = false;
             ReduceStacks();
         }
 
         switch (card.id)
         {
             case 1:
-                if (canBeApplied_01) LongTrip(card, player);
+                if (canBeApplied_01) LongTrip(card);
                 break;
             case 2:
-                if (canBeApplied_02) NoOneToShare(card, enemy);
+                if (canBeApplied_02) NoOneToShare(card);
                 break;
             case 3:
-                if (canBeApplied_03) LostAndFound(card, player);
+                if (canBeApplied_03) LostAndFound(card);
                 break;
             default:
                 UnityEngine.Debug.Log("Invalid Vicissitude card ID");
@@ -46,43 +46,43 @@ public class CardEffectVicissitude : CardItemEffect
         }
     }
     
-    private void LongTrip(CardItem card, PlayerManager player)
+    private void LongTrip(CardItem card)
     {
         float count = card.count[card.level];
         float duration = card.duration[card.level];
         float scalar = card.scalar[card.level];
 
-        player.stats.scaleAttack -= lastBoostPlayerATK;
+        PlayerManager.Instance.stats.scaleAttack -= lastBoostPlayerATK;
 
         lastBoostPlayerATK = _stacks * (scalar / 100.0f);
         
-        player.stats.scaleAttack += lastBoostPlayerATK;
+        PlayerManager.Instance.stats.scaleAttack += lastBoostPlayerATK;
     }
     
-    private void NoOneToShare(CardItem card, EnemyManager enemy)
+    private void NoOneToShare(CardItem card)
     {
         float count = card.count[card.level];
         float duration = card.duration[card.level];
         float scalar = card.scalar[card.level];
         
-        enemy.stats.scaleDefense += lastBoostEnemy;
+        EnemyManager.Instance.stats.scaleDefense += lastBoostEnemy;
 
         lastBoostEnemy = _stacks * (scalar / 100.0f);
         
-        enemy.stats.scaleDefense -= lastBoostEnemy;
+        EnemyManager.Instance.stats.scaleDefense -= lastBoostEnemy;
     }
     
-    private void LostAndFound(CardItem card, PlayerManager player)
+    private void LostAndFound(CardItem card)
     {
         float count = card.count[card.level];
         float duration = card.duration[card.level];
         float scalar = card.scalar[card.level];
         
-        player.stats.scaleDefense -= lastBoostPlayerDEF;
+        PlayerManager.Instance.stats.scaleDefense -= lastBoostPlayerDEF;
 
         lastBoostPlayerDEF = _stacks * (scalar / 100.0f);
         
-        player.stats.scaleDefense += lastBoostPlayerDEF;
+        PlayerManager.Instance.stats.scaleDefense += lastBoostPlayerDEF;
     }
 
     public void ReduceStacks()

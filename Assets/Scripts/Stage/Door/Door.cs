@@ -37,10 +37,10 @@ public class Door : MonoBehaviour
 
     public void Initialize()
     {
+        Close();
+        
         isOpen = false;
         isOpenable = false;
-
-        Close();
     }
 
     #region Actions
@@ -64,10 +64,12 @@ public class Door : MonoBehaviour
     {
         if (!isOpen)
             return;
-        
-        if (_animationCoroutine != null)
-            StopCoroutine(_animationCoroutine);
 
+        if (_animationCoroutine != null)
+        {
+            StopCoroutine(_animationCoroutine);
+        }
+        
         if (_isRotatingDoor)
         {
             _animationCoroutine = StartCoroutine(DoRotationClose());
@@ -117,6 +119,8 @@ public class Door : MonoBehaviour
             yield return null;
             time += Time.deltaTime * _speed;
         }
+
+        this.gameObject.SetActive(false);
     }
 
     #endregion

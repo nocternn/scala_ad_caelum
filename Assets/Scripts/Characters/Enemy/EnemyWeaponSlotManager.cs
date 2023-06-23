@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class EnemyWeaponSlotManager : CharacterWeaponSlotManager
 {
-    private EnemyManager _manager;
-
     public void Initialize()
     {
         Initialize(transform);
@@ -30,15 +28,10 @@ public class EnemyWeaponSlotManager : CharacterWeaponSlotManager
     
     public override void LoadTwoHandIK()
     {
-        if (!_manager.isTwoHanding)
+        if (!EnemyManager.Instance.isTwoHanding)
             return;
         base.LoadTwoHandIK();
-        _manager.animatorHandler.SetHandIK(leftHandIkTarget, rightHandIkTarget, _manager.isTwoHanding);
-    }
-    
-    public void SetManager(EnemyManager manager)
-    {
-        _manager = manager;
+        EnemyManager.Instance.animatorHandler.SetHandIK(leftHandIkTarget, rightHandIkTarget, EnemyManager.Instance.isTwoHanding);
     }
     
     public void SetUsedWeaponType()
@@ -48,21 +41,21 @@ public class EnemyWeaponSlotManager : CharacterWeaponSlotManager
         // Toggle two-handing for spear and crossbow
         if (currentWeaponType.Equals(weaponTypes[1]) || currentWeaponType.Equals(weaponTypes[2]))
         {
-            _manager.isTwoHanding = true;
+            EnemyManager.Instance.isTwoHanding = true;
         }
         else
         {
-            _manager.isTwoHanding = false;
+            EnemyManager.Instance.isTwoHanding = false;
         }
 
         // Toggle aim for bow and crossbow
         if (currentWeaponType.Equals(weaponTypes[0]) || currentWeaponType.Equals(weaponTypes[2]))
         {
-            _manager.isAiming = true;
+            EnemyManager.Instance.isAiming = true;
         }
         else
         {
-            _manager.isAiming = false;
+            EnemyManager.Instance.isAiming = false;
         }
     }
     
@@ -101,6 +94,6 @@ public class EnemyWeaponSlotManager : CharacterWeaponSlotManager
 
         // Enable damage
         damageCollider.ammoItem = weapon.ammo;
-        _manager.weaponSlotManager.SetDamageCollider(false, damageCollider);
+        EnemyManager.Instance.weaponSlotManager.SetDamageCollider(false, damageCollider);
     }
 }

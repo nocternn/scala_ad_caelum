@@ -8,18 +8,18 @@ public abstract class CardItemEffect : MonoBehaviour
     public bool canBeApplied_02 = true;
     public bool canBeApplied_03 = true;
 
-    public virtual void Apply(CardItem card, PlayerManager player = null, EnemyManager enemy = null)
+    public virtual void Apply(CardItem card)
     {
         
     }
     
-    protected IEnumerator AddSkillPoints(PlayerManager player, float count, int duration = 0)
+    protected IEnumerator AddSkillPoints(float count, int duration = 0)
     {
         if (duration > 0)
         {
             for (int i = 1; i <= duration; i++)
             {
-                AddSkillPoints(player, count);
+                AddSkillPoints(count);
                 yield return new WaitForSeconds(1.0f);
             }
         }
@@ -27,18 +27,18 @@ public abstract class CardItemEffect : MonoBehaviour
         {
             for (;;)
             {
-                AddSkillPoints(player, count);
+                AddSkillPoints(count);
                 yield return new WaitForSeconds(1.0f);
             }
         }
     }
 
-    private void AddSkillPoints(PlayerManager player, float count)
+    private void AddSkillPoints(float count)
     {
-        player.stats.currentSkillPoints += count;
-        if (player.stats.currentSkillPoints >= player.stats.maxSkillPoints)
+        PlayerManager.Instance.stats.currentSkillPoints += count;
+        if (PlayerManager.Instance.stats.currentSkillPoints >= PlayerManager.Instance.stats.maxSkillPoints)
         {
-            player.stats.currentSkillPoints = player.stats.maxSkillPoints;
+            PlayerManager.Instance.stats.currentSkillPoints = PlayerManager.Instance.stats.maxSkillPoints;
         }
     }
 }

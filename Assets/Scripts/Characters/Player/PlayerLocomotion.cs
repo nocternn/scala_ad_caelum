@@ -4,41 +4,30 @@ using UnityEngine;
 
 public class PlayerLocomotion : CharacterLocomotion
 {
-	private PlayerManager _manager;
-	private Transform _camera;
-
 	public new Rigidbody rigidbody;
 	
 	private void Awake()
 	{
-		_camera = Camera.main.transform;
-
 		rigidbody = GetComponent<Rigidbody>();
-	}
-
-	public void SetManager(PlayerManager manager)
-	{
-		_manager = manager;
 	}
 
 	public void Initialize()
 	{
-		characterCollider = _manager.transform.GetComponent<CapsuleCollider>();
-		characterColliderBlocker = _manager.transform.Find("Helpers")
-			.Find("CombatColliders").Find("CharacterColliderBlocker").GetComponent<CapsuleCollider>();
+		characterCollider = transform.GetComponent<CapsuleCollider>();
+		characterColliderBlocker = transform.GetChild(2).GetChild(3).GetChild(0).GetComponent<CapsuleCollider>();
 
 		DisableCharacterCollision();
 	}
 	
 	public void HandleAllMovements(float delta)
 	{
-		if (_manager.isInteracting)
+		if (PlayerManager.Instance.isInteracting)
 			return;
 		
 		HandleMovement(delta);
 		HandleDodging(delta);
 		
-		if (_manager.canRotate)
+		if (PlayerManager.Instance.canRotate)
 			HandleRotation(delta);
 	}
 	
@@ -54,9 +43,9 @@ public class PlayerLocomotion : CharacterLocomotion
 
 	private void HandleRotation(float delta)
 	{
-		if (_manager.IsLockingOnTarget())
+		if (PlayerManager.Instance.IsLockingOnTarget())
 		{
-			if (_manager.isAiming)
+			if (PlayerManager.Instance.isAiming)
 			{
 				HandleAimedRotation(delta);
 			}
@@ -83,14 +72,14 @@ public class PlayerLocomotion : CharacterLocomotion
 	}
 	private void HandleAimedRotation(float delta)
 	{
-		Quaternion targetRotation = Quaternion.Euler(0, _manager.GetCameraEulerAngles().y, 0);
+		Quaternion targetRotation = Quaternion.Euler(0, PlayerManager.Instance.GetCameraEulerAngles().y, 0);
 		transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * delta);
 	}
 	private void HandleLockedRotation(float delta)
 	{
 		Quaternion targetRotation;
 			
-		if (_manager.inputHandler.dodgeFlag)
+		if (PlayerManager.Instance.inputHandler.dodgeFlag)
 		{
 			Vector3 targetDirection = GetTargetDirection(false);
 			if (targetDirection == Vector3.zero)
@@ -101,7 +90,7 @@ public class PlayerLocomotion : CharacterLocomotion
 		else
 		{
 			Vector3 rotationDirection = Vector3.zero;
-			rotationDirection = _manager.GetCameraPosition("lockOn") - transform.position;
+			rotationDirection = PlayerManager.Instance.GetCameraPosition("lockOn") - transform.position;
 			rotationDirection.Normalize();
 			rotationDirection.y = 0;
 				
@@ -115,26 +104,26 @@ public class PlayerLocomotion : CharacterLocomotion
 	#region Actions
 	private void HandleDodging(float delta)
 	{
-		if (!_manager.inputHandler.dodgeFlag)
+		if (!PlayerManager.Instance.inputHandler.dodgeFlag)
 			return;
 		
 		Vector3 moveDirection = Vector3.zero;
-		moveDirection  = _camera.forward * _manager.GetMovementInput("vertical");
-		moveDirection += _camera.right * _manager.GetMovementInput("horizontal");
+		moveDirection  = CameraHandler.Instance.cameraTransform.forward * PlayerManager.Instance.GetMovementInput("vertical");
+		moveDirection += CameraHandler.Instance.cameraTransform.right * PlayerManager.Instance.GetMovementInput("horizontal");
 
-		if (_manager.inputHandler.moveAmount > 0)
+		if (PlayerManager.Instance.inputHandler.moveAmount > 0)
 		{
-			_manager.PlayTargetAnimation("Rolling", true);
+			PlayerManager.Instance.PlayTargetAnimation("Rolling", true);
 			
 			moveDirection.y = 0;
 			transform.rotation = Quaternion.LookRotation(moveDirection);
 		}
 		else
 		{
-			_manager.PlayTargetAnimation("Backstep", true);
+			PlayerManager.Instance.PlayTargetAnimation("Backstep", true);
 		}
 
-		_manager.inputHandler.dodgeInput = false;
+		PlayerManager.Instance.inputHandler.dodgeInput = false;
 	}
 	#endregion
 
@@ -143,13 +132,13 @@ public class PlayerLocomotion : CharacterLocomotion
 		Vector3 targetDirection = Vector3.zero;
 		if (isUsingMainCamera)
 		{
-			targetDirection  = _camera.forward * _manager.GetMovementInput("vertical");
-			targetDirection += _camera.right * _manager.GetMovementInput("horizontal");
+			targetDirection  = CameraHandler.Instance.cameraTransform.forward * PlayerManager.Instance.GetMovementInput("vertical");
+			targetDirection += CameraHandler.Instance.cameraTransform.right * PlayerManager.Instance.GetMovementInput("horizontal");
 		}
 		else
 		{
-			targetDirection  = _manager.GetCameraDirection("forward") * _manager.GetMovementInput("vertical");
-			targetDirection += _manager.GetCameraDirection("right") * _manager.GetMovementInput("horizontal");
+			targetDirection  = PlayerManager.Instance.GetCameraDirection("forward") * PlayerManager.Instance.GetMovementInput("vertical");
+			targetDirection += PlayerManager.Instance.GetCameraDirection("right") * PlayerManager.Instance.GetMovementInput("horizontal");
 		}
 		targetDirection.Normalize();
 		targetDirection.y = 0;

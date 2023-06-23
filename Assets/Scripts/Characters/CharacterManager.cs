@@ -5,8 +5,6 @@ using UnityEngine.Animations.Rigging;
 
 public class CharacterManager : MonoBehaviour
 {
-    protected StageManager _stage;
-    
     public RigBuilder rigBuilder;
 
     public Transform lockOnTransform;
@@ -16,10 +14,10 @@ public class CharacterManager : MonoBehaviour
     public bool canRotate;
 
     public MultiAimConstraint aim;
-    
-    public void SetManager(StageManager stage)
+
+    protected virtual void Awake()
     {
-        _stage = stage;
+        lockOnTransform = transform.GetChild(2).GetChild(0);
     }
     
     public virtual void ToggleAim()

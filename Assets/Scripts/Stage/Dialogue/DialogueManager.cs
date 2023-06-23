@@ -5,28 +5,71 @@ using UnityEngine;
 
 public class DialogueManager : MonoBehaviour
 {
-    [Header("JSON")]
-    [SerializeField] private string _file;
-    [SerializeField] private int _iterationID;
-    [SerializeField] DialogueIteration _iteration;
+    [Header("File Paths")] [SerializeField]
+    private string _fileProgress;
+    private string _fileDialogue;
+    
+    [SerializeField] private DialogueIteration _iteration;
+    [SerializeField] private DialogueIterationProgress _iterationProgress;
 
+    private void Awake()
+    {
+        _fileProgress = Application.dataPath + "/Data/Dialogues/progress.json";
+    }
+    
     public void Initialize()
     {
-        _file = Application.dataPath + "/Data/Dialogues/iteration_1.json";
+        ReadProgress();
+        ReadDialogues();
+    }
+    
+    private void ReadProgress()
+    {
+        if (!File.Exists(_fileProgress))
+        {
+            Debug.Log("No progress file found for reading");
+            return;
+        }
+
+        using (StreamReader reader = new StreamReader(_fileProgress))
+        {
+            JsonUtility.FromJsonOverwrite(reader.ReadToEnd(), _iterationProgress);
+
+            _fileDialogue = Application.dataPath +
+                            $"/Data/Dialogues/iteration_{_iterationProgress.currentIteration}.json";
+        }
+    }
+    public void WriteProgress()
+    {
+        if (!File.Exists(_fileProgress))
+        {
+            Debug.Log("No progress file found for writing");
+            return;
+        }
+        
+        using (StreamWriter writer = new StreamWriter(_fileProgress))
+        {
+            _iterationProgress.currentIteration++;
+            if (_iterationProgress.currentIteration > 5)
+            {
+                _iterationProgress.currentIteration = 1;
+            }
+            
+            writer.Write(JsonUtility.ToJson(_iterationProgress));
+        }
     }
 
-    public void ReadDialogues()
+    private void ReadDialogues()
     {
-        if (!File.Exists(_file))
+        if (!File.Exists(_fileDialogue))
         {
             Debug.Log("No dialogue file found");
             return;
         }
 
-        using (StreamReader reader = new StreamReader(_file))
-        {
-            _iteration = JsonUtility.FromJson<DialogueIteration>(reader.ReadToEnd());
-            Debug.Log("Read dialogues");
+        using (StreamReader reader = new StreamReader(_fileDialogue))
+        { 
+            JsonUtility.FromJsonOverwrite(reader.ReadToEnd(), _iteration);
         }
     }
 

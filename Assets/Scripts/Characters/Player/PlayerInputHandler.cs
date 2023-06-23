@@ -7,8 +7,7 @@ public class PlayerInputHandler : MonoBehaviour
 {
 	#region Attributes
 
-	private PlayerManager _manager;
-	private PlayerControls _playerControls;
+	[SerializeField] private PlayerControls _playerControls;
     
 	[Header("Inputs")]
 	public Vector2 movementInput;
@@ -82,16 +81,7 @@ public class PlayerInputHandler : MonoBehaviour
 
 	#endregion
 
-    #region Setters
-
-    public void SetManager(PlayerManager manager)
-    {
-	    _manager = manager;
-    }
-
-    #endregion
-
-    #region Handlers
+	#region Handlers
     
     private void HandleMovementInput()
     {
@@ -124,41 +114,41 @@ public class PlayerInputHandler : MonoBehaviour
     {
 	    if (attackActiveInput)
 		{
-			_manager.HandleAttack("active");
+			PlayerManager.Instance.HandleAttack("active");
 		}
 		else if (attackBasicInput)
 		{
-			if (_manager.canDoCombo)
+			if (PlayerManager.Instance.canDoCombo)
 			{
 				comboFlag = true;
-				_manager.HandleAttack("combo");
+				PlayerManager.Instance.HandleAttack("combo");
 				comboFlag = false;
 			}
 			else
 			{
-				if (_manager.isInteracting)
+				if (PlayerManager.Instance.isInteracting)
 					return;
-				_manager.HandleAttack("basic");
+				PlayerManager.Instance.HandleAttack("basic");
 			}
 		}
 		else if (attackChargedInput)
 		{
-			if (!_manager.stats.IsFullCharge())
+			if (!PlayerManager.Instance.stats.IsFullCharge())
 				return;
-			_manager.HandleAttack("charged");
-			_manager.stats.UpdateAttackCharge(false);
+			PlayerManager.Instance.HandleAttack("charged");
+			PlayerManager.Instance.stats.UpdateAttackCharge(false);
 		}
 		else if (attackUltimateInput)
 		{
-			_manager.HandleAttack("ultimate");
+			PlayerManager.Instance.HandleAttack("ultimate");
 		}
     }
 
     public void HandleLockOnInput()
     {
 	    bool   usingPistol       = false;
-	    string currentWeaponType = _manager.weaponSlotManager.GetCurrentWeaponType();
-	    if (currentWeaponType.Equals(_manager.weaponSlotManager.weaponTypes[0]))
+	    string currentWeaponType = PlayerManager.Instance.weaponSlotManager.GetCurrentWeaponType();
+	    if (currentWeaponType.Equals(PlayerManager.Instance.weaponSlotManager.weaponTypes[0]))
 		    usingPistol = true;
 
 	    if (lockOnInput && lockOnFlag == false) // Lock on
@@ -166,10 +156,10 @@ public class PlayerInputHandler : MonoBehaviour
 		    lockOnInput = false;
 
 		    if (usingPistol)
-			    _manager.isAiming = true;
+			    PlayerManager.Instance.isAiming = true;
 
-		    _manager.ClearLockOnTargets();
-		    _manager.HandleLockOn();
+		    CameraHandler.Instance.ClearLockOnTargets();
+		    PlayerManager.Instance.HandleLockOn();
 	    }
 	    else if (lockOnInput && lockOnFlag)	// Lock off
 	    {
@@ -177,17 +167,17 @@ public class PlayerInputHandler : MonoBehaviour
 		    lockOnFlag = false;
 		    
 		    if (usingPistol)
-			    _manager.isAiming = false;
+			    PlayerManager.Instance.isAiming = false;
 		    
-		    _manager.ClearLockOnTargets();
+		    CameraHandler.Instance.ClearLockOnTargets();
 	    }
 
 	    if (usingPistol)
 	    {
-		    _manager.ToggleAim();
-		    _manager.ToggleCrosshair();
+		    PlayerManager.Instance.ToggleAim();
+		    PlayerManager.Instance.ToggleCrosshair();
 	    }
-	    _manager.SetCameraHeight();
+	    CameraHandler.Instance.SetCameraHeight(Time.deltaTime);
     }
     
     private void HandleInteractInput()
@@ -195,7 +185,7 @@ public class PlayerInputHandler : MonoBehaviour
 	    if (interactInput)
 	    {
 		    interactInput = false;
-		    _manager.Interact();
+		    StageManager.Instance.Interact();
 	    }
     }
 
