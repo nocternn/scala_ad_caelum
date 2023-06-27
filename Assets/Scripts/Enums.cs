@@ -50,4 +50,12 @@ public class Enums : MonoBehaviour
         SwitchBuff,
         SwitchCombat
     }
+    
+    public enum CameraType
+    {
+        Aim,
+        Free,
+        Locked,
+        Standard
+    }
 }

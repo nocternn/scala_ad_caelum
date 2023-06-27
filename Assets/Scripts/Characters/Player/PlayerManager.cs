@@ -71,10 +71,10 @@ public class PlayerManager : CharacterManager
         
         locomotion.HandleAllMovements(delta);
         
-        if (CameraHandler.Instance != null)
+        if (CameraManager.Instance != null)
         {
-            CameraHandler.Instance.FollowTarget(delta);
-            CameraHandler.Instance.HandleRotation(delta, inputHandler.horizontalCameraInput, inputHandler.verticalCameraInput);
+            CameraManager.Instance.currentCamera.FollowTarget(delta);
+            CameraManager.Instance.currentCamera.HandleRotation(delta, inputHandler.horizontalCameraInput, inputHandler.verticalCameraInput);
         }
     }
 
@@ -144,45 +144,45 @@ public class PlayerManager : CharacterManager
     public Vector3 GetCameraDirection(string direction = "none")
     {
         if (direction.Equals("forward"))
-            return CameraHandler.Instance.cameraTransform.forward;
+            return CameraManager.Instance.currentCamera.cameraTransform.forward;
         if (direction.Equals("right"))
-            return CameraHandler.Instance.cameraTransform.right;
+            return CameraManager.Instance.currentCamera.cameraTransform.right;
         return Vector3.zero;
     }
 
     public Quaternion GetCameraRotation(string target = "camera")
     {
         if (target.Equals("pivot"))
-            return CameraHandler.Instance.cameraPivotTransform.rotation;
+            return CameraManager.Instance.currentCamera.cameraPivotTransform.rotation;
         if (target.Equals("lockOn"))
-            return CameraHandler.Instance.currentLockOnTarget.rotation;
-        return CameraHandler.Instance.cameraTransform.rotation;
+            return CameraManager.Instance.currentCamera.currentLockOnTarget.rotation;
+        return CameraManager.Instance.currentCamera.cameraTransform.rotation;
     }
     
     public Vector3 GetCameraEulerAngles(string target = "camera")
     {
         if (target.Equals("pivot"))
-            return CameraHandler.Instance.cameraPivotTransform.eulerAngles;
+            return CameraManager.Instance.currentCamera.cameraPivotTransform.eulerAngles;
         if (target.Equals("lockOn"))
-            return CameraHandler.Instance.currentLockOnTarget.eulerAngles;
-        return CameraHandler.Instance.cameraTransform.eulerAngles;
+            return CameraManager.Instance.currentCamera.currentLockOnTarget.eulerAngles;
+        return CameraManager.Instance.currentCamera.cameraTransform.eulerAngles;
     }
     public Vector3 GetCameraLocalEulerAngles(string target = "camera")
     {
         if (target.Equals("pivot"))
-            return CameraHandler.Instance.cameraPivotTransform.localEulerAngles;
+            return CameraManager.Instance.currentCamera.cameraPivotTransform.localEulerAngles;
         if (target.Equals("lockOn"))
-            return CameraHandler.Instance.currentLockOnTarget.localEulerAngles;
-        return CameraHandler.Instance.cameraTransform.localEulerAngles;
+            return CameraManager.Instance.currentCamera.currentLockOnTarget.localEulerAngles;
+        return CameraManager.Instance.currentCamera.cameraTransform.localEulerAngles;
     }
     
     public Vector3 GetCameraPosition(string target = "camera")
     {
         if (target.Equals("pivot"))
-            return CameraHandler.Instance.cameraPivotTransform.position;
+            return CameraManager.Instance.currentCamera.cameraPivotTransform.position;
         if (target.Equals("lockOn"))
-            return CameraHandler.Instance.currentLockOnTarget.position;
-        return CameraHandler.Instance.cameraTransform.position;
+            return CameraManager.Instance.currentCamera.currentLockOnTarget.position;
+        return CameraManager.Instance.currentCamera.cameraTransform.position;
     }
 
     public float GetMovementInput(string direction)
@@ -196,7 +196,7 @@ public class PlayerManager : CharacterManager
     
     public bool IsLockingOnTarget()
     {
-        return (inputHandler.lockOnFlag || CameraHandler.Instance.currentLockOnTarget != null);
+        return (inputHandler.lockOnFlag || CameraManager.Instance.currentCamera.currentLockOnTarget != null);
     }
 
     #endregion
@@ -242,13 +242,17 @@ public class PlayerManager : CharacterManager
 
     public void HandleLockOn()
     {
-        CameraHandler.Instance.HandleLockOn();
+        CameraManager.Instance.currentCamera.HandleLockOn();
 
-        if (CameraHandler.Instance.nearestLockOnTarget != null)
+        if (CameraManager.Instance.currentCamera.nearestLockOnTarget != null)
         {
-            CameraHandler.Instance.currentLockOnTarget = CameraHandler.Instance.nearestLockOnTarget;
+            CameraManager.Instance.currentCamera.currentLockOnTarget = CameraManager.Instance.currentCamera.nearestLockOnTarget;
             inputHandler.lockOnFlag = true;
         }
+		else
+		{
+            CameraManager.Instance.SetCamera(Enums.CameraType.Standard);
+		}
     }
 
     #endregion

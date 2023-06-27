@@ -107,13 +107,17 @@ public class StageManager : MonoBehaviour
     {
         if (show)
         {
-            PlayerManager.Instance.gameObject.SetActive(true);
+            CameraManager.Instance.SetCamera(Enums.CameraType.Standard);
+            
+            PlayerManager.Instance.gameObject.SetActive(true); 
             PlayerManager.Instance.Initialize();
             PlayerManager.Instance.SetWeapon(SceneLoader.Instance.weapon);
         }
         else
         {
             PlayerManager.Instance.gameObject.SetActive(false);
+            
+            CameraManager.Instance.SetCamera(Enums.CameraType.Free);
         }
     }
 

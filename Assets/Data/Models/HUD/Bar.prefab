@@ -700,3 +700,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c70d03a7ff5be1e45ba2bbed094a0eb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _txtValue: {fileID: 0}
+  _txtMaxValue: {fileID: 0}

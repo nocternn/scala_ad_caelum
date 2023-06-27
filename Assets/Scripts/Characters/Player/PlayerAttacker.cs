@@ -111,7 +111,7 @@ public class PlayerAttacker : MonoBehaviour
         // Set ammo velocity
         if (PlayerManager.Instance.isAiming)
         {
-            Ray ray = CameraHandler.Instance.camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+            Ray ray = CameraManager.Instance.currentCamera.camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
             RaycastHit hitpoint;
 
             if (Physics.Raycast(ray, out hitpoint, 100.0f))

@@ -108,8 +108,8 @@ public class PlayerLocomotion : CharacterLocomotion
 			return;
 		
 		Vector3 moveDirection = Vector3.zero;
-		moveDirection  = CameraHandler.Instance.cameraTransform.forward * PlayerManager.Instance.GetMovementInput("vertical");
-		moveDirection += CameraHandler.Instance.cameraTransform.right * PlayerManager.Instance.GetMovementInput("horizontal");
+		moveDirection  = PlayerManager.Instance.GetCameraDirection("forward") * PlayerManager.Instance.GetMovementInput("vertical");
+		moveDirection += PlayerManager.Instance.GetCameraDirection("right") * PlayerManager.Instance.GetMovementInput("horizontal");
 
 		if (PlayerManager.Instance.inputHandler.moveAmount > 0)
 		{
@@ -132,8 +132,8 @@ public class PlayerLocomotion : CharacterLocomotion
 		Vector3 targetDirection = Vector3.zero;
 		if (isUsingMainCamera)
 		{
-			targetDirection  = CameraHandler.Instance.cameraTransform.forward * PlayerManager.Instance.GetMovementInput("vertical");
-			targetDirection += CameraHandler.Instance.cameraTransform.right * PlayerManager.Instance.GetMovementInput("horizontal");
+			targetDirection  = PlayerManager.Instance.GetCameraDirection("forward") * PlayerManager.Instance.GetMovementInput("vertical");
+			targetDirection += PlayerManager.Instance.GetCameraDirection("right") * PlayerManager.Instance.GetMovementInput("horizontal");
 		}
 		else
 		{

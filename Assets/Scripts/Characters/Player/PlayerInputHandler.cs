@@ -156,9 +156,16 @@ public class PlayerInputHandler : MonoBehaviour
 		    lockOnInput = false;
 
 		    if (usingPistol)
+			{
 			    PlayerManager.Instance.isAiming = true;
+            	CameraManager.Instance.SetCamera(Enums.CameraType.Aim);
+			}
+			else
+			{
+            	CameraManager.Instance.SetCamera(Enums.CameraType.Locked);
+			}
 
-		    CameraHandler.Instance.ClearLockOnTargets();
+		    CameraManager.Instance.currentCamera.ClearLockOnTargets();
 		    PlayerManager.Instance.HandleLockOn();
 	    }
 	    else if (lockOnInput && lockOnFlag)	// Lock off
@@ -169,7 +176,8 @@ public class PlayerInputHandler : MonoBehaviour
 		    if (usingPistol)
 			    PlayerManager.Instance.isAiming = false;
 		    
-		    CameraHandler.Instance.ClearLockOnTargets();
+		    CameraManager.Instance.currentCamera.ClearLockOnTargets();
+            CameraManager.Instance.SetCamera(Enums.CameraType.Standard);
 	    }
 
 	    if (usingPistol)
@@ -177,7 +185,6 @@ public class PlayerInputHandler : MonoBehaviour
 		    PlayerManager.Instance.ToggleAim();
 		    PlayerManager.Instance.ToggleCrosshair();
 	    }
-	    CameraHandler.Instance.SetCameraHeight(Time.deltaTime);
     }
     
     private void HandleInteractInput()
