@@ -11,6 +11,10 @@ public class RangedDamageCollider : DamageCollider
     protected override void OnTriggerEnter(Collider collision)
     {
         base.OnTriggerEnter(collision);
+        
+        if (_damageCollider.tag.Equals(collision.tag))
+            return;
+        
         DestroyAmmo();
     }
 

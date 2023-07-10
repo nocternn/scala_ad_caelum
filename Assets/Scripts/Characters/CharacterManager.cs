@@ -51,8 +51,8 @@ public class CharacterManager : MonoBehaviour
             }
         }
     }
-    
-    public CharacterAction[] GetActions()
+
+    public virtual CharacterAction[] GetActions()
     {
         return _actions;
     }

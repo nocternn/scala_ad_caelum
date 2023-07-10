@@ -17,6 +17,7 @@ MonoBehaviour:
   description: 'ATK: 450 | CRT: 41'
   ammo: {fileID: 0}
   type: 3
+  combatType: 0
   model: {fileID: 8924068759846017593, guid: 3c441d1a214d92b4cbae07517a7b6466, type: 3}
   secondaryIcon: {fileID: 21300000, guid: 1ce575a89cacc434cb0afe3c4c47b7ee, type: 3}
   id: 5

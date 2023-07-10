@@ -6,18 +6,23 @@ public class CharacterWeaponSlotManager : MonoBehaviour
 {
     #region Attributes
 
+    [Header("Holder Slots")]
     public WeaponHolderSlot leftHandSlot;
     public WeaponHolderSlot rightHandSlot;
 
+    [Header("Damage Colliders")]
     protected DamageCollider leftHandDamageCollider;
     protected DamageCollider rightHandDamageCollider;
 
+    [Header("Hand IKs")]
     protected LeftHandIKTarget leftHandIkTarget;
     protected RightHandIKTarget rightHandIkTarget;
 
+    [Header("Weapons")]
     public WeaponItem leftHandWeapon;
     public WeaponItem rightHandWeapon;
-
+    
+    [Header("Properties")]
     public bool isUsingLeftHand;
     public bool isUsingRightHand;
 
@@ -53,6 +58,7 @@ public class CharacterWeaponSlotManager : MonoBehaviour
                 leftHandDamageCollider = leftHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
             }
         }
+
         if (isRight)
         {
             isLoaded = rightHandSlot.LoadWeaponModel(weaponItem);
@@ -92,6 +98,7 @@ public class CharacterWeaponSlotManager : MonoBehaviour
             rightHandDamageCollider = damageCollider;
         }
     }
+
     public void SetDamage(int damage)
     {
         if (isUsingLeftHand)
@@ -102,6 +109,11 @@ public class CharacterWeaponSlotManager : MonoBehaviour
         {
             rightHandWeapon.atk = damage;
         }
+    }
+    
+    public virtual void ToggleShooting()
+    {
+        // Empty
     }
 
     #endregion
@@ -121,6 +133,7 @@ public class CharacterWeaponSlotManager : MonoBehaviour
             return leftHandWeapon.atk;
         return rightHandWeapon.atk;
     }
+
     public int GetCrit()
     {
         if (isUsingLeftHand)
@@ -129,7 +142,7 @@ public class CharacterWeaponSlotManager : MonoBehaviour
     }
 
     #endregion
-    
+
     #region Handle Damage Colliders
 
     public void EnableDamageCollider()
@@ -147,6 +160,7 @@ public class CharacterWeaponSlotManager : MonoBehaviour
         if (rightHandDamageCollider != null)
             rightHandDamageCollider.Disable();
     }
-        
+
     #endregion
+    
 }

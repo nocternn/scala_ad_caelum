@@ -13,10 +13,13 @@ public class UltimateAttackAction : WeaponAction
     
     protected override void Awake()
     {
+        type = Enums.ActionType.Ultimate;
+    }
+
+    public override void Initialize()
+    {
         skill = GameObject.Find("SkillsHolder").GetComponent<WeaponItemSkillUltimate>();
         skill.Initialize(cooldown);
-        
-        type = Enums.ActionType.Ultimate;
     }
     
     public override void PerformAction(PlayerManager player, bool playAnimation = true)

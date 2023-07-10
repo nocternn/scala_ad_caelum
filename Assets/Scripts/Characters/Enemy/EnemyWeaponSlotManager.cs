@@ -11,6 +11,8 @@ public class EnemyWeaponSlotManager : CharacterWeaponSlotManager
         LoadWeaponOnSlot(leftHandWeapon, true, false);
         LoadWeaponOnSlot(rightHandWeapon, false, true);
     }
+
+    #region Loaders
     
     public override bool LoadWeaponOnSlot(WeaponItem weaponItem, bool isLeft, bool isRight)
     {
@@ -32,7 +34,11 @@ public class EnemyWeaponSlotManager : CharacterWeaponSlotManager
         base.LoadTwoHandIK();
         EnemyManager.Instance.animatorHandler.SetHandIK(leftHandIkTarget, rightHandIkTarget, EnemyManager.Instance.isTwoHanding);
     }
-    
+
+    #endregion
+
+    #region Setters
+
     public void SetUsedWeaponType()
     {
         WeaponItem weapon = GetCurrentWeapon();
@@ -57,4 +63,16 @@ public class EnemyWeaponSlotManager : CharacterWeaponSlotManager
             EnemyManager.Instance.isAiming = false;
         }
     }
+
+    public override void ToggleShooting()
+    {
+        WeaponAction[] actions = GetCurrentWeapon().GetActions();
+        foreach (var action in actions)
+        {
+            if (action.type == Enums.ActionType.Shoot)
+                action.PerformAction(EnemyManager.Instance);
+        }
+    }
+
+    #endregion
 }

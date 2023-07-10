@@ -14,6 +14,9 @@ public class DamageCollider : MonoBehaviour
 
     protected virtual void OnTriggerEnter(Collider collision)
     {
+        if (_damageCollider.tag.Equals(collision.tag))
+            return;
+        
         if (collision.tag == "Player")
         {
             PlayerManager.Instance.isHit = true;
@@ -28,7 +31,6 @@ public class DamageCollider : MonoBehaviour
 
             Debug.Log("Player incoming damage = " + damage.ToString());
             PlayerManager.Instance.stats.TakeDamage(damage);
-            
         }
         else if (collision.tag == "Enemy")
         {
@@ -51,6 +53,10 @@ public class DamageCollider : MonoBehaviour
 			if (PlayerManager.Instance.attacker.IsAttackOfType(Enums.ActionType.Basic))
             	PlayerManager.Instance.stats.UpdateAttackCharge(true);
         }
+    }
+    protected virtual void OnTriggerExit(Collider collision)
+    {
+        // Empty
     }
 
     protected void SetDamageCollider()

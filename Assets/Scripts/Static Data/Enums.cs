@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enums
+public abstract class Enums
 {
     public enum CharacterType
     {

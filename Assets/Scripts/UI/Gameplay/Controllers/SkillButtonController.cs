@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class SkillButtonController : MonoBehaviour
 {
-    [SerializeField] private Enums.ActionType type;
+    [SerializeField] private Enums.ActionType _type;
 
     private GameObject _info;
     
@@ -30,12 +30,12 @@ public class SkillButtonController : MonoBehaviour
 
     public void UpdateUI(WeaponItem weaponItem)
     {
-        Tuple<bool, int> status = weaponItem.GetSkillStatus(type);
+        Tuple<bool, int> status = weaponItem.GetSkillStatus(_type);
         bool onCooldown = status.Item1;
         int currentCooldown = status.Item2;
         
         ToggleCooldown(onCooldown);
-        if (type == Enums.ActionType.Active)
+        if (_type == Enums.ActionType.Active)
         {
             if (onCooldown)
             {

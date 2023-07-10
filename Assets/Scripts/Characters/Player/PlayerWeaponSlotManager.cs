@@ -9,6 +9,8 @@ public class PlayerWeaponSlotManager : CharacterWeaponSlotManager
                 Initialize(transform);
         }
 
+        #region Loaders
+
         public override bool LoadWeaponOnSlot(WeaponItem weaponItem, bool isLeft, bool isRight)
         {
                 bool isLoaded = base.LoadWeaponOnSlot(weaponItem, isLeft, isRight);
@@ -20,7 +22,6 @@ public class PlayerWeaponSlotManager : CharacterWeaponSlotManager
 
                 return isLoaded;
         }
-        
         public override void LoadTwoHandIK()
         {
                 if (!PlayerManager.Instance.isTwoHanding)
@@ -30,12 +31,17 @@ public class PlayerWeaponSlotManager : CharacterWeaponSlotManager
                         leftHandIkTarget, rightHandIkTarget,
                         PlayerManager.Instance.isTwoHanding);
         }
+
+        #endregion
+
+        #region Setters
+        
         public void SetUsedWeaponType()
         {
                 WeaponItem weapon = GetCurrentWeapon();
-                
-                PlayerManager.Instance.animatorHandler.SetUsedWeaponType(Dictionaries.WeaponTypePlayer[weapon.type]);
 
+                PlayerManager.Instance.animatorHandler.SetUsedWeaponType(Dictionaries.WeaponTypePlayer[weapon.type]);
+                
                 if (weapon.type == Enums.WeaponType.Pistol
                     || weapon.type == Enums.WeaponType.Greatsword
                     || weapon.type == Enums.WeaponType.Scythe)
@@ -47,4 +53,16 @@ public class PlayerWeaponSlotManager : CharacterWeaponSlotManager
                         PlayerManager.Instance.isTwoHanding = false;
                 }
         }
+        
+        public override void ToggleShooting()
+        {
+                WeaponAction[] actions = GetCurrentWeapon().GetActions();
+                foreach (var action in actions)
+                {
+                        if (action.type == Enums.ActionType.Shoot)
+                                action.PerformAction(PlayerManager.Instance);
+                }
+        }
+
+        #endregion
 }

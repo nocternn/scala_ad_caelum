@@ -13,10 +13,13 @@ public class ActiveAttackAction : WeaponAction
 
     protected override void Awake()
     {
+        type = Enums.ActionType.Active;
+    }
+
+    public override void Initialize()
+    {
         skill = GameObject.Find("SkillsHolder").GetComponent<WeaponItemSkillActive>();
         skill.Initialize(cooldown);
-
-        type = Enums.ActionType.Active;
     }
     
     public override void PerformAction(PlayerManager player, bool playAnimation = true)

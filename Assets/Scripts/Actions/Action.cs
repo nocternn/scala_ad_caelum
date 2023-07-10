@@ -19,6 +19,15 @@ public abstract class Action : ScriptableObject
     {
         // Empty
     }
+    protected virtual void Update()
+    {
+        // Empty
+    }
+
+    public virtual void Initialize()
+    {
+        
+    }
     
     public virtual void PerformAction(PlayerManager player, bool playAnimation = true)
     {

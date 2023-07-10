@@ -68,6 +68,8 @@ public class StageManager : MonoBehaviour
     
     public void Initialize()
     {
+        SceneLoader.Instance.weapon.InitializeSkills();
+        
         HUDManager.Instance.Initialize();
         door.Initialize();
         shop.Initialize();
@@ -186,7 +188,7 @@ public class StageManager : MonoBehaviour
 
         StageManager.Instance.OpenDoor();
 
-        if (id < 5)
+        if (id <= 5)
         {
             stageType = Enums.StageType.Dialogue;
             previousStageType = Enums.StageType.Dialogue;

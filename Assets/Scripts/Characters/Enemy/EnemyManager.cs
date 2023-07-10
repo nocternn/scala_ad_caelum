@@ -54,7 +54,7 @@ public class EnemyManager : CharacterManager
     {
         if (_hasDied || !_isActive)
             return;
-        
+
         HandleRecoveryTime();
     }
     
@@ -103,6 +103,18 @@ public class EnemyManager : CharacterManager
 
     #endregion
 
+    #region Getters
+
+    public override CharacterAction[] GetActions()
+    {
+        var actions = new List<CharacterAction>();
+        actions.AddRange(_actions);
+        actions.AddRange(stats.GetActions());
+        return actions.ToArray();
+    }
+
+    #endregion
+    
     #region Setters
 
     public void SetEnemyType(string enemyName)
@@ -148,6 +160,26 @@ public class EnemyManager : CharacterManager
             }
         }
     }
+    
+    public void ResetNavMeshAgent()
+    {
+        navMeshAgent.transform.localPosition = Vector3.zero;
+        navMeshAgent.transform.localRotation = Quaternion.identity;
+    }
+    
+    public override void ToggleActive(bool state)
+    {
+        base.ToggleActive(state);
+
+        if (currentEnemy != null)
+        {
+            Renderer[] renderers = currentEnemy.GetComponentsInChildren<Renderer>();
+            foreach (var renderer in renderers)
+            {
+                renderer.enabled = state;
+            }
+        }
+    }
 
     #endregion
 
@@ -162,25 +194,5 @@ public class EnemyManager : CharacterManager
             _hasDied = true;
             StageManager.Instance.EndStageWin();
         }
-    }
-
-    public void ResetNavMeshAgent()
-    {
-        navMeshAgent.transform.localPosition = Vector3.zero;
-        navMeshAgent.transform.localRotation = Quaternion.identity;
-    }
-
-	public override void ToggleActive(bool state)
-    {
-        base.ToggleActive(state);
-
-		if (currentEnemy != null)
-		{
-			Renderer[] renderers = currentEnemy.GetComponentsInChildren<Renderer>();
-        	foreach (var renderer in renderers)
-        	{
-            	renderer.enabled = state;
-        	}
-		}
     }
 }

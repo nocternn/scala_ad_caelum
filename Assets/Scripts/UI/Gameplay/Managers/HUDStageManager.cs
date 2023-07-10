@@ -10,6 +10,9 @@ public class HUDStageManager : MonoBehaviour
     [Header("Interactables")]
     public CoinManager coin;
     public DialogueUIManager dialogue;
+    
+    [Header("Progress")]
+    public ProgressBarController progressBar;
 
     [Header("Transforms")]
     public Transform mask;
@@ -40,8 +43,9 @@ public class HUDStageManager : MonoBehaviour
 
     public void Initialize()
     {
-        coin     = GetComponentInChildren<CoinManager>();
-        dialogue = GameObject.FindObjectsOfType<DialogueUIManager>(true)[0];
+        progressBar = GetComponentInChildren<ProgressBarController>();
+        coin        = GetComponentInChildren<CoinManager>();
+        dialogue    = GameObject.FindObjectsOfType<DialogueUIManager>(true)[0];
 
         mask     = transform.GetChild(0);
         back     = transform.GetChild(2);
@@ -49,8 +53,8 @@ public class HUDStageManager : MonoBehaviour
         timer    = transform.GetChild(4);
         quit     = transform.GetChild(5);
 
+        progressBar.UpdateProgress(StageManager.Instance.id - 1);
         coin.Initialize();
-        
         dialogue.SetManager(this);
 
         Button btnBack = back.GetComponent<Button>();

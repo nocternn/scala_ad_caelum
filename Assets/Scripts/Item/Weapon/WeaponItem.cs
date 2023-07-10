@@ -45,23 +45,25 @@ public class WeaponItem : Item
 
     public int GetSkillCost(Enums.ActionType actionType)
     {
+        int cost = 0;
+
         foreach (var action in _actions)
         {
-            switch (action.type)
+            if (action.type == actionType)
             {
-                case Enums.ActionType.Active:
-                    if (action.type == actionType)
-                        return ((ActiveAttackAction)action).cost;
-                    return 0;
-                case Enums.ActionType.Ultimate:
-                    if (action.type == actionType)
-                        return ((UltimateAttackAction)action).cost;
-                    return 0;
-                default:
-                    continue;
+                switch (action.type)
+                {
+                    case Enums.ActionType.Active:
+                        cost = ((ActiveAttackAction)action).cost;
+                        break;
+                    case Enums.ActionType.Ultimate:
+                        cost = ((UltimateAttackAction)action).cost;
+                        break;
+                }
             }
         }
-        return 0;
+        
+        return cost;
     }
     
     public Tuple<bool, int> GetSkillStatus(Enums.ActionType actionType)
@@ -93,6 +95,22 @@ public class WeaponItem : Item
     public WeaponAction[] GetActions()
     {
         return _actions;
+    }
+
+    public void InitializeSkills()
+    {
+        foreach (var action in _actions)
+        {
+            switch (action.type)
+            {
+                case Enums.ActionType.Active:
+                case Enums.ActionType.Ultimate:
+                    action.Initialize();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     public Tuple<bool, int, Enums.ActionType> PerformAttack(

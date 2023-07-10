@@ -182,11 +182,17 @@ public class EnemyStateCombatStance : EnemyState
 
 	private void PerformAction(EnemyManager manager)
 	{
-		CharacterAction[] actions = manager.GetActions();
-		foreach(var action in actions)
+		// Get all actions that are marked as performeable
+		CharacterAction[] actions = Array.FindAll(manager.GetActions(), action => action.toBePerformed);
+		if (actions.Length > 0)
 		{
-			if (action.toBePerformed)
-				action.PerformAction(manager);
+			// Select random action from the array above and perform it
+			int selectedActionIndex = UnityEngine.Random.Range(0, actions.Length - 1);
+			actions[selectedActionIndex].PerformAction(manager);
+
+			// Reset other actions
+			foreach (var action in actions)
+				action.toBePerformed = false;
 		}
 	}
 

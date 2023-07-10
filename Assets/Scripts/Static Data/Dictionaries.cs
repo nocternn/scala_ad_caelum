@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dictionaries
+public abstract class Dictionaries
 {
     public static Dictionary<Enums.EnemyType, string> EnemyType = new Dictionary<Enums.EnemyType, string>()
     {

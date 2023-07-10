@@ -37,7 +37,14 @@ public class Door : MonoBehaviour
 
     public void Initialize()
     {
-        Close();
+        if (isOpen)
+        {
+            Close();
+        }
+        else
+        {
+            StageManager.Instance.ShowDoor(false);
+        }
         
         isOpen = false;
         isOpenable = false;

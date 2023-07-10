@@ -10,7 +10,7 @@ public class EnemyStats : CharacterStats
 
     [Header("Properties")]
     public Enums.EnemyType enemyType;
-    [SerializeField] private Action[] _actions;
+    [SerializeField] private CharacterAction[] _actions;
 
     void Start()
     {
@@ -28,7 +28,7 @@ public class EnemyStats : CharacterStats
         }
     }
 
-    public Action[] GetActions()
+    public CharacterAction[] GetActions()
     {
         return _actions;
     }
