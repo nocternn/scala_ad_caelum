@@ -21,8 +21,6 @@ public class CharacterWeaponSlotManager : MonoBehaviour
     public bool isUsingLeftHand;
     public bool isUsingRightHand;
 
-    public string[] weaponTypes;
-
     #endregion
 
     public void Initialize(Transform character)
@@ -115,19 +113,6 @@ public class CharacterWeaponSlotManager : MonoBehaviour
         if (isUsingLeftHand)
             return leftHandWeapon;
         return rightHandWeapon;
-    }
-        
-    public string GetCurrentWeaponType()
-    {
-        WeaponItem weaponItem = GetCurrentWeapon();
-        foreach (string weaponType in weaponTypes)
-        {
-            if (weaponItem.name.Equals(weaponType))
-            {
-                return weaponType;
-            }
-        }
-        return null;
     }
 
     public int GetDamage()

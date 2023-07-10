@@ -15,20 +15,15 @@ MonoBehaviour:
   primaryIcon: {fileID: 0}
   name: Katana
   description: 
-  model: {fileID: 4433377978238520628, guid: f966f9602598101449fb0ec1ce899ce2, type: 3}
   ammo: {fileID: 0}
+  type: 9
+  combatType: 0
+  model: {fileID: 4433377978238520628, guid: f966f9602598101449fb0ec1ce899ce2, type: 3}
   secondaryIcon: {fileID: 0}
   id: 0
-  descriptionActive: 
-  descriptionUltimate: 
-  skillActive: {fileID: 0}
-  skillUltimate: {fileID: 0}
-  activeCost: 0
-  ultimateCost: 0
-  activeAttack: 
-  basicAttack01: katana_attack_01
-  basicAttack02: katana_attack_02
-  basicAttack03: katana_attack_03
-  basicAttack04: 
-  chargedAttack: 
-  ultimateAttack: 
+  atk: 0
+  crt: 0
+  _actions:
+  - {fileID: 11400000, guid: 015a1039d0dba8e43a27c868d49099d7, type: 2}
+  - {fileID: 11400000, guid: 227d583c187fd7e4fbd0acb04c4d3bed, type: 2}
+  - {fileID: 11400000, guid: 5c121ce23e77dc949b58f74f00fe5e01, type: 2}

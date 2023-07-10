@@ -15,30 +15,15 @@ MonoBehaviour:
   primaryIcon: {fileID: 21300000, guid: 77b3f0a1f8d6aba4cbe195a312089e64, type: 3}
   name: Pistol
   description: 'ATK: 390 | CRT: 45'
-  model: {fileID: 7632030922130552699, guid: d1db24bca7eebcc488d915dcb4fad59f, type: 3}
   ammo: {fileID: 11400000, guid: 4d7a1a3f89f30a6418a390c2744d123f, type: 2}
+  type: 2
+  combatType: 1
+  model: {fileID: 7632030922130552699, guid: d1db24bca7eebcc488d915dcb4fad59f, type: 3}
   secondaryIcon: {fileID: 21300000, guid: e8978fac14e296145a7d4a0f952ba819, type: 3}
   id: 1
   atk: 390
   crt: 45
-  descriptionActive: 'Lose half of current HP and continuously fire in front of the
-    wielder, each hit dealing 100% ATK + 1088 DMG for 5s. Skill cannot be cast when
-    HP is below 33%. '
-  descriptionUltimate: "Unleash a powerful blast in front of the wielder. Enemies
-    take 100% ATK + 1088 \xD7 2 DMG, and take 266 DMG per second for 5s. While activated,
-    wielder gains 80% DMG Reduction. After activation, lose 13% of max HP per second
-    for 5s, but will not die from this effect. Skill cannot be cast when HP is below
-    33%. "
-  skillActive: {fileID: 0}
-  skillUltimate: {fileID: 0}
-  activeCost: 20
-  activeCooldown: 10
-  ultimateCost: 50
-  ultimateCooldown: 20
-  activeAttack: pistol_skill_attack
-  basicAttack01: pistol_basic_attack_01
-  basicAttack02: 
-  basicAttack03: 
-  basicAttack04: 
-  chargedAttack: 
-  ultimateAttack: pistol_skill_attack
+  _actions:
+  - {fileID: 11400000, guid: 53f16c1d7d85628479e4820632fa4f9e, type: 2}
+  - {fileID: 11400000, guid: b774d377a0e9f26488809edf7ddbb360, type: 2}
+  - {fileID: 11400000, guid: 460f01d3577e04d48953e02e74c600eb, type: 2}

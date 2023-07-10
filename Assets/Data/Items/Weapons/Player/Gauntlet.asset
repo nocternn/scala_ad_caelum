@@ -15,26 +15,18 @@ MonoBehaviour:
   primaryIcon: {fileID: 21300000, guid: a1a93b127cf286947b1b49af58976175, type: 3}
   name: Gauntlet
   description: 'ATK: 350 | CRT: 27'
-  model: {fileID: 4527068538015241186, guid: 2b9507c87cddb56459a866eb09d08b0a, type: 3}
   ammo: {fileID: 0}
+  type: 1
+  model: {fileID: 4527068538015241186, guid: 2b9507c87cddb56459a866eb09d08b0a, type: 3}
   secondaryIcon: {fileID: 21300000, guid: 4fcbdd08490792549b597ecb4355b3b6, type: 3}
   id: 3
   atk: 350
   crt: 27
-  descriptionActive: Every 3 hits boosts DMG by 20.0% for 10.0s (stacks up to 10
-    times).
-  descriptionUltimate: The wielder gains 150% ATK for 10s, during which he restores
-    20.0 HP and 3 SP per second.
-  skillActive: {fileID: 0}
-  skillUltimate: {fileID: 0}
-  activeCost: 25
-  activeCooldown: 20
-  ultimateCost: 75
-  ultimateCooldown: 20
-  activeAttack: PowerUp
-  basicAttack01: gauntlet_basic_attack_01
-  basicAttack02: gauntlet_basic_attack_02
-  basicAttack03: gauntlet_basic_attack_03
-  basicAttack04: gauntlet_basic_attack_04
-  chargedAttack: gauntlet_charged_attack
-  ultimateAttack: PowerUp
+  _actions:
+  - {fileID: 11400000, guid: 8ebe939b9e7ef7d46aa558fee23cbfbe, type: 2}
+  - {fileID: 11400000, guid: 488c211ce1185e54e8c7cdf591fa51f9, type: 2}
+  - {fileID: 11400000, guid: 2ee4954eeccac8044bd361f90d4dc758, type: 2}
+  - {fileID: 11400000, guid: 08a30574961fd7b4bb479ea2692cf09b, type: 2}
+  - {fileID: 11400000, guid: e7ca4b2aee1242e4b972bfc8fe0d5775, type: 2}
+  - {fileID: 11400000, guid: bf607837747ee4a49908e59d7961498b, type: 2}
+  - {fileID: 11400000, guid: 9ab272436f0888a45b5f2e05078c5b2e, type: 2}

@@ -4,17 +4,14 @@ using UnityEngine;
 
 public class WeaponItemSkill : MonoBehaviour
 {
-    protected WeaponItem _weapon;
-    
     [Header("Properties")]
     public bool onCooldown;
     public int currentCooldown;
 
-    public virtual void Initialize(WeaponItem weapon)
+    public void Initialize(int cooldown)
     {
-        _weapon = weapon;
-
         onCooldown = false;
+        currentCooldown = cooldown;
     }
     
     public void Cooldown()
@@ -23,27 +20,27 @@ public class WeaponItemSkill : MonoBehaviour
         StartCoroutine(CooldownTimer(currentCooldown));
     }
 
-    public virtual void UseSkill()
+    public virtual void UseSkill(Enums.WeaponType weaponType)
     {
-      switch (_weapon.id)
+      switch (weaponType)
       {
-          case 1:
+          case Enums.WeaponType.Pistol:
               Pistol();
               break;
-          case 2:
+          case Enums.WeaponType.Greatsword:
               Greatsword();
               break;
-          case 3:
+          case Enums.WeaponType.Gauntlet:
               Gauntlet();
               break;
-          case 4:
+          case Enums.WeaponType.Katana:
               Katana();
               break;
-          case 5:
+          case Enums.WeaponType.Scythe:
               Scythe();
               break;
           default:
-              Debug.Log("Invalid weapon ID");
+              Debug.Log("Invalid weapon");
               break;
       }
     }
@@ -71,16 +68,18 @@ public class WeaponItemSkill : MonoBehaviour
     
     private IEnumerator CooldownTimer(int initialCooldown)
     {
+        WeaponItem weapon = PlayerManager.Instance.weaponSlotManager.GetCurrentWeapon();
+        
         while (currentCooldown >= 0)
         {
-            HUDManager.Instance.hudCombat.UpdateSkillButtonsUI(_weapon);
+            HUDManager.Instance.hudCombat.UpdateSkillButtonsUI(weapon);
             currentCooldown--;
             yield return new WaitForSeconds(1.0f);
         }
         
         onCooldown = false;
         currentCooldown = initialCooldown;
-        HUDManager.Instance.hudCombat.UpdateSkillButtonsUI(_weapon);
+        HUDManager.Instance.hudCombat.UpdateSkillButtonsUI(weapon);
 
         yield break;
     }

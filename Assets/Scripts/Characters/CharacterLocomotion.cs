@@ -14,4 +14,10 @@ public class CharacterLocomotion : MonoBehaviour
     {
         Physics.IgnoreCollision(characterCollider, characterColliderBlocker, true);
     }
+
+    public void ToggleColliders(bool state)
+    {
+        characterCollider.enabled = state;
+        characterColliderBlocker.enabled = state;
+    }
 }

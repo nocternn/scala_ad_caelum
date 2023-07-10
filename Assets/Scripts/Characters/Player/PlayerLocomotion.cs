@@ -106,22 +106,8 @@ public class PlayerLocomotion : CharacterLocomotion
 	{
 		if (!PlayerManager.Instance.inputHandler.dodgeFlag)
 			return;
-		
-		Vector3 moveDirection = Vector3.zero;
-		moveDirection  = PlayerManager.Instance.GetCameraDirection("forward") * PlayerManager.Instance.GetMovementInput("vertical");
-		moveDirection += PlayerManager.Instance.GetCameraDirection("right") * PlayerManager.Instance.GetMovementInput("horizontal");
 
-		if (PlayerManager.Instance.inputHandler.moveAmount > 0)
-		{
-			PlayerManager.Instance.PlayTargetAnimation("Rolling", true);
-			
-			moveDirection.y = 0;
-			transform.rotation = Quaternion.LookRotation(moveDirection);
-		}
-		else
-		{
-			PlayerManager.Instance.PlayTargetAnimation("Backstep", true);
-		}
+		PlayerManager.Instance.PerformAction(Enums.ActionType.Dodge);
 
 		PlayerManager.Instance.inputHandler.dodgeInput = false;
 	}

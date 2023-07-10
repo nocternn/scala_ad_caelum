@@ -15,20 +15,15 @@ MonoBehaviour:
   primaryIcon: {fileID: 0}
   name: Sword
   description: 
-  model: {fileID: 2248184348287448245, guid: fa411bb4bc9c5ae4a9047f08d771d3f5, type: 3}
   ammo: {fileID: 0}
+  type: 7
+  model: {fileID: 2248184348287448245, guid: fa411bb4bc9c5ae4a9047f08d771d3f5, type: 3}
   secondaryIcon: {fileID: 0}
   id: 0
-  descriptionActive: 
-  descriptionUltimate: 
-  skillActive: {fileID: 0}
-  skillUltimate: {fileID: 0}
-  activeCost: 0
-  ultimateCost: 0
-  activeAttack: 
-  basicAttack01: sword_attack_01
-  basicAttack02: sword_attack_02
-  basicAttack03: sword_attack_03
-  basicAttack04: sword_attack_04
-  chargedAttack: 
-  ultimateAttack: 
+  atk: 0
+  crt: 0
+  _actions:
+  - {fileID: 11400000, guid: 4cd7ff4482fe0f4409078924f8ce0582, type: 2}
+  - {fileID: 11400000, guid: e75bc13e29c955748a31583844930469, type: 2}
+  - {fileID: 11400000, guid: 1622474c9682a504780984bd5e7694a6, type: 2}
+  - {fileID: 11400000, guid: e396a171678d52546b685788757e4cf3, type: 2}

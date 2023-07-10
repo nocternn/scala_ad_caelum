@@ -15,20 +15,13 @@ MonoBehaviour:
   primaryIcon: {fileID: 0}
   name: Bow
   description: 
-  model: {fileID: 1879072980467666848, guid: a70b4d49ddb080d4e83e9e3fee990773, type: 3}
   ammo: {fileID: 11400000, guid: 4905ea4ee553ebe4bb90ef650783e2a7, type: 2}
+  type: 4
+  combatType: 1
+  model: {fileID: 1879072980467666848, guid: a70b4d49ddb080d4e83e9e3fee990773, type: 3}
   secondaryIcon: {fileID: 0}
   id: 0
-  descriptionActive: 
-  descriptionUltimate: 
-  skillActive: {fileID: 0}
-  skillUltimate: {fileID: 0}
-  activeCost: 0
-  ultimateCost: 0
-  activeAttack: 
-  basicAttack01: bow_attack_01
-  basicAttack02: 
-  basicAttack03: 
-  basicAttack04: 
-  chargedAttack: 
-  ultimateAttack: 
+  atk: 0
+  crt: 0
+  _actions:
+  - {fileID: 11400000, guid: d782183aaed183341b58f8fe177c72e4, type: 2}

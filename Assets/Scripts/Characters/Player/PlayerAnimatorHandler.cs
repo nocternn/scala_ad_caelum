@@ -28,15 +28,12 @@ public class PlayerAnimatorHandler : CharacterAnimatorHandler
 	
 	#region Play Animation
 
-	public void PlayTargetWeaponBasedAnimation(string targetAnimation, bool isInteracting, string[] weaponTypes)
+	public void PlayTargetWeaponBasedAnimation(string targetAnimation, bool isInteracting, WeaponItem weapon)
 	{
-		foreach (string weaponType in weaponTypes)
+		string weaponType = Dictionaries.WeaponTypePlayer[weapon.type];
+		if (_animator.GetBool(String.Format("isUsing{0}", weaponType)))
 		{
-			if (_animator.GetBool(String.Format("isUsing{0}", weaponType)))
-			{
-				PlayTargetAnimation(String.Format("{0}_{1}", weaponType.ToLower(), targetAnimation), isInteracting);
-				break;
-			}
+			PlayTargetAnimation(String.Format("{0}_{1}", weaponType.ToLower(), targetAnimation), isInteracting);
 		}
 	}
 
@@ -44,11 +41,11 @@ public class PlayerAnimatorHandler : CharacterAnimatorHandler
 	
 	#region Setters
 
-	public void SetUsedWeaponType(string currentWeaponType, string[] weaponTypes)
+	public void SetUsedWeaponType(string currentWeaponType)
 	{
-		foreach (string weaponType in weaponTypes)
+		foreach(KeyValuePair<Enums.WeaponType, string> type in Dictionaries.WeaponTypePlayer)
 		{
-			_animator.SetBool(String.Format("isUsing{0}", weaponType), false);
+			_animator.SetBool(String.Format("isUsing{0}", type.Value), false);
 		}
 		_animator.SetBool(String.Format("isUsing{0}", currentWeaponType), true);
 	}

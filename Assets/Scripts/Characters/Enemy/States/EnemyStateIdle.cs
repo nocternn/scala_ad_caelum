@@ -6,6 +6,7 @@ public class EnemyStateIdle : EnemyState
 {
     [Header("A.I. Settings - Components")]
     [SerializeField] private LayerMask detectionLayer;
+    [SerializeField] private LayerMask lineOfSightBlockingLayer;
     [SerializeField] private EnemyStatePursueTarget pursueTargetState;
     
     [Header("A.I. Settings - Detection")]
@@ -24,22 +25,35 @@ public class EnemyStateIdle : EnemyState
 
         return this;
     }
+
+    public bool IsTargetVisible(EnemyManager manager, CharacterManager target, float viewableAngle)
+    {
+        bool isTargetInFOV = (viewableAngle >= minDetectionAngle) && (viewableAngle <= maxDetectionAngle);
+        bool isTargetObstructed = Physics.Linecast(
+            manager.lockOnTransform.position,
+            target.lockOnTransform.position,
+            lineOfSightBlockingLayer
+        );
+        return isTargetInFOV && !isTargetObstructed;
+    }
     
     private void HandleDetection(EnemyManager manager)
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRadius, detectionLayer);
         for (int i = 0; i < colliders.Length; i++)
         {
-            CharacterManager character = colliders[i].transform.GetComponent<CharacterManager>();
-            if (character != null)
+            CharacterManager target = colliders[i].transform.GetComponent<CharacterManager>();
+
+            // Proceed to next step if target is not of the same type as A.I.
+            if (target != null && target.characterType != manager.characterType)
             {
-                Vector3 targetDirection = character.transform.position - manager.transform.position;
+                Vector3 targetDirection = target.transform.position - manager.transform.position;
                 float viewableAngle = Vector3.Angle(targetDirection, manager.transform.forward);
 
-                if ((character.transform.root != transform.root)
-                    && (viewableAngle >= minDetectionAngle && viewableAngle <= maxDetectionAngle))
+                // Assign target as current target if the target is visible to the A.I.
+                if (IsTargetVisible(manager, target, viewableAngle))
                 {
-                    manager.currentTarget = character;
+                    manager.currentTarget = target;
                     return;
                 }
             }

@@ -5,10 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Items/Ammo")]
 public class AmmoItem : Item
 {
-    public GameObject model;
-    
-    [Header("Type")]
+    [Header("Specific Item Information")]
     public Enums.AmmoType type;
+    public GameObject model;
 
     [Header("Physics")]
     public float forwardVelocity = 550;

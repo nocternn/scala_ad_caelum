@@ -1,57 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class DamageCollider : MonoBehaviour
 {
     protected BoxCollider _damageCollider;
-    protected PlayerManager _player;
-    protected EnemyManager _enemy;
 
     private void Awake()
     {
         SetDamageCollider();
-
-        _player = GameObject.FindObjectsOfType<PlayerManager>(true)[0];
-        _enemy = GameObject.FindObjectsOfType<EnemyManager>(true)[0];
     }
 
     protected virtual void OnTriggerEnter(Collider collision)
     {
         if (collision.tag == "Player")
         {
-            int enemyATK = _enemy.weaponSlotManager.GetDamage();
-            int enemyCRT = _enemy.weaponSlotManager.GetCrit();
+            PlayerManager.Instance.isHit = true;
+            Task.Delay((int)Mathf.Round(1000)).ContinueWith(t => { PlayerManager.Instance.isHit = false; });
+            
+            int enemyATK = EnemyManager.Instance.weaponSlotManager.GetDamage();
+            int enemyCRT = EnemyManager.Instance.weaponSlotManager.GetCrit();
 
             int damage = 0;
-            damage += _enemy.stats.GetOutgoingDamage(enemyATK, enemyCRT);
-            damage += _player.stats.GetIncomingDamage(damage);
+            damage += EnemyManager.Instance.stats.GetOutgoingDamage(enemyATK, enemyCRT);
+            damage += PlayerManager.Instance.stats.GetIncomingDamage(damage);
 
             Debug.Log("Player incoming damage = " + damage.ToString());
+            PlayerManager.Instance.stats.TakeDamage(damage);
             
-            _player.stats.TakeDamage(damage);
         }
         else if (collision.tag == "Enemy")
         {
-            EnemyManager enemyManager = collision.GetComponent<EnemyManager>();
-            if (enemyManager == null)
-                return;
+            EnemyManager.Instance.isHit = true;
+            Task.Delay((int)Mathf.Round(1000)).ContinueWith(t => { EnemyManager.Instance.isHit = false; });
             
-            int playerATK = _player.weaponSlotManager.GetDamage();
-            int playerCRT = _player.weaponSlotManager.GetCrit();
+            int playerATK = PlayerManager.Instance.weaponSlotManager.GetDamage();
+            int playerCRT = PlayerManager.Instance.weaponSlotManager.GetCrit();
 
             int damage = 0;
-            damage += _player.stats.GetOutgoingDamage(playerATK, playerCRT);
-            damage += enemyManager.stats.GetIncomingDamage(damage);
+            damage += PlayerManager.Instance.stats.GetOutgoingDamage(playerATK, playerCRT);
+            damage += EnemyManager.Instance.stats.GetIncomingDamage(damage);
 
             Debug.Log("Enemy incoming damage = " + damage.ToString());
             
-            enemyManager.TakeDamage(damage);
+            EnemyManager.Instance.TakeDamage(damage);
 
-            _player.stats.hitCount++;
-            _player.stats.currentSkillPoints += 0.5f;
-			if (_player.attacker.IsBasicAttack())
-            	_player.stats.UpdateAttackCharge(true);
+            PlayerManager.Instance.stats.hitCount++;
+            PlayerManager.Instance.stats.currentSkillPoints += 0.5f;
+			if (PlayerManager.Instance.attacker.IsAttackOfType(Enums.ActionType.Basic))
+            	PlayerManager.Instance.stats.UpdateAttackCharge(true);
         }
     }
 

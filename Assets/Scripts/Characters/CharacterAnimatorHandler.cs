@@ -29,6 +29,12 @@ public class CharacterAnimatorHandler : MonoBehaviour
         _animator.SetBool("isInteracting", isInteracting);
         _animator.CrossFade(targetAnimation, 0.2f);
     }
+
+    public void StopCurrentAnimation()
+    {
+        _animator.StopPlayback();
+        _animator.SetBool("isInteracting", false);
+    }
     
     public void UpdateAnimatorValues(float horizontalMovement, float verticalMovement)
     {

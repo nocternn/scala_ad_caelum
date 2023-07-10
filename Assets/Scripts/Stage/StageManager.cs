@@ -108,14 +108,14 @@ public class StageManager : MonoBehaviour
         if (show)
         {
             CameraManager.Instance.SetCamera(Enums.CameraType.Standard);
-            
-            PlayerManager.Instance.gameObject.SetActive(true); 
-            PlayerManager.Instance.Initialize();
+
+            PlayerManager.Instance.ToggleActive(true);
             PlayerManager.Instance.SetWeapon(SceneLoader.Instance.weapon);
+            PlayerManager.Instance.stats.CalculateCritChance(id);
         }
         else
         {
-            PlayerManager.Instance.gameObject.SetActive(false);
+            PlayerManager.Instance.ToggleActive(false);
             
             CameraManager.Instance.SetCamera(Enums.CameraType.Free);
         }
@@ -125,13 +125,12 @@ public class StageManager : MonoBehaviour
     {
         if (show)
         {
-            EnemyManager.Instance.gameObject.SetActive(true);
-            EnemyManager.Instance.Initialize();
-            EnemyManager.Instance.SetEnemyType(EnemyManager.Types[id - 1]);
+            EnemyManager.Instance.SetEnemyType(Dictionaries.EnemyType[(Enums.EnemyType)(id - 1)]);
+            EnemyManager.Instance.ToggleActive(true);
         }
         else
         {
-            EnemyManager.Instance.gameObject.SetActive(false);
+            EnemyManager.Instance.ToggleActive(false);
         }
     }
 
@@ -254,6 +253,7 @@ public class StageManager : MonoBehaviour
             ShowShop(true);
             
             HUDManager.Instance.shop.gameObject.SetActive(false);
+            StageManager.Instance.shop.isOpen = false;
         }
         else if (stageType == Enums.StageType.Quit)
         {

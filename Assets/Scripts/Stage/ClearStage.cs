@@ -19,8 +19,9 @@ public class ClearStage : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        EnemyManager enemy   = GameObject.Find("Enemy").transform.GetComponent<EnemyManager>();
-        Destroy(enemy.gameObject);
+        EnemyManager enemy = GameObject.Find("Enemy").transform.GetComponent<EnemyManager>();
+        enemy.ToggleActive(false);
+        enemy.locomotion.ToggleColliders(false);
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

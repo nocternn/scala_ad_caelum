@@ -15,7 +15,14 @@ public class ShopTrigger : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            _shop.isOpenable = true;
+            if (!_shop.isOpen)
+            {
+                _shop.isOpenable = true;
+            }
+            else
+            {
+                _shop.isOpenable = false;
+            }
         }
     }
     

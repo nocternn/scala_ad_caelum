@@ -8,26 +8,17 @@ public class EnemyStatePursueTarget : EnemyState
     [SerializeField] private EnemyStateIdle idleState;
     [SerializeField] private EnemyStateCombatStance combatStanceState;
     
-    [Header("A.I. Settings - Movement")]
-    private float distanceFromTarget;
-    private float viewableAngle;
-    
     public override EnemyState Tick(EnemyManager manager)
     {
-        Vector3 direction = manager.currentTarget.transform.position - manager.transform.position;
-        distanceFromTarget = Vector3.Distance(manager.currentTarget.transform.position, manager.transform.position);
-        viewableAngle = Vector3.Angle(direction, manager.transform.forward);
-        
         // Chase the target
         if (!manager.isInteracting)
         {
             HandleMovement(manager);
         }
         HandleRotation(manager);
-        manager.ResetNavMeshAgent();
         
         // Switch to combat stance state if within attack range
-        if (!manager.isInteracting && distanceFromTarget <= manager.stats.maxAttackRange)
+        if (!manager.isInteracting && _distanceFromTarget <= manager.stats.maxAttackRange)
             return combatStanceState;
         
         // Continue to chase if out of attack range
@@ -36,7 +27,7 @@ public class EnemyStatePursueTarget : EnemyState
     
     public void HandleMovement(EnemyManager manager)
     {
-        if (distanceFromTarget > manager.stats.maxAttackRange)
+        if (_distanceFromTarget > manager.stats.maxAttackRange)
         {
             manager.animatorHandler.UpdateAnimatorValues(0, 1);
         }
@@ -73,5 +64,6 @@ public class EnemyStatePursueTarget : EnemyState
             manager.transform.rotation = Quaternion.Slerp(manager.transform.rotation, manager.navMeshAgent.transform.rotation,
                 manager.locomotion.rotationSpeed / Time.deltaTime);
         }
+        manager.ResetNavMeshAgent();
     }
 }

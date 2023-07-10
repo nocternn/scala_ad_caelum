@@ -15,24 +15,18 @@ MonoBehaviour:
   primaryIcon: {fileID: 21300000, guid: 1632d1f021cfa69468a4f0a97fd4d0d4, type: 3}
   name: Scythe
   description: 'ATK: 450 | CRT: 41'
-  model: {fileID: 8924068759846017593, guid: 3c441d1a214d92b4cbae07517a7b6466, type: 3}
   ammo: {fileID: 0}
+  type: 3
+  model: {fileID: 8924068759846017593, guid: 3c441d1a214d92b4cbae07517a7b6466, type: 3}
   secondaryIcon: {fileID: 21300000, guid: 1ce575a89cacc434cb0afe3c4c47b7ee, type: 3}
   id: 5
   atk: 450
   crt: 41
-  descriptionActive: Enemies take 100.0% ATK DMG per second for 10s.
-  descriptionUltimate: Wielder restores 300 HP instantly and has 35.0% bonus DMG.
-  skillActive: {fileID: 0}
-  skillUltimate: {fileID: 0}
-  activeCost: 30
-  activeCooldown: 20
-  ultimateCost: 70
-  ultimateCooldown: 15
-  activeAttack: scythe_active_attack
-  basicAttack01: scythe_basic_attack_01
-  basicAttack02: scythe_basic_attack_02
-  basicAttack03: scythe_basic_attack_03
-  basicAttack04: scythe_basic_attack_04
-  chargedAttack: scythe_charged_attack
-  ultimateAttack: PowerUp
+  _actions:
+  - {fileID: 11400000, guid: 84b066c87a6995a42a3fe3c2335e2a91, type: 2}
+  - {fileID: 11400000, guid: a7b7b42c4745a6a4594248907353339f, type: 2}
+  - {fileID: 11400000, guid: 4445bdcb9072dd34991760312921f6e6, type: 2}
+  - {fileID: 11400000, guid: cd68fffeeb7e4cb46875b6628c0ce152, type: 2}
+  - {fileID: 11400000, guid: 4de0ec1c0100eaa4eac676bb4002421e, type: 2}
+  - {fileID: 11400000, guid: 23c98a333e592a74f92551dbe4d60d2f, type: 2}
+  - {fileID: 11400000, guid: f273049f7e79b8d429beae7eb3dc2991, type: 2}

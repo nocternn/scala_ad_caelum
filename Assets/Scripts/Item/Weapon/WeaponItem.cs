@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,43 +8,21 @@ public class WeaponItem : Item
 {
     #region Attributes
 
-    public GameObject model;
+    [Header("Specific Item Information")]
     public AmmoItem ammo;
+    public Enums.WeaponType type;
+    public Enums.WeaponCombatType combatType;
+    public GameObject model;
     public Sprite secondaryIcon;
-    
     public int id;
 
     [Header("Stats")]
     public int atk;
     public int crt;
 
-    [Header("Descriptions")]
-    public string descriptionActive;
-    public string descriptionUltimate;
-
-    [Header("Skill Info")]
-    public WeaponItemSkillActive skillActive; 
-    public WeaponItemSkillUltimate skillUltimate; 
-    public int activeCost;
-    public int activeCooldown;
-    public int ultimateCost;
-    public int ultimateCooldown;
+    [Header("Actions")]
+    [SerializeField] private WeaponAction[] _actions;
     
-    [Header("Active Attack Animations")]
-    public string activeAttack;
-    
-    [Header("Basic Attack Animations")]
-    public string basicAttack01;
-    public string basicAttack02;
-    public string basicAttack03;
-    public string basicAttack04;
-    
-    [Header("Charged Attack Animations")]
-    public string chargedAttack;
-    
-    [Header("Ultimate Attack Animations")]
-    public string ultimateAttack;
-
     #endregion
 
     public string GetName()
@@ -54,26 +33,99 @@ public class WeaponItem : Item
     public string GetDescription()
     {
         string updatedDescription = description;
-        updatedDescription += "\nActive: " + descriptionActive;
-        updatedDescription += "\nUltimate: " + descriptionUltimate;
+        foreach (var action in _actions)
+        {
+            string actionDescription = action.GetDescription();
+            if (actionDescription.Length > 0)
+                updatedDescription += "\n" + action.GetDescription();
+        }
 
         return updatedDescription;
     }
 
-    public void SetSkills(GameObject holder)
+    public int GetSkillCost(Enums.ActionType actionType)
     {
-        foreach (var comp in holder.GetComponents<Component>())
+        foreach (var action in _actions)
         {
-            if (!(comp is Transform))
+            switch (action.type)
             {
-                Destroy(comp);
+                case Enums.ActionType.Active:
+                    if (action.type == actionType)
+                        return ((ActiveAttackAction)action).cost;
+                    return 0;
+                case Enums.ActionType.Ultimate:
+                    if (action.type == actionType)
+                        return ((UltimateAttackAction)action).cost;
+                    return 0;
+                default:
+                    continue;
             }
         }
-
-        skillActive = holder.AddComponent<WeaponItemSkillActive>() as WeaponItemSkillActive;
-        skillUltimate = holder.AddComponent<WeaponItemSkillUltimate>() as WeaponItemSkillUltimate;
-
-        skillActive.Initialize(this);
-        skillUltimate.Initialize(this);
+        return 0;
     }
+    
+    public Tuple<bool, int> GetSkillStatus(Enums.ActionType actionType)
+    {
+        bool cooldownStatus = false;
+        int currentCooldown = -1;
+        
+        foreach (var action in _actions)
+        {
+            if (action.type == actionType)
+            {
+                switch (action.type)
+                {
+                case Enums.ActionType.Active:
+                    cooldownStatus = ((ActiveAttackAction)action).skill.onCooldown;
+                    currentCooldown = ((ActiveAttackAction)action).skill.currentCooldown;
+                    break;
+                case Enums.ActionType.Ultimate:
+                    cooldownStatus = ((UltimateAttackAction)action).skill.onCooldown;
+                    currentCooldown = ((UltimateAttackAction)action).skill.currentCooldown;
+                    break;
+                }
+            }
+        }
+        
+        return new Tuple<bool, int>(cooldownStatus, currentCooldown);
+    }
+
+    public WeaponAction[] GetActions()
+    {
+        return _actions;
+    }
+
+    public Tuple<bool, int, Enums.ActionType> PerformAttack(
+        Enums.CharacterType character, Enums.ActionType attack,
+        int id = 0,
+        bool playAnimation = true)
+    {
+        bool performedStatus = false;
+        int performedID = -1;
+        Enums.ActionType performedType = Enums.ActionType.None;
+        
+        foreach (var action in _actions)
+        {
+            if (action.type == attack && action.id == id)
+            {
+                switch (character)
+                {
+                    case Enums.CharacterType.Playable:
+                        action.PerformAction(PlayerManager.Instance, playAnimation);
+                        break;
+                    default:
+                        action.PerformAction(EnemyManager.Instance, playAnimation);
+                        break;
+                }
+
+                performedStatus = true;
+                performedID = action.id;
+                performedType = action.type;
+            }
+        }
+        
+        return new Tuple<bool, int, Enums.ActionType>(performedStatus, performedID, performedType);
+    }
+    
+    
 }

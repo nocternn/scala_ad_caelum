@@ -15,24 +15,19 @@ MonoBehaviour:
   primaryIcon: {fileID: 21300000, guid: 90a447e0be7f5af488a3b109fe709c53, type: 3}
   name: Katana
   description: 'ATK: 400 | CRT: 12'
-  model: {fileID: 6046141879700435344, guid: d88257ee18cb4894b8ec606ac4a73dec, type: 3}
   ammo: {fileID: 0}
+  type: 9
+  combatType: 0
+  model: {fileID: 6046141879700435344, guid: d88257ee18cb4894b8ec606ac4a73dec, type: 3}
   secondaryIcon: {fileID: 21300000, guid: 022ab74063a06a843ad6c5c8b62ac3e7, type: 3}
   id: 4
   atk: 400
   crt: 12
-  descriptionActive: 'Boosts wielder''s DMG by 50.0% for 20s. '
-  descriptionUltimate: Unleash a powerful forward slash, dealing 1500% ATK.
-  skillActive: {fileID: 0}
-  skillUltimate: {fileID: 0}
-  activeCost: 50
-  activeCooldown: 30
-  ultimateCost: 200
-  ultimateCooldown: 15
-  activeAttack: PowerUp
-  basicAttack01: katana_basic_attack_01
-  basicAttack02: katana_basic_attack_02
-  basicAttack03: katana_basic_attack_03
-  basicAttack04: katana_basic_attack_04
-  chargedAttack: katana_charged_attack
-  ultimateAttack: katana_ultimate_attack
+  _actions:
+  - {fileID: 11400000, guid: 6cfd4196d55d9bc429a63f6cd7290981, type: 2}
+  - {fileID: 11400000, guid: 9e27de74d98fe49499d55e637855ebce, type: 2}
+  - {fileID: 11400000, guid: f377da1b5c0d969499ead27a074b2aa3, type: 2}
+  - {fileID: 11400000, guid: 38edd75182698504998d0f2d47b3aca2, type: 2}
+  - {fileID: 11400000, guid: b8d56873702e5cf4aa71fcbbe962e246, type: 2}
+  - {fileID: 11400000, guid: 016ff87d0a44b1f4a8ead0ec4d130f92, type: 2}
+  - {fileID: 11400000, guid: 10051cc038b279249a4e8259ae97bded, type: 2}

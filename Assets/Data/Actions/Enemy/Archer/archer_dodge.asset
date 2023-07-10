@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58bfceae4339c5a4cbcefe8a627d79d2, type: 3}
+  m_Name: archer_dodge
+  m_EditorClassIdentifier: 
+  id: 0
+  _animation: archer_dodge_forward
+  _duration: 0
+  _recoveryTime: 10
+  chanceToBePerformed: 50
+  toBePerformed: 0
+  _backwardAnimation: archer_dodge_backward
+  _leftAnimation: archer_dodge_left
+  _rightAnimation: archer_dodge_right

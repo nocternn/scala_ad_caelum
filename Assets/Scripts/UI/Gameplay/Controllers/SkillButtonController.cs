@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -6,7 +7,7 @@ using UnityEngine.UI;
 
 public class SkillButtonController : MonoBehaviour
 {
-    [SerializeField] private string type;
+    [SerializeField] private Enums.ActionType type;
 
     private GameObject _info;
     
@@ -29,32 +30,35 @@ public class SkillButtonController : MonoBehaviour
 
     public void UpdateUI(WeaponItem weaponItem)
     {
-        if (type.Equals("active"))
+        Tuple<bool, int> status = weaponItem.GetSkillStatus(type);
+        bool onCooldown = status.Item1;
+        int currentCooldown = status.Item2;
+        
+        ToggleCooldown(onCooldown);
+        if (type == Enums.ActionType.Active)
         {
-            ToggleCooldown(weaponItem.skillActive.onCooldown);
-            if (weaponItem.skillActive.onCooldown)
+            if (onCooldown)
             {
-                _skillCooldown.text = weaponItem.skillActive.currentCooldown.ToString();
+                _skillCooldown.text = currentCooldown.ToString();
             }
             else
             {
                 _skillIcon.sprite = weaponItem.primaryIcon;
-                _skillCost.text   = weaponItem.activeCost.ToString() + " SP";
+                _skillCost.text   = weaponItem.GetSkillCost(Enums.ActionType.Active).ToString() + " SP";
                 
                 _skillIcon.enabled = true;
             }
         }
         else
         {
-            ToggleCooldown(weaponItem.skillUltimate.onCooldown);
-            if (weaponItem.skillUltimate.onCooldown)
+            if (onCooldown)
             {
-                _skillCooldown.text = weaponItem.skillUltimate.currentCooldown.ToString();
+                _skillCooldown.text = currentCooldown.ToString();
             }
             else
             {
                 _skillIcon.sprite = weaponItem.secondaryIcon;
-                _skillCost.text   = weaponItem.ultimateCost.ToString() + " SP";
+                _skillCost.text   = weaponItem.GetSkillCost(Enums.ActionType.Ultimate).ToString() + " SP";
                 
                 _skillIcon.enabled = true;
             }

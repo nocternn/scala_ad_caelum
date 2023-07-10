@@ -97,6 +97,7 @@ public class HUDManager : MonoBehaviour
         {
             shop.gameObject.SetActive(true);
 
+            StageManager.Instance.shop.isOpen = true;
             StageManager.Instance.shop.isOpenable = false;
             
             hudShop = shop.GetComponent<HUDShopManager>();

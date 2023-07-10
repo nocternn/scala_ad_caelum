@@ -19,11 +19,9 @@ public class PlayerManager : CharacterManager
     
     [Header("Helpers")]
     public Transform aimTarget;
-    public Transform skillsHolder;
     
     [Header("Properties")]
     public bool canDoCombo;
-    public bool isHit = false;
 
     #endregion
 
@@ -31,24 +29,42 @@ public class PlayerManager : CharacterManager
     
     protected override void Awake()
     {
-        var foundAims = GameObject.FindObjectsOfType<MultiAimConstraint>(true);
-        foreach (MultiAimConstraint foundAim in foundAims)
+        base.Awake();
+        Instance = this;
+        
+        var foundRigs = GameObject.FindObjectsOfType<Rig>(true);
+        foreach (Rig foundRig in foundRigs)
         {
-            if (foundAim.transform.root.name.Equals("Player"))
+            if (foundRig.transform.root.name.Equals("Player"))
             {
-                aim = foundAim; 
+                rigLayer = foundRig;
                 break;
             }
         }
-        aimTarget    = transform.GetChild(2).GetChild(1);
-        skillsHolder = transform.GetChild(2).GetChild(2);
+        aimTarget = transform.GetChild(2).GetChild(1);
+
+        animatorHandler   = GetComponent<PlayerAnimatorHandler>();
+        attacker          = GetComponent<PlayerAttacker>();
+        inputHandler      = GetComponent<PlayerInputHandler>();
+        locomotion        = GetComponent<PlayerLocomotion>();
+        stats             = GetComponent<PlayerStats>();
+        weaponSlotManager = GetComponent<PlayerWeaponSlotManager>();
+
+        rigBuilder = GetComponent<RigBuilder>();
+        rigBuilder.Clear();
         
-        Instance = this;
-        Instance.gameObject.SetActive(false);
+        animatorHandler.Initialize();
+        weaponSlotManager.Initialize();
+        locomotion.Initialize();
+        
+        ToggleActive(false);
     }
     
     private void Update()
     {
+        if (_hasDied || !_isActive)
+            return;
+        
         inputHandler.HandleAllInputs(Time.deltaTime);
 
         if (IsLockingOnTarget())
@@ -63,6 +79,9 @@ public class PlayerManager : CharacterManager
 
     private void FixedUpdate()
     {
+        if (_hasDied || !_isActive)
+            return;
+        
         float delta = Time.deltaTime;
 
         isInteracting = animatorHandler.GetBool("isInteracting");
@@ -80,6 +99,9 @@ public class PlayerManager : CharacterManager
 
     private void LateUpdate()
     {
+        if (_hasDied || !_isActive)
+            return;
+        
         inputHandler.attackActiveInput = false;
         inputHandler.attackBasicInput = false;
         inputHandler.attackChargedInput = false;
@@ -87,30 +109,11 @@ public class PlayerManager : CharacterManager
     }
     #endregion
 
-    public void Initialize()
-    {
-        animatorHandler   = GetComponent<PlayerAnimatorHandler>();
-        attacker          = GetComponent<PlayerAttacker>();
-        inputHandler      = GetComponent<PlayerInputHandler>();
-        locomotion        = GetComponent<PlayerLocomotion>();
-        stats             = GetComponent<PlayerStats>();
-        weaponSlotManager = GetComponent<PlayerWeaponSlotManager>();
-
-        rigBuilder = GetComponent<RigBuilder>();
-        
-        animatorHandler.Initialize();
-        weaponSlotManager.Initialize();
-        attacker.Initialize();
-        locomotion.Initialize();
-
-        stats.CalculateCritChance(StageManager.Instance.id);
-    }
-
     #region Setters
 
     public void SetWeapon(WeaponItem weapon)
     {
-        if (weapon.name.Equals(weaponSlotManager.weaponTypes[2])) // Gauntlet - left hand
+        if (weapon.type == Enums.WeaponType.Gauntlet) // Gauntlet - left hand
         {
             weaponSlotManager.leftHandWeapon = weapon;
             weaponSlotManager.rightHandWeapon = null;
@@ -126,15 +129,17 @@ public class PlayerManager : CharacterManager
 
         weaponSlotManager.SetUsedWeaponType();
         weaponSlotManager.LoadTwoHandIK();
-
-        weapon.SetSkills(skillsHolder.gameObject);
-        attacker.currentWeapon = weapon;
     }
-
-    public void ToggleCrosshair()
+    
+    public override void ToggleActive(bool state)
     {
-        aimTarget.gameObject.SetActive(isAiming);
-        HUDManager.Instance.hudCombat.ToggleCrosshair(isAiming);
+        base.ToggleActive(state);
+        
+        Renderer[] renderers = transform.GetChild(1).GetComponentsInChildren<Renderer>();
+        foreach (var renderer in renderers)
+        {
+            renderer.enabled = state;
+        }
     }
     
     #endregion
@@ -208,7 +213,7 @@ public class PlayerManager : CharacterManager
         if (isWeaponBased)
         {
             animatorHandler.PlayTargetWeaponBasedAnimation(targetAnimation, isInteracting,
-                weaponSlotManager.weaponTypes);
+                weaponSlotManager.GetCurrentWeapon());
         }
         else
         {
@@ -216,27 +221,31 @@ public class PlayerManager : CharacterManager
         }
     }
     
-    public void HandleAttack(string tag)
+    public void HandleAttack(Enums.ActionType attack)
     {
-        if (tag.Equals("active"))
+        switch (attack)
         {
-            attacker.HandleActiveAttack();
-        }
-        else if (tag.Equals("basic"))
-        {
-            attacker.HandleBasicAttack();
-        }
-        else if (tag.Equals("charged"))
-        {
-            attacker.HandleChargedAttack();
-        }
-        else if (tag.Equals("combo"))
-        {
-            attacker.HandleWeaponCombo();
-        }
-        else if (tag.Equals("ultimate"))
-        {
-            attacker.HandleUltimateAttack();
+            case Enums.ActionType.Basic:
+                attacker.HandleBasicAttack();
+                break;
+            case Enums.ActionType.Charged:
+                attacker.HandleChargedAttack();
+                break;
+            case Enums.ActionType.Active:
+                attacker.HandleActiveAttack();
+                break;
+            case Enums.ActionType.Ultimate:
+                attacker.HandleUltimateAttack();
+                break;
+            case Enums.ActionType.Shoot:
+                attacker.HandleShootAttack();
+                break;
+            case Enums.ActionType.Combo:
+                attacker.HandleWeaponCombo();
+                break;
+            default:
+                Debug.Log("[PlayerManager::HandleAttack] Invalid attack type.");
+                break;
         }
     }
 
@@ -256,5 +265,4 @@ public class PlayerManager : CharacterManager
     }
 
     #endregion
-
 }

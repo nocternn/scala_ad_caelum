@@ -50,8 +50,6 @@ public class PlayerStats : CharacterStats
 
             StageManager.Instance.EndStageLoss();
         }
-
-        PlayerManager.Instance.isHit = true;
     }
 
     public void UpdateAttackCharge(bool isGain)

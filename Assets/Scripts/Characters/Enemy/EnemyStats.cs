@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class EnemyStats : CharacterStats
 {
-    public EnemyActionAttack[] enemyAttacks;
-    
     [Header("A.I. Settings")]
     public float currentRecoveryTime = 0;
     public float maxAttackRange = 10;
+
+    [Header("Properties")]
+    public Enums.EnemyType enemyType;
+    [SerializeField] private Action[] _actions;
 
     void Start()
     {
@@ -24,5 +26,10 @@ public class EnemyStats : CharacterStats
         {
             currentHealth = 0;
         }
+    }
+
+    public Action[] GetActions()
+    {
+        return _actions;
     }
 }

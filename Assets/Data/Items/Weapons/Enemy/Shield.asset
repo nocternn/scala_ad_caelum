@@ -13,17 +13,14 @@ MonoBehaviour:
   m_Name: Shield
   m_EditorClassIdentifier: 
   primaryIcon: {fileID: 0}
-  secondaryIcon: {fileID: 0}
   name: Shield
   description: 
-  level: 0
+  ammo: {fileID: 0}
+  type: 8
+  combatType: 0
   model: {fileID: 3224559543519104709, guid: c55589d59a0ca5d47b65e0b57cdb37af, type: 3}
-  active_cost: 0
-  ultimate_cost: 0
-  active_attack: 
-  basic_attack_01: 
-  basic_attack_02: 
-  basic_attack_03: 
-  basic_attack_04: 
-  charged_attack: 
-  ultimate_attack: 
+  secondaryIcon: {fileID: 0}
+  id: 0
+  atk: 0
+  crt: 0
+  _actions: []

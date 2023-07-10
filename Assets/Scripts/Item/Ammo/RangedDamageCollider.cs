@@ -25,8 +25,8 @@ public class RangedDamageCollider : DamageCollider
     
     protected void DestroyAmmo()
     {
-        _player.weaponSlotManager.DisableDamageCollider();
-        _enemy.weaponSlotManager.DisableDamageCollider();
+        PlayerManager.Instance.weaponSlotManager.DisableDamageCollider();
+        EnemyManager.Instance.weaponSlotManager.DisableDamageCollider();
         Destroy(transform.root.gameObject);
     }
 }

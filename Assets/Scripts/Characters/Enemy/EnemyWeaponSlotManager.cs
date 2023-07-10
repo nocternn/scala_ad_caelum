@@ -7,7 +7,6 @@ public class EnemyWeaponSlotManager : CharacterWeaponSlotManager
     public void Initialize()
     {
         Initialize(transform);
-        weaponTypes = new[] { "Bow", "Spear", "Crossbow", "Katana", "Sword" };
         
         LoadWeaponOnSlot(leftHandWeapon, true, false);
         LoadWeaponOnSlot(rightHandWeapon, false, true);
@@ -36,10 +35,10 @@ public class EnemyWeaponSlotManager : CharacterWeaponSlotManager
     
     public void SetUsedWeaponType()
     {
-        string currentWeaponType = GetCurrentWeaponType();
-
+        WeaponItem weapon = GetCurrentWeapon();
+        
         // Toggle two-handing for spear and crossbow
-        if (currentWeaponType.Equals(weaponTypes[1]) || currentWeaponType.Equals(weaponTypes[2]))
+        if (weapon.type == Enums.WeaponType.Crossbow || weapon.type == Enums.WeaponType.Spear)
         {
             EnemyManager.Instance.isTwoHanding = true;
         }
@@ -49,7 +48,7 @@ public class EnemyWeaponSlotManager : CharacterWeaponSlotManager
         }
 
         // Toggle aim for bow and crossbow
-        if (currentWeaponType.Equals(weaponTypes[0]) || currentWeaponType.Equals(weaponTypes[2]))
+        if (weapon.type == Enums.WeaponType.Bow || weapon.type == Enums.WeaponType.Crossbow)
         {
             EnemyManager.Instance.isAiming = true;
         }
@@ -57,43 +56,5 @@ public class EnemyWeaponSlotManager : CharacterWeaponSlotManager
         {
             EnemyManager.Instance.isAiming = false;
         }
-    }
-    
-    public void ShootAmmo()
-    {
-        string currentWeaponType = GetCurrentWeaponType();
-        WeaponItem weapon;
-        if (currentWeaponType.Equals(weaponTypes[0]))
-        {
-            weapon = leftHandWeapon;
-        }
-        else
-        {
-            weapon = rightHandWeapon;
-        }
-        
-        // Get instantion location
-        AmmoInstantiationLocation instantiationLocation;
-        instantiationLocation = rightHandSlot.GetComponent<AmmoInstantiationLocation>();
-        if (instantiationLocation == null)
-            instantiationLocation = rightHandSlot.GetComponentInChildren<AmmoInstantiationLocation>();
-        
-        GameObject ammo = Instantiate(weapon.ammo.model, instantiationLocation.transform);
-        Rigidbody rigidbody = ammo.GetComponent<Rigidbody>();
-        RangedDamageCollider damageCollider = ammo.GetComponentInChildren<RangedDamageCollider>();
-        
-		// Set ammo direction
-		ammo.transform.rotation = Quaternion.LookRotation(rightHandSlot.transform.up);
-
-        // Set ammo velocity
-        rigidbody.AddForce(ammo.transform.forward * weapon.ammo.forwardVelocity);
-        rigidbody.AddForce(ammo.transform.up * weapon.ammo.upwardVelocity);
-        rigidbody.useGravity = weapon.ammo.useGravity;
-        rigidbody.mass = weapon.ammo.mass;
-        ammo.transform.parent = null;
-
-        // Enable damage
-        damageCollider.ammoItem = weapon.ammo;
-        EnemyManager.Instance.weaponSlotManager.SetDamageCollider(false, damageCollider);
     }
 }

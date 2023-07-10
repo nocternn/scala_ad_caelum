@@ -5,21 +5,25 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Items/Card")]
 public class CardItem : Item
 {
-	public bool canUpgrade;
+	#region Attributes
 
+	[Header("Specific Item Information")]
 	public Enums.CardType type;
+	public bool canUpgrade;
+	public int id;
+	public int level;
 
-    public int id;
-    public int level;
-
-    public int cost;
-    public string costDescription;
+	[Header("Cost")]
+	public int cost;
+	public string costDescription;
     
-    public float[] count;
-    public float[] duration;
-    public float[] scalar;
+	[Header("Card Effect")]
+	public CardItemEffect effect;
+	public float[] count;
+	public float[] duration;
+	public float[] scalar;
 
-    public CardItemEffect effect;
+	#endregion
 
     public void Initialize()
     {

@@ -5,19 +5,6 @@ using UnityEngine;
 
 public class WeaponItemSkillUltimate : WeaponItemSkill
 {
-  public override void Initialize(WeaponItem weapon)
-  {
-    base.Initialize(weapon);
-
-    currentCooldown = weapon.ultimateCooldown;
-  }
-  
-  public override void UseSkill()
-  {
-    PlayerManager.Instance.PlayTargetAnimation(_weapon.ultimateAttack, true);
-    base.UseSkill();
-  }
-  
   #region Skill Overrides
 
   protected override void Pistol()
@@ -38,7 +25,7 @@ public class WeaponItemSkillUltimate : WeaponItemSkill
     PlayerManager.Instance.weaponSlotManager.SetDamage(damageOriginal + damageExtra);
 
     // Shoot in front
-    PlayerManager.Instance.attacker.ShootBullet();
+    PlayerManager.Instance.HandleAttack(Enums.ActionType.Shoot);
 
     // Revert damage
     PlayerManager.Instance.weaponSlotManager.SetDamage(damageOriginal);

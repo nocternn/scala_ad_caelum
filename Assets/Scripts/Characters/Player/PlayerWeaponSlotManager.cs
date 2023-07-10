@@ -7,15 +7,13 @@ public class PlayerWeaponSlotManager : CharacterWeaponSlotManager
         public void Initialize()
         {
                 Initialize(transform);
-                weaponTypes = new[] { "Pistol", "Greatsword", "Gauntlet", "Katana", "Scythe" };
         }
 
         public override bool LoadWeaponOnSlot(WeaponItem weaponItem, bool isLeft, bool isRight)
         {
                 bool isLoaded = base.LoadWeaponOnSlot(weaponItem, isLeft, isRight);
 
-                string weaponType = GetCurrentWeaponType();
-                if (isLoaded && weaponType.Equals(weaponTypes[0]) && rightHandDamageCollider == null)
+                if (isLoaded && weaponItem.type == Enums.WeaponType.Pistol && rightHandDamageCollider == null)
                 {
                         rightHandDamageCollider = weaponItem.ammo.model.GetComponentInChildren<DamageCollider>();
                 }
@@ -34,13 +32,13 @@ public class PlayerWeaponSlotManager : CharacterWeaponSlotManager
         }
         public void SetUsedWeaponType()
         {
-                string currentWeaponType = GetCurrentWeaponType();
+                WeaponItem weapon = GetCurrentWeapon();
                 
-                PlayerManager.Instance.animatorHandler.SetUsedWeaponType(currentWeaponType, weaponTypes);
+                PlayerManager.Instance.animatorHandler.SetUsedWeaponType(Dictionaries.WeaponTypePlayer[weapon.type]);
 
-                if (currentWeaponType.Equals(weaponTypes[0])
-                    || currentWeaponType.Equals(weaponTypes[1])
-                    || currentWeaponType.Equals(weaponTypes[4]))
+                if (weapon.type == Enums.WeaponType.Pistol
+                    || weapon.type == Enums.WeaponType.Greatsword
+                    || weapon.type == Enums.WeaponType.Scythe)
                 {
                         PlayerManager.Instance.isTwoHanding = true;
                 }

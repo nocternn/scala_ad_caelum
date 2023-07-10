@@ -114,41 +114,48 @@ public class PlayerInputHandler : MonoBehaviour
     {
 	    if (attackActiveInput)
 		{
-			PlayerManager.Instance.HandleAttack("active");
+			PlayerManager.Instance.HandleAttack(Enums.ActionType.Active);
 		}
 		else if (attackBasicInput)
 		{
 			if (PlayerManager.Instance.canDoCombo)
 			{
 				comboFlag = true;
-				PlayerManager.Instance.HandleAttack("combo");
+				PlayerManager.Instance.HandleAttack(Enums.ActionType.Combo);
 				comboFlag = false;
 			}
 			else
 			{
 				if (PlayerManager.Instance.isInteracting)
 					return;
-				PlayerManager.Instance.HandleAttack("basic");
+				switch (PlayerManager.Instance.weaponSlotManager.GetCurrentWeapon().combatType)
+				{
+					case Enums.WeaponCombatType.Ranged:
+						PlayerManager.Instance.HandleAttack(Enums.ActionType.Shoot);
+						break;
+					default:
+						PlayerManager.Instance.HandleAttack(Enums.ActionType.Basic);
+						break;
+				}
 			}
 		}
 		else if (attackChargedInput)
 		{
 			if (!PlayerManager.Instance.stats.IsFullCharge())
 				return;
-			PlayerManager.Instance.HandleAttack("charged");
+			PlayerManager.Instance.HandleAttack(Enums.ActionType.Charged);
 			PlayerManager.Instance.stats.UpdateAttackCharge(false);
 		}
 		else if (attackUltimateInput)
 		{
-			PlayerManager.Instance.HandleAttack("ultimate");
+			PlayerManager.Instance.HandleAttack(Enums.ActionType.Ultimate);
 		}
     }
 
     public void HandleLockOnInput()
     {
-	    bool   usingPistol       = false;
-	    string currentWeaponType = PlayerManager.Instance.weaponSlotManager.GetCurrentWeaponType();
-	    if (currentWeaponType.Equals(PlayerManager.Instance.weaponSlotManager.weaponTypes[0]))
+	    bool usingPistol = false;
+	    if (PlayerManager.Instance.weaponSlotManager.GetCurrentWeapon().type == Enums.WeaponType.Pistol)
 		    usingPistol = true;
 
 	    if (lockOnInput && lockOnFlag == false) // Lock on
@@ -157,8 +164,8 @@ public class PlayerInputHandler : MonoBehaviour
 
 		    if (usingPistol)
 			{
-			    PlayerManager.Instance.isAiming = true;
-            	CameraManager.Instance.SetCamera(Enums.CameraType.Aim);
+                PlayerManager.Instance.PerformAction(Enums.ActionType.Aim);
+                CameraManager.Instance.SetCamera(Enums.CameraType.Aim);
 			}
 			else
 			{
@@ -172,18 +179,12 @@ public class PlayerInputHandler : MonoBehaviour
 	    {
 		    lockOnInput = false;
 		    lockOnFlag = false;
-		    
+
 		    if (usingPistol)
-			    PlayerManager.Instance.isAiming = false;
-		    
+			    PlayerManager.Instance.PerformAction(Enums.ActionType.Aim);
+
 		    CameraManager.Instance.currentCamera.ClearLockOnTargets();
             CameraManager.Instance.SetCamera(Enums.CameraType.Standard);
-	    }
-
-	    if (usingPistol)
-	    {
-		    PlayerManager.Instance.ToggleAim();
-		    PlayerManager.Instance.ToggleCrosshair();
 	    }
     }
     

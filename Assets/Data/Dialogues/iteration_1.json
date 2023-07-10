@@ -1,46 +1,59 @@
 {
     "stage01" : [
         {
-            "name" : "",
+            "name" : "???",
             "sentences" : [
-                "It was another ordinary day for David.",
-                "Like clockwork, David wakes up at 7 a.m. sharp, goes to work from 9 a.m. until evening, comes home at 6 p.m. then goes to sleep at 11 p.m.",
-                "Every day, the cycle repeats. The day was never different.",
-                "But the night, the recent nights, brought something new.",
-                "Tonight David opens his eyes once again."
-            ]
-        },
-        {
-            "name" : "David",
-            "sentences" : [
-                ""
+                "Remember, this is not a dream.",
+                "And yet, it is not reality either.",
+                "You are here, only to see yourself.",
+                "Welcome, to Caelum."
             ]
         }
     ],
     "stage02": [
         {
+            "name" : "???",
+            "sentences" : [
+                "Was this trial too easy? Or too hard?",
+                "What do you think?"
+            ]
+        },
+        {
             "name" : "David",
             "sentences" : [
-                "Iteration 1, Stage 2, Dialogue 1, Sentence 1",
-                "Iteration 1, Stage 1, Dialogue 1, Sentence 2"
+                "I... don't know.",
+                "Has anyone else gone through this? What do they think?"
             ]
         },
         {
             "name" : "???",
             "sentences" : [
-                "Iteration 1, Stage 2, Dialogue 2, Sentence 1",
-                "Iteration 1, Stage 2, Dialogue 2, Sentence 2"
+                "...",
+                "You'll find you later."
             ]
         }
     ],
     "stage03" : [
         {
+            "name" : "???",
+            "sentences" : [
+                "Was this trial too easy? Or too hard?",
+                "What do you think?"
+            ]
+        },
+        {
             "name" : "David",
-            "sentences" : []
+            "sentences" : [
+                "I... don't know.",
+                "Has anyone else gone through this? What do they think?"
+            ]
         },
         {
             "name" : "???",
-            "sentences" : []
+            "sentences" : [
+                "...",
+                "You'll find you later."
+            ]
         }
     ],
     "stage04" : [

@@ -31,10 +31,12 @@ public class EnemyAnimatorHandler : CharacterAnimatorHandler
         EnemyManager.Instance.rigBuilder.Build();
     }
     
-    public void SetEnemyType(String enemyName)
+    public void SetEnemyType(string enemyName)
     {
-        foreach (string enemyType in EnemyManager.Types)
-            SetBool(String.Format("is{0}", enemyType), false);
+        foreach(KeyValuePair<Enums.EnemyType, string> type in Dictionaries.EnemyType)
+        {
+            SetBool(String.Format("is{0}", type.Value), false);
+        }
         SetBool(String.Format("is{0}", enemyName), true);
     }
 }

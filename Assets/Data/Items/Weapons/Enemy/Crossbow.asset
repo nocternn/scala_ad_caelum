@@ -15,20 +15,13 @@ MonoBehaviour:
   primaryIcon: {fileID: 0}
   name: Crossbow
   description: 
-  model: {fileID: 6449960425678237739, guid: e73e14e40fec31f43a8f349d391139ae, type: 3}
   ammo: {fileID: 11400000, guid: b4cecc4708eedb4499de5b125aca404b, type: 2}
+  type: 5
+  combatType: 1
+  model: {fileID: 6449960425678237739, guid: e73e14e40fec31f43a8f349d391139ae, type: 3}
   secondaryIcon: {fileID: 0}
   id: 0
-  descriptionActive: 
-  descriptionUltimate: 
-  skillActive: {fileID: 0}
-  skillUltimate: {fileID: 0}
-  activeCost: 0
-  ultimateCost: 0
-  activeAttack: 
-  basicAttack01: crossbow_attack_01
-  basicAttack02: 
-  basicAttack03: 
-  basicAttack04: 
-  chargedAttack: 
-  ultimateAttack: 
+  atk: 0
+  crt: 0
+  _actions:
+  - {fileID: 11400000, guid: d603f5e4c78cd3e46b600e5cee685611, type: 2}

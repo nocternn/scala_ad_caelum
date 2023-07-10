@@ -24,9 +24,8 @@ public class EnemyManager : CharacterManager
     public CharacterManager currentTarget;
     public EnemyState currentState;
 
-    [Header("Properties")]
-    [SerializeField] private bool hasDied = false;
-    public static string[] Types = new[] { "Archer", "Spearwoman", "Crossbowman", "Ninja", "Paladin" };
+	[Header("A.I. Settings - Actions")]
+	public bool isBlocking;
 
     #endregion
     
@@ -37,12 +36,23 @@ public class EnemyManager : CharacterManager
         base.Awake();
         
         Instance = this;
-        Instance.gameObject.SetActive(false);
+
+        navMeshAgent = GetComponentInChildren<NavMeshAgent>();
+        locomotion = GetComponent<EnemyLocomotion>();
+        rigidbody  = GetComponent<Rigidbody>();
+
+        navMeshAgent.enabled = false;
+        rigidbody.isKinematic = false;
+
+        locomotion.Initialize();
+		
+		_hasDied = false;
+		ToggleActive(false);
     }
     
     private void Update()
     {
-        if (hasDied)
+        if (_hasDied || !_isActive)
             return;
         
         HandleRecoveryTime();
@@ -50,12 +60,13 @@ public class EnemyManager : CharacterManager
     
     private void FixedUpdate()
     {
-        if (hasDied)
+        if (_hasDied || !_isActive)
             return;
         
         float delta = Time.deltaTime;
 
         isInteracting = animatorHandler.GetBool("isInteracting");
+        isBlocking    = animatorHandler.GetBool("isBlocking");
         canRotate     = animatorHandler.GetBool("canRotate");
         
         HandleStateMachine();
@@ -69,12 +80,11 @@ public class EnemyManager : CharacterManager
     {
         if (currentState != null)
         {
-            currentState.SetManager(this);
-
             EnemyState nextState = currentState.Tick(this);
             if (nextState != null)
             {
-                SwitchToNextState(nextState);
+				nextState.UpdateVision(this);
+        		currentState = nextState;
             }
         }
     }
@@ -93,30 +103,12 @@ public class EnemyManager : CharacterManager
 
     #endregion
 
-
-    private void SwitchToNextState(EnemyState nextState)
-    {
-        currentState = nextState;
-    }
-
-    public void Initialize()
-    {
-        navMeshAgent = GetComponentInChildren<NavMeshAgent>();
-        locomotion = GetComponent<EnemyLocomotion>();
-        rigidbody  = GetComponent<Rigidbody>();
-
-        navMeshAgent.enabled = false;
-        rigidbody.isKinematic = false;
-
-        locomotion.Initialize();
-    }
-
     #region Setters
 
     public void SetEnemyType(string enemyName)
     {
         Transform enemies = transform.Find("EnemyModel").transform;
-        for (int i = 0; i < EnemyManager.Types.Length; i++)
+        for (int i = 0; i < Dictionaries.EnemyType.Count; i++)
         {
             Transform enemy = enemies.GetChild(i);
             
@@ -129,7 +121,7 @@ public class EnemyManager : CharacterManager
                 
                 animatorHandler = currentEnemy.GetComponent<EnemyAnimatorHandler>();
                 animatorHandler.Initialize();
-                animatorHandler.SetEnemyType(EnemyManager.Types[i]);
+                animatorHandler.SetEnemyType(enemyName);
                 
                 stats = enemy.GetComponent<EnemyStats>();
                 stats.CalculateCritChance(StageManager.Instance.id);
@@ -139,15 +131,18 @@ public class EnemyManager : CharacterManager
                 weaponSlotManager.SetUsedWeaponType();
                 weaponSlotManager.LoadTwoHandIK();
 
-                var foundAims = GameObject.FindObjectsOfType<MultiAimConstraint>(true);
-                foreach (MultiAimConstraint foundAim in foundAims)
+                var foundRigs = GameObject.FindObjectsOfType<Rig>(true);
+                foreach (Rig foundRig in foundRigs)
                 {
-                    if (foundAim.transform.parent.parent.name.Equals(enemyName))
+                    if (foundRig.transform.parent.name.Equals(enemyName))
                     {
-                        aim = foundAim; 
+                        rigLayer = foundRig; 
                         break;
                     }
                 }
+
+				if (weaponSlotManager.GetCurrentWeapon().combatType == Enums.WeaponCombatType.Ranged)
+					PerformAction(Enums.ActionType.Aim);
 
                 break;
             }
@@ -156,7 +151,6 @@ public class EnemyManager : CharacterManager
 
     #endregion
 
-    
     public void TakeDamage(int damage)
     {
         stats.TakeDamage(damage);
@@ -165,7 +159,7 @@ public class EnemyManager : CharacterManager
         if (stats.currentHealth == 0)
         {
             animatorHandler.PlayTargetAnimation(String.Format("{0}_death", currentEnemy.name.ToLower()), true);
-            hasDied = true;
+            _hasDied = true;
             StageManager.Instance.EndStageWin();
         }
     }
@@ -174,5 +168,19 @@ public class EnemyManager : CharacterManager
     {
         navMeshAgent.transform.localPosition = Vector3.zero;
         navMeshAgent.transform.localRotation = Quaternion.identity;
+    }
+
+	public override void ToggleActive(bool state)
+    {
+        base.ToggleActive(state);
+
+		if (currentEnemy != null)
+		{
+			Renderer[] renderers = currentEnemy.GetComponentsInChildren<Renderer>();
+        	foreach (var renderer in renderers)
+        	{
+            	renderer.enabled = state;
+        	}
+		}
     }
 }

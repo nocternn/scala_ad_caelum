@@ -15,26 +15,18 @@ MonoBehaviour:
   primaryIcon: {fileID: 21300000, guid: 90179409bf1036d4b9cd91e44102323e, type: 3}
   name: Greatsword
   description: 'ATK: 500 | CRT: 43'
-  model: {fileID: 4378240966591519852, guid: 92ff518d80e138448b5511aca0251988, type: 3}
   ammo: {fileID: 0}
+  type: 0
+  model: {fileID: 4378240966591519852, guid: 92ff518d80e138448b5511aca0251988, type: 3}
   secondaryIcon: {fileID: 21300000, guid: 86f42235806fd1f4992d8f5db7fbaf3f, type: 3}
   id: 2
   atk: 500
   crt: 43
-  descriptionActive: Consume 50% HP, each hit from Basic ATK, Charged ATK deals 50%
-    ATK more DMG, and create a shield that can absorb damage equal to 80% of max
-    HP for 10s. Skill cannot be cast when HP is below 33%.
-  descriptionUltimate: Wielder gains 100% DMG boost and 50% DMG reduction for 10s.
-  skillActive: {fileID: 0}
-  skillUltimate: {fileID: 0}
-  activeCost: 50
-  activeCooldown: 20
-  ultimateCost: 80
-  ultimateCooldown: 20
-  activeAttack: PowerUp
-  basicAttack01: greatsword_basic_attack_01
-  basicAttack02: greatsword_basic_attack_02
-  basicAttack03: greatsword_basic_attack_03
-  basicAttack04: greatsword_basic_attack_04
-  chargedAttack: greatsword_charged_attack
-  ultimateAttack: PowerUp
+  _actions:
+  - {fileID: 11400000, guid: 0296dbaf2ad57cd4bb076ed48468c375, type: 2}
+  - {fileID: 11400000, guid: eadb218955f42c54c848cdae972b8cd5, type: 2}
+  - {fileID: 11400000, guid: d01269d3e7372424d96b169459e3499a, type: 2}
+  - {fileID: 11400000, guid: c215c7e9010c6164cbc52f9b4655454c, type: 2}
+  - {fileID: 11400000, guid: 3704ed511cfb09049a101a83cf8dabd2, type: 2}
+  - {fileID: 11400000, guid: 201e0cceafcbba242b8d0ba4b1472f3c, type: 2}
+  - {fileID: 11400000, guid: 619054fb6cc89ce4aae950390d24877a, type: 2}
