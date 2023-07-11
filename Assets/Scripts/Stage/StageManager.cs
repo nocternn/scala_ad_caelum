@@ -173,7 +173,8 @@ public class StageManager : MonoBehaviour
         stageType = Enums.StageType.Shop;
 
         TogglePlayer(false);
-        
+
+        HUDManager.Instance.hudStage.ShowCombatReport(false);
         HUDManager.Instance.Initialize();
     }
 
@@ -197,7 +198,12 @@ public class StageManager : MonoBehaviour
         }
         else
         {
+            // Save iteration progress
             dialogue.WriteProgress();
+            // Increase number of runs stat
+            SceneLoader.Instance.statsManager.stats.numberOfRuns++;
+            SceneLoader.Instance.statsManager.WriteStats();
+            
             Quit();
         }
     }
@@ -210,19 +216,30 @@ public class StageManager : MonoBehaviour
         if (id % 2 == 0)
             StageManager.Instance.ShowShop(true);
 
-        // Lock off target
-        PlayerManager.Instance.inputHandler.lockOnInput = true;
-        PlayerManager.Instance.inputHandler.lockOnFlag = true;
-        PlayerManager.Instance.inputHandler.HandleLockOnInput();
+        // Lock off target if player is locking on
+        if (PlayerManager.Instance.IsLockingOnTarget())
+            PlayerManager.Instance.inputHandler.HandleLockOnInput();
 
         // Spawn coin rewards
         HUDManager.Instance.hudStage.coin.Spawn(10);
         HUDManager.Instance.hudStage.AddCoins(true, _clearReward);
         coinsAvailable = HUDManager.Instance.hudStage.coin.GetCoins();
+
+        // Show combat report
+        HUDManager.Instance.hudStage.InitializeCombatReport(_clearReward);
+        HUDManager.Instance.hudStage.ShowCombatReport(true);
+        
+        // Register number of stages cleared stat
+        SceneLoader.Instance.statsManager.stats.numberOfStagesCleared++;
+        SceneLoader.Instance.statsManager.WriteStats();
     }
 
     public void EndStageLoss()
     {
+        // Register number of deaths cleared stat
+        SceneLoader.Instance.statsManager.stats.numberOfDeaths++;
+        SceneLoader.Instance.statsManager.WriteStats();
+        
         Quit();
     }
 
@@ -254,6 +271,7 @@ public class StageManager : MonoBehaviour
             ShowDoor(true);
             ShowShop(true);
             
+            HUDManager.Instance.hudStage.ShowCombatReport(true);
             HUDManager.Instance.shop.gameObject.SetActive(false);
             StageManager.Instance.shop.isOpen = false;
         }
@@ -266,11 +284,17 @@ public class StageManager : MonoBehaviour
             {
                 TogglePlayer(true);
 
-                if (EnemyManager.Instance != null)
+                // If the door is active then it means the stage is cleared and show the combat report
+                // Else show the enemy and resume timer
+                if (!StageManager.Instance.door.gameObject.activeSelf)
                 {
                     HUDManager.Instance.hudStage.ToggleTimer(true);
 
                     ToggleEnemy(true);
+                }
+                else
+                {
+                    HUDManager.Instance.hudStage.ShowCombatReport(true);
                 }
             }
             else if (stageType == Enums.StageType.Dialogue)
@@ -299,6 +323,7 @@ public class StageManager : MonoBehaviour
                 HUDManager.Instance.hudStage.ShowDialogue(false);
             }
             
+            HUDManager.Instance.hudStage.ShowCombatReport(false);
             HUDManager.Instance.hudStage.ShowQuitConfirmation(true);
         }
     }

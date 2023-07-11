@@ -4,11 +4,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class StageTimer : MonoBehaviour
+public class StageTimerController : MonoBehaviour
 {
     [SerializeField] private TMP_Text _txtTimer;
-    
-    private int _remainingDuration;
+    [SerializeField] private int _remainingDuration;
     
     public bool pause;
     public int duration;
@@ -25,6 +24,11 @@ public class StageTimer : MonoBehaviour
             return 10;
 
         return 0;
+    }
+
+    public int GetElapsed()
+    {
+        return duration - _remainingDuration;
     }
 
     private void Start()

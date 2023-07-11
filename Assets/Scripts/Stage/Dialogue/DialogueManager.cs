@@ -5,16 +5,17 @@ using UnityEngine;
 
 public class DialogueManager : MonoBehaviour
 {
-    [Header("File Paths")] [SerializeField]
-    private string _fileProgress;
-    private string _fileDialogue;
+    [Header("File Paths")]
+    [SerializeField] private string _fileProgress;
+    [SerializeField] private string _fileDialogue;
     
+    [Header("Data")]
     [SerializeField] private DialogueIteration _iteration;
     [SerializeField] private DialogueIterationProgress _iterationProgress;
 
     private void Awake()
     {
-        _fileProgress = Application.dataPath + "/Data/Dialogues/progress.json";
+        _fileProgress = Application.dataPath + "/Data/JSON/progress.json";
     }
     
     public void Initialize()
@@ -36,7 +37,7 @@ public class DialogueManager : MonoBehaviour
             JsonUtility.FromJsonOverwrite(reader.ReadToEnd(), _iterationProgress);
 
             _fileDialogue = Application.dataPath +
-                            $"/Data/Dialogues/iteration_{_iterationProgress.currentIteration}.json";
+                            $"/Data/JSON/Dialogue/iteration_{_iterationProgress.currentIteration}.json";
         }
     }
     public void WriteProgress()

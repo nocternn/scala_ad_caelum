@@ -72,6 +72,7 @@ public abstract class Enums
     {
         Main,
         Inventory,
+        Statistics,
         Quit
     }
 

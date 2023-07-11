@@ -8,7 +8,7 @@ public class QuitMenuManager : MonoBehaviour
     {
         MenuManager.Instance.menuType = Enums.MenuType.Main;
 
-        MenuManager.Instance.quitMenu.gameObject.SetActive(false);
+        MenuManager.Instance.ToggleAllMenus(false);
         MenuManager.Instance.mainMenu.gameObject.SetActive(true);
     }
 

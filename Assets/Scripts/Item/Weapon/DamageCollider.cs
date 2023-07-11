@@ -19,39 +19,57 @@ public class DamageCollider : MonoBehaviour
         
         if (collision.tag == "Player")
         {
+            // Toggle is hit state
             PlayerManager.Instance.isHit = true;
             Task.Delay((int)Mathf.Round(1000)).ContinueWith(t => { PlayerManager.Instance.isHit = false; });
             
+            // Get enemy attack stats
             int enemyATK = EnemyManager.Instance.weaponSlotManager.GetDamage();
             int enemyCRT = EnemyManager.Instance.weaponSlotManager.GetCrit();
 
+            // Calculate incoming damage
             int damage = 0;
             damage += EnemyManager.Instance.stats.GetOutgoingDamage(enemyATK, enemyCRT);
             damage += PlayerManager.Instance.stats.GetIncomingDamage(damage);
 
-            Debug.Log("Player incoming damage = " + damage.ToString());
+            // Register damage
             PlayerManager.Instance.stats.TakeDamage(damage);
+            
+            // Register total damage received stat
+            SceneLoader.Instance.statsManager.stats.totalDamageReceived += damage;
+            SceneLoader.Instance.statsManager.WriteStats();
         }
         else if (collision.tag == "Enemy")
         {
+            // Toggle is hit state
             EnemyManager.Instance.isHit = true;
             Task.Delay((int)Mathf.Round(1000)).ContinueWith(t => { EnemyManager.Instance.isHit = false; });
-            
+
+            // Get player attack stats
             int playerATK = PlayerManager.Instance.weaponSlotManager.GetDamage();
             int playerCRT = PlayerManager.Instance.weaponSlotManager.GetCrit();
 
+            // Calculate incoming damage
             int damage = 0;
             damage += PlayerManager.Instance.stats.GetOutgoingDamage(playerATK, playerCRT);
             damage += EnemyManager.Instance.stats.GetIncomingDamage(damage);
 
-            Debug.Log("Enemy incoming damage = " + damage.ToString());
-            
+            // Register damage
             EnemyManager.Instance.TakeDamage(damage);
 
+            // Register hit, increase SP, increase charge (if applicable)
             PlayerManager.Instance.stats.hitCount++;
             PlayerManager.Instance.stats.currentSkillPoints += 0.5f;
 			if (PlayerManager.Instance.attacker.IsAttackOfType(Enums.ActionType.Basic))
             	PlayerManager.Instance.stats.UpdateAttackCharge(true);
+
+            // Register total damage dealt stat
+            SceneLoader.Instance.statsManager.stats.totalDamageDealt += damage;
+            // Register max single hit damage (if applicable)
+            if (damage > SceneLoader.Instance.statsManager.stats.maxDamageSingleHit)
+                SceneLoader.Instance.statsManager.stats.maxDamageSingleHit = damage;
+            // Register new stats
+            SceneLoader.Instance.statsManager.WriteStats();
         }
     }
     protected virtual void OnTriggerExit(Collider collision)

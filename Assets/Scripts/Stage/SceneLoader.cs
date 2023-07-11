@@ -5,12 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
+    // [IMPORTANT] This file has to be named "SceneLoader"
+    
     public static SceneLoader Instance { get; private set; }
 
     public float transitionTime = 1.0f;
     public WeaponItem weapon;
     public Enums.SceneType sceneType;
     public Enums.SceneType previousSceneType;
+    
+    public StatisticsManager statsManager;
 
     void Awake()
     {
@@ -18,6 +22,9 @@ public class SceneLoader : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
+            
+            // Manager
+            statsManager = GetComponent<StatisticsManager>();
         }
         else
         {

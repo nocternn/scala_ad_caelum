@@ -28,7 +28,7 @@ public class InventoryMenuManager : MonoBehaviour
     {
         MenuManager.Instance.menuType = Enums.MenuType.Main;
 
-        MenuManager.Instance.inventoryMenu.gameObject.SetActive(false);
+        MenuManager.Instance.ToggleAllMenus(false);
         MenuManager.Instance.mainMenu.gameObject.SetActive(true);
     }
 

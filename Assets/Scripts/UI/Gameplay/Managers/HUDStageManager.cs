@@ -18,6 +18,7 @@ public class HUDStageManager : MonoBehaviour
     public Transform mask;
     public Transform back;
     public Transform interact;
+    public Transform report;
     public Transform timer;
     public Transform quit;
 
@@ -50,8 +51,9 @@ public class HUDStageManager : MonoBehaviour
         mask     = transform.GetChild(0);
         back     = transform.GetChild(2);
         interact = transform.GetChild(3);
-        timer    = transform.GetChild(4);
-        quit     = transform.GetChild(5);
+        report   = transform.GetChild(4);
+        timer    = transform.GetChild(5);
+        quit     = transform.GetChild(6);
 
         progressBar.UpdateProgress(StageManager.Instance.id - 1);
         coin.Initialize();
@@ -83,7 +85,7 @@ public class HUDStageManager : MonoBehaviour
     {
         int reward = 0;
         if (hasReward)
-            reward = timer.GetComponent<StageTimer>().GetRewardAmount();
+            reward = timer.GetComponent<StageTimerController>().GetRewardAmount();
         coin.AddCoins(reward + amount);
     }
 
@@ -98,11 +100,33 @@ public class HUDStageManager : MonoBehaviour
 
     #endregion
 
+    #region Report
+
+    public void ShowCombatReport(bool visible)
+    {
+        report.gameObject.SetActive(visible);
+    }
+
+    public void InitializeCombatReport(int clearReward)
+    {
+        CombatReportController reportController = report.GetComponent<CombatReportController>();
+        StageTimerController timerController = timer.GetComponent<StageTimerController>();
+        
+        int timeElapsed = timerController.GetElapsed();
+        int timeReward  = timerController.GetRewardAmount();
+
+        reportController.Initialize();
+        reportController.SetTime(timeElapsed);
+        reportController.SetCoins(clearReward + timeReward);
+    }
+
+    #endregion
+
     #region Timer
 
     public void ToggleTimer(bool isRunning)
     {
-        timer.GetComponent<StageTimer>().pause = !isRunning;
+        timer.GetComponent<StageTimerController>().pause = !isRunning;
     }
 
     #endregion
