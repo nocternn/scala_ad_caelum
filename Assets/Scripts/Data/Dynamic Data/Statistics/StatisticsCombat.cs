@@ -12,10 +12,10 @@ public class StatisticsCombat
     public int baseCritical;
     
     [Header("Stats Scale")]
-    public float scaleAttack;
-    public float scaleCritical;
-    public float scaleDefense;
     public float scaleHealth;
+    public float scaleAttack;
+    public float scaleDefense;
+    public float scaleCritical;
     
     public void CopyFrom(StatisticsCombat combat)
     {
@@ -28,4 +28,9 @@ public class StatisticsCombat
         scaleDefense = combat.scaleDefense;
         scaleHealth = combat.scaleHealth;
     }
+
+    public int ScaleStat(int currentStat, float scale)
+	{
+		return (int)Mathf.Round(currentStat * scale);
+	}
 }

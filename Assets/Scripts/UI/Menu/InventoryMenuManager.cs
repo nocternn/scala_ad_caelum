@@ -24,14 +24,6 @@ public class InventoryMenuManager : MonoBehaviour
         }
     }
 
-    public void Back()
-    {
-        MenuManager.Instance.menuType = Enums.MenuType.Main;
-
-        MenuManager.Instance.ToggleAllMenus(false);
-        MenuManager.Instance.mainMenu.gameObject.SetActive(true);
-    }
-
     public void Choose()
     {
         foreach (Transform child in _container)
@@ -41,12 +33,25 @@ public class InventoryMenuManager : MonoBehaviour
                 CardWeaponController selectedCard = child.GetComponent<CardWeaponController>();
                 selectedCard.transform.GetComponent<Toggle>().isOn = false;
 
-                SceneLoader.Instance.playerWeapon = selectedCard.weapon;
+                // Register player weapon
+                StatisticsManager.Instance.playerWeapon = selectedCard.weapon;
+                StatisticsManager.Instance.playerStats.weapon = selectedCard.weapon.name;
+                StatisticsManager.Instance.WriteStatsPlayer();
                 
                 break;
             }
         }
 
-        Back();
+        MenuManager.Instance.Back();
+    }
+
+    public WeaponItem GetWeapon(string name)
+    {
+        foreach (var weapon in weapons)
+        {
+            if (weapon.name.Equals(name))
+                return weapon;
+        }
+        return null;
     }
 }

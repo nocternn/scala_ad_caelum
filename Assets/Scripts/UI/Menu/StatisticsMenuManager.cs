@@ -25,19 +25,11 @@ public class StatisticsMenuManager : MonoBehaviour
 
     public void SetValues()
     {
-        _txtRuns.text            = SceneLoader.Instance.statsManager.playerStats.meta.numberOfRuns.ToString();
-        _txtStages.text          = SceneLoader.Instance.statsManager.playerStats.meta.numberOfStagesCleared.ToString();
-        _txtDeaths.text          = SceneLoader.Instance.statsManager.playerStats.meta.numberOfDeaths.ToString();
-        _txtDamageDealt.text     = SceneLoader.Instance.statsManager.playerStats.meta.totalDamageDealt.ToString();
-        _txtDamageReceived.text  = SceneLoader.Instance.statsManager.playerStats.meta.totalDamageReceived.ToString();
-        _txtDamageSingleHit.text = SceneLoader.Instance.statsManager.playerStats.meta.maxDamageSingleHit.ToString();
-    }
-    
-    public void Back()
-    {
-        MenuManager.Instance.menuType = Enums.MenuType.Main;
-
-        MenuManager.Instance.ToggleAllMenus(false);
-        MenuManager.Instance.mainMenu.gameObject.SetActive(true);
+        _txtRuns.text            = StatisticsManager.Instance.playerStats.meta.numberOfRuns.ToString();
+        _txtStages.text          = StatisticsManager.Instance.playerStats.meta.numberOfStagesCleared.ToString();
+        _txtDeaths.text          = StatisticsManager.Instance.playerStats.meta.numberOfDeaths.ToString();
+        _txtDamageDealt.text     = StatisticsManager.Instance.playerStats.meta.totalDamageDealt.ToString();
+        _txtDamageReceived.text  = StatisticsManager.Instance.playerStats.meta.totalDamageReceived.ToString();
+        _txtDamageSingleHit.text = StatisticsManager.Instance.playerStats.meta.maxDamageSingleHit.ToString();
     }
 }

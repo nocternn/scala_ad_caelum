@@ -15,16 +15,14 @@ public class LoginMenuManager : MonoBehaviour
     
     public void Login()
     {
-        SceneLoader.Instance.playerName = _txtPlayerName.text;
-
-        bool hasRead = SceneLoader.Instance.statsManager.ReadStatsPlayer(_txtPlayerName.text);
+        bool hasRead = StatisticsManager.Instance.ReadStatsPlayer(_txtPlayerName.text);
         if (!hasRead)
         {
-            SceneLoader.Instance.statsManager.ReadStatsPlayer("default");
-            SceneLoader.Instance.statsManager.WriteStatsPlayer(_txtPlayerName.text);
+            StatisticsManager.Instance.ReadStatsPlayer();
+            StatisticsManager.Instance.playerStats.name = _txtPlayerName.text;
+            StatisticsManager.Instance.WriteStatsPlayer();
         }
         
-        MenuManager.Instance.ToggleAllMenus(false);
-        MenuManager.Instance.mainMenu.gameObject.SetActive(true);
+        MenuManager.Instance.Back();
     }
 }

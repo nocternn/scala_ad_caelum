@@ -12,7 +12,7 @@ public class PlayerAttacker : MonoBehaviour
 
     void Awake()
     {
-        _currentWeapon = SceneLoader.Instance.playerWeapon;
+        _currentWeapon = StatisticsManager.Instance.playerWeapon;
     }
 
     public void HandleWeaponCombo()

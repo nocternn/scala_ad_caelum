@@ -77,7 +77,7 @@ public class HUDManager : MonoBehaviour
             hudCombat = combat.GetComponent<HUDCombatManager>();
             hudCombat.Initialize();
             
-            hudCombat.UpdateSkillButtonsUI(SceneLoader.Instance.playerWeapon);
+            hudCombat.UpdateSkillButtonsUI(StatisticsManager.Instance.playerWeapon);
 
             hudStage.timer.gameObject.SetActive(true);
         }

@@ -14,21 +14,12 @@ public class SceneLoader : MonoBehaviour
     public Enums.SceneType sceneType;
     public Enums.SceneType previousSceneType;
 
-    [Header("Player")]
-    public string playerName;
-    public WeaponItem playerWeapon;
-    public StatisticsManager statsManager;
-
     void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
-            
-            // Manager
-            statsManager = GetComponent<StatisticsManager>();
-            statsManager.Initialize();
         }
         else
         {
@@ -55,9 +46,12 @@ public class SceneLoader : MonoBehaviour
 
         if (sceneType == Enums.SceneType.Menu)
         {
-            if (StageManager.Instance != null)
+            if (previousSceneType == Enums.SceneType.Game)
             {
                 StageManager.Instance.gameObject.SetActive(false);
+                
+                MenuManager.Instance.menuType = Enums.MenuType.Main;
+                MenuManager.Instance.Initialize();
             }
         }
         else
@@ -65,7 +59,7 @@ public class SceneLoader : MonoBehaviour
             StageManager.Instance.gameObject.SetActive(true);
             if (previousSceneType == Enums.SceneType.Menu)
             {
-                StageManager.Instance.id = statsManager.playerStats.progress.stage;
+                StageManager.Instance.id = StatisticsManager.Instance.playerStats.progress.stage;
                 StageManager.Instance.dialogue.Initialize();
             }
             StageManager.Instance.Initialize();

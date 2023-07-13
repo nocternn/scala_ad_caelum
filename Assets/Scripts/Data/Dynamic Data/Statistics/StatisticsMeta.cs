@@ -11,4 +11,14 @@ public class StatisticsMeta
     public int totalDamageDealt;
     public int totalDamageReceived;
     public int maxDamageSingleHit;
+
+    public void CopyFrom(StatisticsMeta meta)
+    {
+        numberOfRuns = meta.numberOfRuns;
+        numberOfStagesCleared = meta.numberOfStagesCleared;
+        numberOfDeaths = meta.numberOfDeaths;
+        totalDamageDealt = meta.totalDamageDealt;
+        totalDamageReceived = meta.totalDamageReceived;
+        maxDamageSingleHit = meta.maxDamageSingleHit;
+    }
 }

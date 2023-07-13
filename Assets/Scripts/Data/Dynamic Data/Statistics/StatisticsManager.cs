@@ -5,18 +5,38 @@ using UnityEngine;
 
 public class StatisticsManager : MonoBehaviour
 {
+    public static StatisticsManager Instance { get; private set; }
+
     [Header("File Paths")]
     [SerializeField] private string _dirPath;
+
+    [Header("Data")]
     [SerializeField] private List<Statistics> _allStats; // Statistics of all local players
+    [SerializeField] private Statistics _defaultStats; // Default statistics
 
-    [Header("Data")] [SerializeField]
-    private Statistics _defaultStats; // Default statistics
+    [Header("Data - Player")]
     public Statistics playerStats; // Statistics of current player
+    public WeaponItem playerWeapon;
 
-    public void Initialize()
+    [Header("Data - Opponent")]
+    public Statistics opponentStats; // Statistics of current opponent
+    public WeaponItem opponentWeapon;
+
+    void Awake()
     {
-        _dirPath = Application.dataPath + "/Data/JSON/Statistics";
-        ReadAllStats();
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
+
+            _dirPath = Application.dataPath + "/Data/JSON/Statistics";
+            ReadAllStats();
+        }
+        else
+        {
+            Destroy(this.gameObject);
+            return;
+        }
     }
 
     #region I/O
@@ -25,7 +45,7 @@ public class StatisticsManager : MonoBehaviour
     {
         DirectoryInfo dir = new DirectoryInfo(_dirPath);
         FileInfo[] files = dir.GetFiles("*.json");
-        
+
         foreach (var file in files)
         {
             using (StreamReader reader = new StreamReader(file.FullName))
@@ -44,44 +64,51 @@ public class StatisticsManager : MonoBehaviour
         }
     }
 
-    public bool ReadStatsPlayer(string name)
+    public bool ReadStatsPlayer(string name = "")
     {
         bool readPlayer = false;
-        
-        foreach (var stats in _allStats)
+
+        if (name.Length > 0)
         {
-            if (stats.name.Equals(name))
+            foreach (var stats in _allStats)
             {
-                readPlayer = true;
-                playerStats = stats;
-                break;
+                if (stats.name.Equals(name))
+                {
+                    readPlayer = true;
+                    playerStats = stats;
+                    playerWeapon = MenuManager.Instance.inventoryMenu.GetWeapon(playerStats.weapon);
+                    break;
+                }
             }
         }
-        
+        else
+        {
+            readPlayer = true;
+            playerStats.CopyFrom(_defaultStats);
+            playerWeapon = MenuManager.Instance.inventoryMenu.GetWeapon(playerStats.weapon);
+        }
+
         return readPlayer;
     }
 
-    public bool WriteStatsPlayer(string name)
+    public bool WriteStatsPlayer()
     {
         bool writePlayer = false;
-        
-        string filePath = _dirPath + $"/statistics_{name}.json";
-        if (!File.Exists(filePath))
-            File.Create(filePath);
-        
-        foreach (var stats in _allStats)
+
+        if (playerStats != null)
         {
-            if (stats.name.Equals(name))
+            writePlayer = true;
+
+            string filePath = _dirPath + $"/statistics_{playerStats.name}.json";
+            if (!File.Exists(filePath))         // If statistics for this player does not exist
+                File.Create(filePath).Close();  // Create empty file
+
+            using (StreamWriter writer = new StreamWriter(filePath))
             {
-                writePlayer = true;
-                using (StreamWriter writer = new StreamWriter(filePath))
-                {
-                    writer.Write(JsonUtility.ToJson(playerStats));
-                }
-                break;
+                writer.Write(JsonUtility.ToJson(playerStats));
             }
         }
-        
+
         return writePlayer;
     }
 
@@ -101,24 +128,18 @@ public class StatisticsManager : MonoBehaviour
         playerStats.combat.scaleHealth = player.stats.scaleHealth;
     }
 
-    public void ResetStatsPlayer(string name, Enums.StatsType type)
+    public void ResetStatsPlayer(Enums.StatsType type)
     {
-        foreach (var stats in _allStats)
+        switch (type)
         {
-            if (stats.name.Equals(name))
-            {
-                switch (type)
-                {
-                    case Enums.StatsType.Progress:
-                        playerStats.progress.CopyFrom(_defaultStats.progress);
-                        break;
-                    case Enums.StatsType.Combat:
-                        playerStats.combat.CopyFrom(_defaultStats.combat);
-                        break;
-                    default:
-                        break;
-                }
-            }
+            case Enums.StatsType.Progress:
+                playerStats.progress.CopyFrom(_defaultStats.progress);
+                break;
+            case Enums.StatsType.Combat:
+                playerStats.combat.CopyFrom(_defaultStats.combat);
+                break;
+            default:
+                break;
         }
     }
 
@@ -141,6 +162,11 @@ public class StatisticsManager : MonoBehaviour
                 return stats;
         }
         return null;
+    }
+
+    public Statistics[] GetAllStats()
+    {
+        return _allStats.ToArray();
     }
 
     #endregion

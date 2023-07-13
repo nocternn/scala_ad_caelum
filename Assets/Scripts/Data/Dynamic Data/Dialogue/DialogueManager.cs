@@ -14,7 +14,7 @@ public class DialogueManager : MonoBehaviour
     public void Initialize()
     {
         string filePath =
-            $"/Data/JSON/Dialogue/iteration_{SceneLoader.Instance.statsManager.playerStats.progress.iteration}.json";
+            $"/Data/JSON/Dialogue/iteration_{StatisticsManager.Instance.playerStats.progress.iteration}.json";
         _fileDialogue = Application.dataPath + filePath;
         
         ReadDialogues();
