@@ -10,7 +10,7 @@ public class InventoryMenuManager : MonoBehaviour
 
     public WeaponItem[] weapons;
 
-    void Awake()
+    private void Awake()
     {
         _container = transform.GetChild(2).GetChild(0).GetChild(0).transform;
         foreach (Transform child in _container.transform)
@@ -41,7 +41,7 @@ public class InventoryMenuManager : MonoBehaviour
                 CardWeaponController selectedCard = child.GetComponent<CardWeaponController>();
                 selectedCard.transform.GetComponent<Toggle>().isOn = false;
 
-                SceneLoader.Instance.weapon = selectedCard.weapon;
+                SceneLoader.Instance.playerWeapon = selectedCard.weapon;
                 
                 break;
             }

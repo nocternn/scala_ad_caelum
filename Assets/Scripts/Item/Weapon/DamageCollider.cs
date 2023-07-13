@@ -36,8 +36,8 @@ public class DamageCollider : MonoBehaviour
             PlayerManager.Instance.stats.TakeDamage(damage);
             
             // Register total damage received stat
-            SceneLoader.Instance.statsManager.stats.totalDamageReceived += damage;
-            SceneLoader.Instance.statsManager.WriteStats();
+            SceneLoader.Instance.statsManager.playerStats.meta.totalDamageReceived += damage;
+            SceneLoader.Instance.statsManager.WriteStatsPlayer(SceneLoader.Instance.playerName);
         }
         else if (collision.tag == "Enemy")
         {
@@ -64,12 +64,12 @@ public class DamageCollider : MonoBehaviour
             	PlayerManager.Instance.stats.UpdateAttackCharge(true);
 
             // Register total damage dealt stat
-            SceneLoader.Instance.statsManager.stats.totalDamageDealt += damage;
+            SceneLoader.Instance.statsManager.playerStats.meta.totalDamageDealt += damage;
             // Register max single hit damage (if applicable)
-            if (damage > SceneLoader.Instance.statsManager.stats.maxDamageSingleHit)
-                SceneLoader.Instance.statsManager.stats.maxDamageSingleHit = damage;
+            if (damage > SceneLoader.Instance.statsManager.playerStats.meta.maxDamageSingleHit)
+                SceneLoader.Instance.statsManager.playerStats.meta.maxDamageSingleHit = damage;
             // Register new stats
-            SceneLoader.Instance.statsManager.WriteStats();
+            SceneLoader.Instance.statsManager.WriteStatsPlayer(SceneLoader.Instance.playerName);
         }
     }
     protected virtual void OnTriggerExit(Collider collision)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Statistics
+public class StatisticsMeta
 {
     public int numberOfRuns;
     public int numberOfStagesCleared;

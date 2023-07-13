@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DialogueUIManager : MonoBehaviour
+public class DialogueController : MonoBehaviour
 {
     [SerializeField] private HUDStageManager _manager;
 

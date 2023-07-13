@@ -68,7 +68,7 @@ public class StageManager : MonoBehaviour
     
     public void Initialize()
     {
-        SceneLoader.Instance.weapon.InitializeSkills();
+        SceneLoader.Instance.playerWeapon.InitializeSkills();
         
         HUDManager.Instance.Initialize();
         door.Initialize();
@@ -112,7 +112,7 @@ public class StageManager : MonoBehaviour
             CameraManager.Instance.SetCamera(Enums.CameraType.Standard);
 
             PlayerManager.Instance.ToggleActive(true);
-            PlayerManager.Instance.SetWeapon(SceneLoader.Instance.weapon);
+            PlayerManager.Instance.SetWeapon(SceneLoader.Instance.playerWeapon);
             PlayerManager.Instance.stats.CalculateCritChance(id);
         }
         else
@@ -185,11 +185,18 @@ public class StageManager : MonoBehaviour
     public void SwitchToNextStage()
     {
         id++;
+        
+        // Register stage progress
+        SceneLoader.Instance.statsManager.playerStats.progress.stage = id;
+        // Register combat stats
+        SceneLoader.Instance.statsManager.CopyCombatStats(PlayerManager.Instance);
+        
         _initialized = false;
 
         StageManager.Instance.OpenDoor();
 
-        if (id <= 5)
+        bool quit = false;
+        if (id <= StatisticsProgress.MaxStages)
         {
             stageType = Enums.StageType.Dialogue;
             previousStageType = Enums.StageType.Dialogue;
@@ -198,14 +205,28 @@ public class StageManager : MonoBehaviour
         }
         else
         {
-            // Save iteration progress
-            dialogue.WriteProgress();
-            // Increase number of runs stat
-            SceneLoader.Instance.statsManager.stats.numberOfRuns++;
-            SceneLoader.Instance.statsManager.WriteStats();
+            quit = true;
             
-            Quit();
+            // Register iteration progress
+            // If current iteration is last and we passed the last stage then loop back to the beginning
+            if (SceneLoader.Instance.statsManager.playerStats.progress.iteration == StatisticsProgress.MaxIterations)
+            {
+                SceneLoader.Instance.statsManager.ResetStatsPlayer(
+                        SceneLoader.Instance.playerName,
+                        Enums.StatsType.Progress
+                    );
+            }
+            
+            // Register number of runs stat
+            SceneLoader.Instance.statsManager.playerStats.meta.numberOfRuns++;
         }
+        
+        // Register all stats changes
+        SceneLoader.Instance.statsManager.WriteStatsPlayer(SceneLoader.Instance.playerName);
+
+        // Quite run (if necessary)
+        if (quit)
+            Quit();
     }
 
     public void EndStageWin()
@@ -230,15 +251,15 @@ public class StageManager : MonoBehaviour
         HUDManager.Instance.hudStage.ShowCombatReport(true);
         
         // Register number of stages cleared stat
-        SceneLoader.Instance.statsManager.stats.numberOfStagesCleared++;
-        SceneLoader.Instance.statsManager.WriteStats();
+        SceneLoader.Instance.statsManager.playerStats.meta.numberOfStagesCleared++;
+        SceneLoader.Instance.statsManager.WriteStatsPlayer(SceneLoader.Instance.playerName);
     }
 
     public void EndStageLoss()
     {
         // Register number of deaths cleared stat
-        SceneLoader.Instance.statsManager.stats.numberOfDeaths++;
-        SceneLoader.Instance.statsManager.WriteStats();
+        SceneLoader.Instance.statsManager.playerStats.meta.numberOfDeaths++;
+        SceneLoader.Instance.statsManager.WriteStatsPlayer(SceneLoader.Instance.playerName);
         
         Quit();
     }

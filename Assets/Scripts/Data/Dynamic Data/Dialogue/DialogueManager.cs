@@ -6,58 +6,18 @@ using UnityEngine;
 public class DialogueManager : MonoBehaviour
 {
     [Header("File Paths")]
-    [SerializeField] private string _fileProgress;
     [SerializeField] private string _fileDialogue;
     
     [Header("Data")]
     [SerializeField] private DialogueIteration _iteration;
-    [SerializeField] private DialogueIterationProgress _iterationProgress;
-
-    private void Awake()
-    {
-        _fileProgress = Application.dataPath + "/Data/JSON/progress.json";
-    }
     
     public void Initialize()
     {
-        ReadProgress();
-        ReadDialogues();
-    }
-    
-    private void ReadProgress()
-    {
-        if (!File.Exists(_fileProgress))
-        {
-            Debug.Log("No progress file found for reading");
-            return;
-        }
-
-        using (StreamReader reader = new StreamReader(_fileProgress))
-        {
-            JsonUtility.FromJsonOverwrite(reader.ReadToEnd(), _iterationProgress);
-
-            _fileDialogue = Application.dataPath +
-                            $"/Data/JSON/Dialogue/iteration_{_iterationProgress.currentIteration}.json";
-        }
-    }
-    public void WriteProgress()
-    {
-        if (!File.Exists(_fileProgress))
-        {
-            Debug.Log("No progress file found for writing");
-            return;
-        }
+        string filePath =
+            $"/Data/JSON/Dialogue/iteration_{SceneLoader.Instance.statsManager.playerStats.progress.iteration}.json";
+        _fileDialogue = Application.dataPath + filePath;
         
-        using (StreamWriter writer = new StreamWriter(_fileProgress))
-        {
-            _iterationProgress.currentIteration++;
-            if (_iterationProgress.currentIteration > 5)
-            {
-                _iterationProgress.currentIteration = 1;
-            }
-            
-            writer.Write(JsonUtility.ToJson(_iterationProgress));
-        }
+        ReadDialogues();
     }
 
     private void ReadDialogues()

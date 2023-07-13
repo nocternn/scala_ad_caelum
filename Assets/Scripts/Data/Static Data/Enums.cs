@@ -70,10 +70,12 @@ public abstract class Enums
     
     public enum MenuType
     {
-        Main,
         Inventory,
-        Statistics,
-        Quit
+        LocalBattle,
+        Login,
+        Main,
+        Quit,
+        Statistics
     }
 
     public enum SceneType
@@ -116,4 +118,11 @@ public abstract class Enums
 		Dodge,
 		Parry
 	}
+
+    public enum StatsType
+    {
+        Progress,
+        Combat,
+        Meta
+    }
 }

@@ -9,11 +9,14 @@ public class SceneLoader : MonoBehaviour
     
     public static SceneLoader Instance { get; private set; }
 
+    [Header("Scene Transition")]
     public float transitionTime = 1.0f;
-    public WeaponItem weapon;
     public Enums.SceneType sceneType;
     public Enums.SceneType previousSceneType;
-    
+
+    [Header("Player")]
+    public string playerName;
+    public WeaponItem playerWeapon;
     public StatisticsManager statsManager;
 
     void Awake()
@@ -25,6 +28,7 @@ public class SceneLoader : MonoBehaviour
             
             // Manager
             statsManager = GetComponent<StatisticsManager>();
+            statsManager.Initialize();
         }
         else
         {
@@ -37,7 +41,6 @@ public class SceneLoader : MonoBehaviour
     {
         //Tell our 'OnLevelFinishedLoading' function to start listening for a scene change as soon as this script is enabled.
         SceneManager.sceneLoaded += OnLevelFinishedLoading;
-        
     }
         
     void OnDisable()
@@ -62,6 +65,7 @@ public class SceneLoader : MonoBehaviour
             StageManager.Instance.gameObject.SetActive(true);
             if (previousSceneType == Enums.SceneType.Menu)
             {
+                StageManager.Instance.id = statsManager.playerStats.progress.stage;
                 StageManager.Instance.dialogue.Initialize();
             }
             StageManager.Instance.Initialize();

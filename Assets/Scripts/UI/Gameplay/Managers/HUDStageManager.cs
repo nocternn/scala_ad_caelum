@@ -9,7 +9,7 @@ public class HUDStageManager : MonoBehaviour
 
     [Header("Interactables")]
     public CoinManager coin;
-    public DialogueUIManager dialogue;
+    public DialogueController dialogue;
     
     [Header("Progress")]
     public ProgressBarController progressBar;
@@ -46,7 +46,7 @@ public class HUDStageManager : MonoBehaviour
     {
         progressBar = GetComponentInChildren<ProgressBarController>();
         coin        = GetComponentInChildren<CoinManager>();
-        dialogue    = GameObject.FindObjectsOfType<DialogueUIManager>(true)[0];
+        dialogue    = GameObject.FindObjectsOfType<DialogueController>(true)[0];
 
         mask     = transform.GetChild(0);
         back     = transform.GetChild(2);

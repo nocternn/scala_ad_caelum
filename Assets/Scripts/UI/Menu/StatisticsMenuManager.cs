@@ -11,7 +11,7 @@ public class StatisticsMenuManager : MonoBehaviour
     [SerializeField] private TMP_Text _txtDamageDealt;
     [SerializeField] private TMP_Text _txtDamageReceived;
     [SerializeField] private TMP_Text _txtDamageSingleHit;
-    
+
     private void Awake()
     {
         Transform container = transform.GetChild(2).GetChild(0).GetChild(0);
@@ -23,18 +23,14 @@ public class StatisticsMenuManager : MonoBehaviour
         _txtDamageSingleHit = container.GetChild(5).GetChild(1).GetComponent<TMP_Text>();
     }
 
-    public void Initialize()
+    public void SetValues()
     {
-        bool readSuccess = SceneLoader.Instance.statsManager.ReadStats();
-        if (!readSuccess)
-            return;
-        
-        _txtRuns.text            = SceneLoader.Instance.statsManager.stats.numberOfRuns.ToString();
-        _txtStages.text          = SceneLoader.Instance.statsManager.stats.numberOfStagesCleared.ToString();
-        _txtDeaths.text          = SceneLoader.Instance.statsManager.stats.numberOfDeaths.ToString();
-        _txtDamageDealt.text     = SceneLoader.Instance.statsManager.stats.totalDamageDealt.ToString();
-        _txtDamageReceived.text  = SceneLoader.Instance.statsManager.stats.totalDamageReceived.ToString();
-        _txtDamageSingleHit.text = SceneLoader.Instance.statsManager.stats.maxDamageSingleHit.ToString();
+        _txtRuns.text            = SceneLoader.Instance.statsManager.playerStats.meta.numberOfRuns.ToString();
+        _txtStages.text          = SceneLoader.Instance.statsManager.playerStats.meta.numberOfStagesCleared.ToString();
+        _txtDeaths.text          = SceneLoader.Instance.statsManager.playerStats.meta.numberOfDeaths.ToString();
+        _txtDamageDealt.text     = SceneLoader.Instance.statsManager.playerStats.meta.totalDamageDealt.ToString();
+        _txtDamageReceived.text  = SceneLoader.Instance.statsManager.playerStats.meta.totalDamageReceived.ToString();
+        _txtDamageSingleHit.text = SceneLoader.Instance.statsManager.playerStats.meta.maxDamageSingleHit.ToString();
     }
     
     public void Back()
