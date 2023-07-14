@@ -11,9 +11,9 @@ public class PlayerWeaponSlotManager : CharacterWeaponSlotManager
 
         #region Loaders
 
-        public override bool LoadWeaponOnSlot(WeaponItem weaponItem, bool isLeft, bool isRight)
+        public override bool LoadWeaponOnSlot(WeaponItem weaponItem)
         {
-                bool isLoaded = base.LoadWeaponOnSlot(weaponItem, isLeft, isRight);
+                bool isLoaded = base.LoadWeaponOnSlot(weaponItem);
 
                 if (isLoaded && weaponItem.type == Enums.WeaponType.Pistol && rightHandDamageCollider == null)
                 {

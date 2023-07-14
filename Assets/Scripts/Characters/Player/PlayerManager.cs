@@ -113,20 +113,7 @@ public class PlayerManager : CharacterManager
 
     public void SetWeapon(WeaponItem weapon)
     {
-        if (weapon.type == Enums.WeaponType.Gauntlet) // Gauntlet - left hand
-        {
-            weaponSlotManager.leftHandWeapon = weapon;
-            weaponSlotManager.rightHandWeapon = null;
-        }
-        else // All other weapons - right hand
-        {
-            weaponSlotManager.leftHandWeapon = null;
-            weaponSlotManager.rightHandWeapon = weapon;
-        }
-        
-        weaponSlotManager.LoadWeaponOnSlot(weaponSlotManager.leftHandWeapon, true, false);
-        weaponSlotManager.LoadWeaponOnSlot(weaponSlotManager.rightHandWeapon, false, true);
-
+        weaponSlotManager.LoadWeaponOnSlot(weapon);
         weaponSlotManager.SetUsedWeaponType();
         weaponSlotManager.LoadTwoHandIK();
     }

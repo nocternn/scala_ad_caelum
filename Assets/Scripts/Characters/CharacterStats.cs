@@ -22,6 +22,23 @@ public class CharacterStats : MonoBehaviour
 
 	private float _critChance = 0;
 	private float _critBase = 0;
+
+	public virtual void Initialize()
+	{
+		if (StageManager.Instance.isLocalBattle)
+		{
+			// Copy opponent local player's base values
+			baseHealth = StatisticsManager.Instance.opponentStats.combat.baseHealth;
+			baseAttack = StatisticsManager.Instance.opponentStats.combat.baseAttack;
+			baseDefense = StatisticsManager.Instance.opponentStats.combat.baseDefense;
+			baseCritical = StatisticsManager.Instance.opponentStats.combat.baseCritical;
+			// Copy opponent local player's scale values
+			scaleHealth = StatisticsManager.Instance.opponentStats.combat.scaleHealth;
+			scaleAttack = StatisticsManager.Instance.opponentStats.combat.scaleAttack;
+			scaleDefense = StatisticsManager.Instance.opponentStats.combat.scaleDefense;
+			scaleCritical = StatisticsManager.Instance.opponentStats.combat.scaleCritical;
+		}
+	}
 	
 	public void CalculateCritChance(int stageID)
     {

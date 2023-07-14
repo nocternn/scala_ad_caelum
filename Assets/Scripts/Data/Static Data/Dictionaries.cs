@@ -6,6 +6,7 @@ public abstract class Dictionaries
 {
     public static Dictionary<Enums.EnemyType, string> EnemyType = new Dictionary<Enums.EnemyType, string>()
     {
+        { Enums.EnemyType.LocalPlayer, "LocalPlayer" },
         { Enums.EnemyType.Archer, "Archer" },
         { Enums.EnemyType.Spearwoman, "Spearwoman" },
         { Enums.EnemyType.Crossbowman, "Crossbowman" },

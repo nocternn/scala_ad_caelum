@@ -13,6 +13,7 @@ public class SceneLoader : MonoBehaviour
     public float transitionTime = 1.0f;
     public Enums.SceneType sceneType;
     public Enums.SceneType previousSceneType;
+    public Enums.MenuType previousMenuType;
 
     void Awake()
     {
@@ -57,16 +58,29 @@ public class SceneLoader : MonoBehaviour
         else
         {
             StageManager.Instance.gameObject.SetActive(true);
+            bool firstInit = false;
             if (previousSceneType == Enums.SceneType.Menu)
             {
-                StageManager.Instance.id = StatisticsManager.Instance.playerStats.progress.stage;
-                StageManager.Instance.dialogue.Initialize();
+                if (previousMenuType == Enums.MenuType.Main)
+                {
+                    StageManager.Instance.isLocalBattle = false;
+                    StageManager.Instance.stageType = Enums.StageType.Dialogue;
+                    StageManager.Instance.id = StatisticsManager.Instance.playerStats.progress.stage;
+
+                    firstInit = true;
+                }
+                else
+                {
+                    StageManager.Instance.isLocalBattle = true;
+                    StageManager.Instance.stageType = Enums.StageType.Combat;
+                    StageManager.Instance.id = 0;
+                }
             }
-            StageManager.Instance.Initialize();
+            StageManager.Instance.Initialize(firstInit);
         }
     }
 
-    public IEnumerator LoadScene(int offset)
+    public IEnumerator LoadScene(int offset, bool backToMain = false)
     {
         PlayCrossfade(true);
         
@@ -74,7 +88,10 @@ public class SceneLoader : MonoBehaviour
         yield return new WaitForSeconds(transitionTime);
         
         // Load next scene
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + offset);
+        int buildIndex = SceneManager.GetActiveScene().buildIndex;
+        if (backToMain)
+            offset = -buildIndex;
+        SceneManager.LoadScene(buildIndex + offset);
     }
 
     private void PlayCrossfade(bool start)

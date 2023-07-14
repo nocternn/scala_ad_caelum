@@ -123,7 +123,6 @@ public class EnemyManager : CharacterManager
         for (int i = 0; i < Dictionaries.EnemyType.Count; i++)
         {
             Transform enemy = enemies.GetChild(i);
-            
             if (enemy.name.Equals(enemyName))
             {
                 currentEnemy = enemy;
@@ -133,15 +132,14 @@ public class EnemyManager : CharacterManager
                 
                 animatorHandler = currentEnemy.GetComponent<EnemyAnimatorHandler>();
                 animatorHandler.Initialize();
-                animatorHandler.SetEnemyType(enemyName);
+                if (!StageManager.Instance.isLocalBattle)
+                    animatorHandler.SetEnemyType(enemyName);
                 
                 stats = enemy.GetComponent<EnemyStats>();
-                stats.CalculateCritChance(StageManager.Instance.id);
+                stats.Initialize();
                 
                 weaponSlotManager = currentEnemy.GetComponent<EnemyWeaponSlotManager>();
                 weaponSlotManager.Initialize();
-                weaponSlotManager.SetUsedWeaponType();
-                weaponSlotManager.LoadTwoHandIK();
 
                 var foundRigs = GameObject.FindObjectsOfType<Rig>(true);
                 foreach (Rig foundRig in foundRigs)
@@ -153,11 +151,21 @@ public class EnemyManager : CharacterManager
                     }
                 }
 
-				if (weaponSlotManager.GetCurrentWeapon().combatType == Enums.WeaponCombatType.Ranged)
-					PerformAction(Enums.ActionType.Aim);
-
                 break;
             }
+        }
+    }
+
+    public void SetWeapon(WeaponItem weapon)
+    {
+        bool isLoaded = weaponSlotManager.LoadWeaponOnSlot(weapon);
+        if (isLoaded)
+        {
+            weaponSlotManager.SetUsedWeaponType();
+            weaponSlotManager.LoadTwoHandIK();
+
+            if (weapon.combatType == Enums.WeaponCombatType.Ranged)
+                PerformAction(Enums.ActionType.Aim);
         }
     }
     

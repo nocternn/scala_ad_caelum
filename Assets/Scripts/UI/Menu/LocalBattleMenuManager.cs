@@ -43,7 +43,7 @@ public class LocalBattleMenuManager : MonoBehaviour
             }
         }
 
-        MenuManager.Instance.Back();
+        PlayLocalBattle();
     }
 
     public void Randomize()
@@ -56,6 +56,15 @@ public class LocalBattleMenuManager : MonoBehaviour
         StatisticsManager.Instance.opponentStats = selectedCard.playerStats;
         StatisticsManager.Instance.opponentWeapon = selectedCard.playerWeapon;
 
-        MenuManager.Instance.Back();
+        PlayLocalBattle();
+    }
+    
+    private void PlayLocalBattle()
+    {
+        SceneLoader.Instance.sceneType = Enums.SceneType.Game;
+        SceneLoader.Instance.previousSceneType = Enums.SceneType.Menu;
+        SceneLoader.Instance.previousMenuType = Enums.MenuType.LocalBattle;
+        
+        StartCoroutine(SceneLoader.Instance.LoadScene(2));
     }
 }

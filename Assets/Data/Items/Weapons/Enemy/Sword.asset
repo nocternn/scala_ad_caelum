@@ -17,9 +17,12 @@ MonoBehaviour:
   description: 
   ammo: {fileID: 0}
   type: 7
+  combatType: 0
+  handlingType: 1
   model: {fileID: 2248184348287448245, guid: fa411bb4bc9c5ae4a9047f08d771d3f5, type: 3}
   secondaryIcon: {fileID: 0}
   id: 0
+  isTwoHanded: 0
   atk: 0
   crt: 0
   _actions:

@@ -13,7 +13,7 @@ public class WeaponHolderSlot : MonoBehaviour
 	public bool LoadWeaponModel(WeaponItem weaponItem)
 	{
 		UnloadWeaponAndDestroy();
-
+		
 		if (weaponItem == null)
 		{
 			UnloadWeapon();

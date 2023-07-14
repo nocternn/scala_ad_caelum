@@ -29,11 +29,9 @@ public class HUDManager : MonoBehaviour
         Instance = this;
         
         _initialized = false;
-
+        
         combat = transform.GetChild(0);
-        buff = transform.GetChild(1);
-        shop = transform.GetChild(2);
-        stage = transform.GetChild(3);
+        stage  = transform.GetChild(1);
 
         hudStage = stage.GetComponent<HUDStageManager>();
     }
@@ -61,14 +59,31 @@ public class HUDManager : MonoBehaviour
         }
     }
 
-    public void Initialize()
+    public void Initialize(bool firstInit = false)
     {
         combat.gameObject.SetActive(false);
-        buff.gameObject.SetActive(false);
-        shop.gameObject.SetActive(false);
+        
+        if (!StageManager.Instance.isLocalBattle && firstInit)
+        {
+            buff = transform.GetChild(2);
+            shop = transform.GetChild(3);
+            
+            // Reorder so that:
+            // - combat is the first child in hierarchy
+            // - stage is the last child in hierarchy
+            buff.SetSiblingIndex(1);
+            shop.SetSiblingIndex(1);
+        }
+
+        if (!StageManager.Instance.isLocalBattle)
+        {
+            buff.gameObject.SetActive(false);
+            shop.gameObject.SetActive(false);
+        }
         
         hudStage.Initialize();
-        hudStage.coin.SetCoins(StageManager.Instance.coinsAvailable);
+        if (!StageManager.Instance.isLocalBattle)
+            hudStage.coin.SetCoins(StageManager.Instance.coinsAvailable);
         
         if (StageManager.Instance.stageType == Enums.StageType.Combat)
         {

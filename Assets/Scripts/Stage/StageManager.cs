@@ -20,6 +20,7 @@ public class StageManager : MonoBehaviour
     [Header("Properties")]
     [SerializeField] private bool _initialized;
     [SerializeField] private int _clearReward;
+    public bool isLocalBattle;
     public int id;
     public int coinsAvailable;
     public Enums.StageType stageType;
@@ -41,11 +42,10 @@ public class StageManager : MonoBehaviour
             Destroy(this.gameObject);
             return;
         }
-
-        dialogue = GetComponent<DialogueManager>();
-
+        
         door = GameObject.FindObjectsOfType<Door>(true)[0];
         shop = GameObject.FindObjectsOfType<Shop>(true)[0];
+        dialogue = GetComponent<DialogueManager>();
     }
     
     private void Update()
@@ -66,15 +66,24 @@ public class StageManager : MonoBehaviour
 
     #region Initiate
     
-    public void Initialize()
+    public void Initialize(bool firstInit = false)
     {
         StatisticsManager.Instance.playerWeapon.InitializeSkills();
         
-        HUDManager.Instance.Initialize();
         door.Initialize();
-        shop.Initialize();
-
         ShowShop(false);
+
+        if (!isLocalBattle)
+        {
+            dialogue.Initialize();
+            shop.Initialize();
+            
+            HUDManager.Instance.Initialize(firstInit);
+        }
+        else
+        {
+            SwitchToCombat();
+        }
         
         _initialized = true;
     }
@@ -127,8 +136,18 @@ public class StageManager : MonoBehaviour
     {
         if (show)
         {
-            EnemyManager.Instance.SetEnemyType(Dictionaries.EnemyType[(Enums.EnemyType)(id - 1)]);
             EnemyManager.Instance.ToggleActive(true);
+            EnemyManager.Instance.SetEnemyType(Dictionaries.EnemyType[(Enums.EnemyType)id]);
+            if (!isLocalBattle)
+            {
+                EnemyManager.Instance.SetWeapon(EnemyManager.Instance.weaponSlotManager.leftHandWeapon);
+                EnemyManager.Instance.SetWeapon(EnemyManager.Instance.weaponSlotManager.rightHandWeapon);
+            }
+            else
+            {
+                EnemyManager.Instance.SetWeapon(StatisticsManager.Instance.opponentWeapon);
+            }
+            EnemyManager.Instance.stats.CalculateCritChance(id);
         }
         else
         {
@@ -153,10 +172,13 @@ public class StageManager : MonoBehaviour
         HUDManager.Instance.Initialize();
     }
     
-    public void SwitchToCombat(CardItem selectedBuff)
+    public void SwitchToCombat(CardItem selectedBuff = null)
     {
-        selectedBuff.EnableEffect(buffHolder);
-        selectedBuffs.Add(selectedBuff);
+        if (!isLocalBattle)
+        {
+            selectedBuff.EnableEffect(buffHolder);
+            selectedBuffs.Add(selectedBuff);
+        }
 
         TogglePlayer(true);
         ToggleEnemy(true);
@@ -185,39 +207,44 @@ public class StageManager : MonoBehaviour
     public void SwitchToNextStage()
     {
         id++;
-        
-        // Register stage progress
-        StatisticsManager.Instance.playerStats.progress.stage = id;
-        // Register combat stats
-        StatisticsManager.Instance.CopyCombatStats(PlayerManager.Instance);
-        
         _initialized = false;
-
-        StageManager.Instance.OpenDoor();
-
+        OpenDoor();
+        
         bool quit = false;
-        if (id <= StatisticsProgress.MaxStages)
+        if (!isLocalBattle)
         {
-            stageType = Enums.StageType.Dialogue;
-            previousStageType = Enums.StageType.Dialogue;
+            // Register stage progress
+            StatisticsManager.Instance.playerStats.progress.stage = id;
+            // Register combat stats
+            StatisticsManager.Instance.CopyCombatStats(PlayerManager.Instance);
             
-            StartCoroutine(SceneLoader.Instance.LoadScene(0));
+            if (id <= StatisticsProgress.MaxStages)
+            {
+                stageType = Enums.StageType.Dialogue;
+                previousStageType = Enums.StageType.Dialogue;
+            
+                StartCoroutine(SceneLoader.Instance.LoadScene(0));
+            }
+            else
+            {
+                quit = true;
+            
+                // Register iteration progress
+                // If current iteration is last and we passed the last stage then loop back to the beginning
+                if (StatisticsManager.Instance.playerStats.progress.iteration == StatisticsProgress.MaxIterations)
+                    StatisticsManager.Instance.ResetStatsPlayer(Enums.StatsType.Progress);
+            
+                // Register number of runs stat
+                StatisticsManager.Instance.playerStats.meta.numberOfRuns++;
+            }
+        
+            // Register all stats changes
+            StatisticsManager.Instance.WriteStatsPlayer();
         }
         else
         {
             quit = true;
-            
-            // Register iteration progress
-            // If current iteration is last and we passed the last stage then loop back to the beginning
-            if (StatisticsManager.Instance.playerStats.progress.iteration == StatisticsProgress.MaxIterations)
-                StatisticsManager.Instance.ResetStatsPlayer(Enums.StatsType.Progress);
-            
-            // Register number of runs stat
-            StatisticsManager.Instance.playerStats.meta.numberOfRuns++;
         }
-        
-        // Register all stats changes
-        StatisticsManager.Instance.WriteStatsPlayer();
 
         // Quite run (if necessary)
         if (quit)
@@ -227,34 +254,42 @@ public class StageManager : MonoBehaviour
     public void EndStageWin()
     {
         HUDManager.Instance.hudStage.ToggleTimer(false);
-        StageManager.Instance.ShowDoor(true);
+        ShowDoor(true);
 
-        if (id % 2 == 0)
-            StageManager.Instance.ShowShop(true);
+        if ((!isLocalBattle) && (id % 2 == 0))
+        {
+            ShowShop(true);
+        }
 
         // Lock off target if player is locking on
         if (PlayerManager.Instance.IsLockingOnTarget())
             PlayerManager.Instance.inputHandler.HandleLockOnInput();
-
-        // Spawn coin rewards
-        HUDManager.Instance.hudStage.coin.Spawn(10);
-        HUDManager.Instance.hudStage.AddCoins(true, _clearReward);
-        coinsAvailable = HUDManager.Instance.hudStage.coin.GetCoins();
-
+        
         // Show combat report
         HUDManager.Instance.hudStage.InitializeCombatReport(_clearReward);
-        HUDManager.Instance.hudStage.ShowCombatReport(true);
-        
-        // Register number of stages cleared stat
-        StatisticsManager.Instance.playerStats.meta.numberOfStagesCleared++;
-        StatisticsManager.Instance.WriteStatsPlayer();
+        HUDManager.Instance.hudStage.ShowCombatReport(true, !isLocalBattle);
+
+        // Spawn coin rewards
+        if (!isLocalBattle)
+        {
+            HUDManager.Instance.hudStage.coin.Spawn(10);
+            HUDManager.Instance.hudStage.AddCoins(true, _clearReward);
+            coinsAvailable = HUDManager.Instance.hudStage.coin.GetCoins();
+            
+            // Register number of stages cleared stat
+            StatisticsManager.Instance.playerStats.meta.numberOfStagesCleared++;
+            StatisticsManager.Instance.WriteStatsPlayer();
+        }
     }
 
     public void EndStageLoss()
     {
-        // Register number of deaths cleared stat
-        StatisticsManager.Instance.playerStats.meta.numberOfDeaths++;
-        StatisticsManager.Instance.WriteStatsPlayer();
+        if (!isLocalBattle)
+        {
+            // Register number of deaths cleared stat
+            StatisticsManager.Instance.playerStats.meta.numberOfDeaths++;
+            StatisticsManager.Instance.WriteStatsPlayer();
+        }
         
         Quit();
     }
@@ -289,7 +324,7 @@ public class StageManager : MonoBehaviour
             
             HUDManager.Instance.hudStage.ShowCombatReport(true);
             HUDManager.Instance.shop.gameObject.SetActive(false);
-            StageManager.Instance.shop.isOpen = false;
+            shop.isOpen = false;
         }
         else if (stageType == Enums.StageType.Quit)
         {
@@ -302,7 +337,7 @@ public class StageManager : MonoBehaviour
 
                 // If the door is active then it means the stage is cleared and show the combat report
                 // Else show the enemy and resume timer
-                if (!StageManager.Instance.door.gameObject.activeSelf)
+                if (!door.gameObject.activeSelf)
                 {
                     HUDManager.Instance.hudStage.ToggleTimer(true);
 
@@ -346,12 +381,13 @@ public class StageManager : MonoBehaviour
 
     public void Quit()
     {
-        Reset();
-        
+        if (!isLocalBattle)
+            Reset();
+
         SceneLoader.Instance.sceneType = Enums.SceneType.Menu;
         SceneLoader.Instance.previousSceneType = Enums.SceneType.Game;
         
-        StartCoroutine(SceneLoader.Instance.LoadScene(-1));
+        StartCoroutine(SceneLoader.Instance.LoadScene(0, true));
     }
 
     #endregion

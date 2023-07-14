@@ -44,20 +44,26 @@ public class HUDStageManager : MonoBehaviour
 
     public void Initialize()
     {
-        progressBar = GetComponentInChildren<ProgressBarController>();
-        coin        = GetComponentInChildren<CoinManager>();
-        dialogue    = GameObject.FindObjectsOfType<DialogueController>(true)[0];
+        if (!StageManager.Instance.isLocalBattle)
+        {
+            progressBar = GetComponentInChildren<ProgressBarController>();
+            coin        = GetComponentInChildren<CoinManager>();
+            dialogue    = GameObject.FindObjectsOfType<DialogueController>(true)[0];
+        }
 
         mask     = transform.GetChild(0);
-        back     = transform.GetChild(2);
-        interact = transform.GetChild(3);
-        report   = transform.GetChild(4);
-        timer    = transform.GetChild(5);
-        quit     = transform.GetChild(6);
+        back = transform.GetChild(1);
+        interact = transform.GetChild(2);
+        report = transform.GetChild(3);
+        timer = transform.GetChild(4);
+        quit = transform.GetChild(5);
 
-        progressBar.UpdateProgress(StageManager.Instance.id - 1);
-        coin.Initialize();
-        dialogue.SetManager(this);
+        if (!StageManager.Instance.isLocalBattle)
+        {
+            progressBar.UpdateProgress(StageManager.Instance.id - 1);
+            coin.Initialize();
+            dialogue.SetManager(this);
+        }
 
         Button btnBack = back.GetComponent<Button>();
         btnBack.onClick.RemoveAllListeners();
@@ -102,8 +108,9 @@ public class HUDStageManager : MonoBehaviour
 
     #region Report
 
-    public void ShowCombatReport(bool visible)
+    public void ShowCombatReport(bool visible, bool coinsVisible = true)
     {
+        report.GetComponent<CombatReportController>().ToggleCoins(coinsVisible);
         report.gameObject.SetActive(visible);
     }
 

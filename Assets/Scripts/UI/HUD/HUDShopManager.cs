@@ -12,7 +12,7 @@ public class HUDShopManager : MonoBehaviour
 
     public void Initialize()
     {
-        _container = transform.GetChild(1).GetChild(0).GetChild(0).transform;
+        _container = transform.GetChild(2).GetChild(0).GetChild(0);
         foreach (Transform child in _container.transform)
             Destroy(child.gameObject);
         

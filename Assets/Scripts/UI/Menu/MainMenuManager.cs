@@ -8,6 +8,7 @@ public class MainMenuManager : MonoBehaviour
     {
         SceneLoader.Instance.sceneType = Enums.SceneType.Game;
         SceneLoader.Instance.previousSceneType = Enums.SceneType.Menu;
+        SceneLoader.Instance.previousMenuType = Enums.MenuType.Main;
 
         if (StatisticsManager.Instance.IsBeginning())
             StatisticsManager.Instance.ResetStatsPlayer(Enums.StatsType.Combat);

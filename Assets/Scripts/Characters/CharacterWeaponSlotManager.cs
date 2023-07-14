@@ -46,41 +46,42 @@ public class CharacterWeaponSlotManager : MonoBehaviour
 
     #region Loaders
 
-    public virtual bool LoadWeaponOnSlot(WeaponItem weaponItem, bool isLeft, bool isRight)
+    public virtual bool LoadWeaponOnSlot(WeaponItem weaponItem)
     {
         bool isLoaded = false;
-
-        if (isLeft)
+        if (weaponItem != null)
         {
-            isLoaded = leftHandSlot.LoadWeaponModel(weaponItem);
-            if (isLoaded)
+            if (weaponItem.handlingType == Enums.WeaponHandlingType.Left)
             {
-                leftHandDamageCollider = leftHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
+                isLoaded = leftHandSlot.LoadWeaponModel(weaponItem);
+                if (isLoaded)
+                {
+                    leftHandDamageCollider = leftHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
+                    leftHandWeapon = weaponItem;
+                    isUsingLeftHand = true;
+                }
+            }
+            else
+            {
+                isLoaded = rightHandSlot.LoadWeaponModel(weaponItem);
+                if (isLoaded)
+                {
+                    rightHandDamageCollider = rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
+                    rightHandWeapon = weaponItem;
+                    isUsingRightHand = true;
+                }
             }
         }
-
-        if (isRight)
-        {
-            isLoaded = rightHandSlot.LoadWeaponModel(weaponItem);
-            if (isLoaded)
-            {
-                rightHandDamageCollider = rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
-            }
-        }
-
-        if (isLoaded)
-        {
-            isUsingLeftHand = isLeft;
-            isUsingRightHand = isRight;
-        }
-
         return isLoaded;
     }
 
     public virtual void LoadTwoHandIK()
     {
-        leftHandIkTarget = rightHandSlot.currentWeaponModel.GetComponentInChildren<LeftHandIKTarget>();
-        rightHandIkTarget = rightHandSlot.currentWeaponModel.GetComponentInChildren<RightHandIKTarget>();
+        if (EnemyManager.Instance.isTwoHanding)
+        {
+            leftHandIkTarget = rightHandSlot.currentWeaponModel.GetComponentInChildren<LeftHandIKTarget>();
+            rightHandIkTarget = rightHandSlot.currentWeaponModel.GetComponentInChildren<RightHandIKTarget>();
+        }
     }
 
     #endregion

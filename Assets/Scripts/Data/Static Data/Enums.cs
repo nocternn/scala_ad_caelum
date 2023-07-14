@@ -13,6 +13,7 @@ public abstract class Enums
     
     public enum EnemyType
     {
+        LocalPlayer,
         Archer,
         Spearwoman,
         Crossbowman,
@@ -41,6 +42,13 @@ public abstract class Enums
     {
         Melee,
         Ranged
+    }
+
+    public enum WeaponHandlingType
+    {
+        Left,
+        Right,
+        Both
     }
     
     public enum AmmoType

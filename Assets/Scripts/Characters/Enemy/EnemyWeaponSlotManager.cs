@@ -7,16 +7,13 @@ public class EnemyWeaponSlotManager : CharacterWeaponSlotManager
     public void Initialize()
     {
         Initialize(transform);
-        
-        LoadWeaponOnSlot(leftHandWeapon, true, false);
-        LoadWeaponOnSlot(rightHandWeapon, false, true);
     }
 
     #region Loaders
     
-    public override bool LoadWeaponOnSlot(WeaponItem weaponItem, bool isLeft, bool isRight)
+    public override bool LoadWeaponOnSlot(WeaponItem weaponItem)
     {
-        bool isLoaded = base.LoadWeaponOnSlot(weaponItem, isLeft, isRight);
+        bool isLoaded = base.LoadWeaponOnSlot(weaponItem);
 /*
         string weaponType = GetCurrentWeaponType();
         if ((weaponType.Equals(weaponTypes[0]) || weaponType.Equals(weaponTypes[2])) && rightHandDamageCollider == null)
@@ -42,26 +39,8 @@ public class EnemyWeaponSlotManager : CharacterWeaponSlotManager
     public void SetUsedWeaponType()
     {
         WeaponItem weapon = GetCurrentWeapon();
-        
-        // Toggle two-handing for spear and crossbow
-        if (weapon.type == Enums.WeaponType.Crossbow || weapon.type == Enums.WeaponType.Spear)
-        {
-            EnemyManager.Instance.isTwoHanding = true;
-        }
-        else
-        {
-            EnemyManager.Instance.isTwoHanding = false;
-        }
-
-        // Toggle aim for bow and crossbow
-        if (weapon.type == Enums.WeaponType.Bow || weapon.type == Enums.WeaponType.Crossbow)
-        {
-            EnemyManager.Instance.isAiming = true;
-        }
-        else
-        {
-            EnemyManager.Instance.isAiming = false;
-        }
+        EnemyManager.Instance.isTwoHanding = (weapon.handlingType == Enums.WeaponHandlingType.Both);
+        EnemyManager.Instance.isAiming = (weapon.combatType == Enums.WeaponCombatType.Ranged);
     }
 
     public override void ToggleShooting()

@@ -587,7 +587,7 @@ MonoBehaviour:
   _hasDied: 0
   _isActive: 0
   _actions:
-  - {fileID: 11400000, guid: f425b6bc8ce9d9f48a022f775e0fff80, type: 2}
+  - {fileID: 11400000, guid: 8a34859cd64ca834ba886f7bb37e73c1, type: 2}
   - {fileID: 11400000, guid: 5cb09402183b89a43b1ae7bdd2ba78ca, type: 2}
   characterType: 1
   animatorHandler: {fileID: 0}
@@ -3040,7 +3040,7 @@ PrefabInstance:
     - target: {fileID: 8703270401646922882, guid: 82062496d93d6a54292e535d20028815,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8703270401646922882, guid: 82062496d93d6a54292e535d20028815,
         type: 3}
@@ -3541,7 +3541,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1531559416}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -3978,7 +3978,7 @@ PrefabInstance:
     - target: {fileID: 2560441174095320592, guid: b072217ea4e409042b40abdd9369d6ff,
         type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2560441174095320592, guid: b072217ea4e409042b40abdd9369d6ff,
         type: 3}
@@ -4146,6 +4146,7 @@ MonoBehaviour:
   buffHolder: {fileID: 1184316799}
   _initialized: 0
   _clearReward: 100
+  isLocalBattle: 0
   id: 1
   coinsAvailable: 0
   stageType: 2
@@ -4180,7 +4181,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbd98f4acb99c3341a18f9e7a00632d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fileProgress: 
   _fileDialogue: 
   _iteration:
     stage01: []
@@ -4189,8 +4189,6 @@ MonoBehaviour:
     stage04: []
     stage05: []
     stageEnd: []
-  _iterationProgress:
-    currentIteration: 0
 --- !u!1 &305234333
 GameObject:
   m_ObjectHideFlags: 0
@@ -7371,7 +7369,7 @@ RectTransform:
   - {fileID: 2068740174}
   - {fileID: 1714459744}
   m_Father: {fileID: 1531559416}
-  m_RootOrder: 8
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
@@ -7844,9 +7842,9 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 804087239}
+  - {fileID: 1531559416}
   - {fileID: 2019978830}
   - {fileID: 1312187395}
-  - {fileID: 1531559416}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7967,7 +7965,7 @@ MonoBehaviour:
   _hasDied: 0
   _isActive: 0
   _actions:
-  - {fileID: 11400000, guid: c507ae4c8d1ecd348aa12ea5962213d4, type: 2}
+  - {fileID: 11400000, guid: 8a34859cd64ca834ba886f7bb37e73c1, type: 2}
   characterType: 0
   animatorHandler: {fileID: 0}
   locomotion: {fileID: 0}
@@ -8615,7 +8613,7 @@ RectTransform:
   - {fileID: 1580555270}
   - {fileID: 1883975092}
   m_Father: {fileID: 1001558564}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -9619,7 +9617,7 @@ RectTransform:
   - {fileID: 2087282588}
   - {fileID: 1465556136}
   m_Father: {fileID: 1531559416}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
@@ -9773,7 +9771,7 @@ PrefabInstance:
     - target: {fileID: 8703270401646922882, guid: 82062496d93d6a54292e535d20028815,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8703270401646922882, guid: 82062496d93d6a54292e535d20028815,
         type: 3}
@@ -10027,16 +10025,16 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 808035170}
-  - {fileID: 1726503410}
   - {fileID: 143587941}
   - {fileID: 1490265312}
   - {fileID: 1435337687}
   - {fileID: 191504053}
   - {fileID: 1652694651}
-  - {fileID: 234796696}
   - {fileID: 919117015}
+  - {fileID: 1726503410}
+  - {fileID: 234796696}
   m_Father: {fileID: 1001558564}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -13456,7 +13454,7 @@ RectTransform:
   - {fileID: 1073261966}
   - {fileID: 1893171012}
   m_Father: {fileID: 1531559416}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -15037,7 +15035,7 @@ RectTransform:
   - {fileID: 1353941988}
   - {fileID: 1601686942}
   m_Father: {fileID: 1001558564}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -16275,7 +16273,7 @@ PrefabInstance:
     - target: {fileID: 2364924657474969111, guid: cb557c7c4e76ddc408e46baab919db19,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2364924657474969111, guid: cb557c7c4e76ddc408e46baab919db19,
         type: 3}
@@ -16389,7 +16387,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2015900109983607932, guid: 25df2e191c39856479ff68a0163daaa1, type: 3}
+  - {fileID: 2100000, guid: 33e296b054dedb949aedf0b613baf336, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -16539,7 +16537,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6194709992376381822, guid: 25df2e191c39856479ff68a0163daaa1, type: 3}
+  - {fileID: 2100000, guid: 33e296b054dedb949aedf0b613baf336, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -16801,7 +16799,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6194709992376381822, guid: 25df2e191c39856479ff68a0163daaa1, type: 3}
+  - {fileID: 2100000, guid: 33e296b054dedb949aedf0b613baf336, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -17521,7 +17519,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6194709992376381822, guid: 25df2e191c39856479ff68a0163daaa1, type: 3}
+  - {fileID: 2100000, guid: 33e296b054dedb949aedf0b613baf336, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -17639,7 +17637,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2015900109983607932, guid: 25df2e191c39856479ff68a0163daaa1, type: 3}
+  - {fileID: 2100000, guid: 33e296b054dedb949aedf0b613baf336, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -18925,7 +18923,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6194709992376381822, guid: 25df2e191c39856479ff68a0163daaa1, type: 3}
+  - {fileID: 2100000, guid: 33e296b054dedb949aedf0b613baf336, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

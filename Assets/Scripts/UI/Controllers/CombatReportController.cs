@@ -50,6 +50,12 @@ public class CombatReportController : MonoBehaviour
 
     public void SetCoins(int coins)
     {
+        ToggleCoins(true);
         _txtCoins.text = coins.ToString();
+    }
+
+    public void ToggleCoins(bool visible)
+    {
+        _txtCoins.transform.parent.gameObject.SetActive(visible);
     }
 }

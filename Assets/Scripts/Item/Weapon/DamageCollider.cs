@@ -34,10 +34,13 @@ public class DamageCollider : MonoBehaviour
 
             // Register damage
             PlayerManager.Instance.stats.TakeDamage(damage);
-            
-            // Register total damage received stat
-            StatisticsManager.Instance.playerStats.meta.totalDamageReceived += damage;
-            StatisticsManager.Instance.WriteStatsPlayer();
+
+            if (!StageManager.Instance.isLocalBattle)
+            {
+                // Register total damage received stat
+                StatisticsManager.Instance.playerStats.meta.totalDamageReceived += damage;
+                StatisticsManager.Instance.WriteStatsPlayer();
+            }
         }
         else if (collision.tag == "Enemy")
         {
@@ -63,13 +66,16 @@ public class DamageCollider : MonoBehaviour
 			if (PlayerManager.Instance.attacker.IsAttackOfType(Enums.ActionType.Basic))
             	PlayerManager.Instance.stats.UpdateAttackCharge(true);
 
-            // Register total damage dealt stat
-            StatisticsManager.Instance.playerStats.meta.totalDamageDealt += damage;
-            // Register max single hit damage (if applicable)
-            if (damage > StatisticsManager.Instance.playerStats.meta.maxDamageSingleHit)
-                StatisticsManager.Instance.playerStats.meta.maxDamageSingleHit = damage;
-            // Register new stats
-            StatisticsManager.Instance.WriteStatsPlayer();
+            if (!StageManager.Instance.isLocalBattle)
+            {
+                // Register total damage dealt stat
+                StatisticsManager.Instance.playerStats.meta.totalDamageDealt += damage;
+                // Register max single hit damage (if applicable)
+                if (damage > StatisticsManager.Instance.playerStats.meta.maxDamageSingleHit)
+                    StatisticsManager.Instance.playerStats.meta.maxDamageSingleHit = damage;
+                // Register new stats
+                StatisticsManager.Instance.WriteStatsPlayer();
+            }
         }
     }
     protected virtual void OnTriggerExit(Collider collision)

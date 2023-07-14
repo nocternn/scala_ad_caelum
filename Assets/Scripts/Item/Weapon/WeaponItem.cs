@@ -12,9 +12,11 @@ public class WeaponItem : Item
     public AmmoItem ammo;
     public Enums.WeaponType type;
     public Enums.WeaponCombatType combatType;
+    public Enums.WeaponHandlingType handlingType;
     public GameObject model;
     public Sprite secondaryIcon;
     public int id;
+    public bool isTwoHanded;
 
     [Header("Stats")]
     public int atk;
