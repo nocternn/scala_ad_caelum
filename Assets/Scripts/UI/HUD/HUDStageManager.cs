@@ -10,7 +10,7 @@ public class HUDStageManager : MonoBehaviour
     [Header("Interactables")]
     public CoinManager coin;
     public DialogueController dialogue;
-    
+
     [Header("Progress")]
     public ProgressBarController progressBar;
 
@@ -28,7 +28,7 @@ public class HUDStageManager : MonoBehaviour
 
     #endregion
 
-    void Start()
+    void Awake()
     {
         _initialized = false;
     }
@@ -37,7 +37,7 @@ public class HUDStageManager : MonoBehaviour
     {
         if (!_initialized)
             return;
-        
+
         canInteract = StageManager.Instance.door.isOpenable ||  StageManager.Instance.shop.isOpenable;
         interact.gameObject.SetActive(canInteract);
     }
@@ -68,7 +68,7 @@ public class HUDStageManager : MonoBehaviour
         Button btnBack = back.GetComponent<Button>();
         btnBack.onClick.RemoveAllListeners();
         btnBack.onClick.AddListener(delegate { HUDManager.Instance.Action(Enums.HUDAction.Back); });
-        
+
         Button btnInteract = interact.GetComponent<Button>();
         btnInteract.onClick.RemoveAllListeners();
         btnInteract.onClick.AddListener(delegate { HUDManager.Instance.Action(Enums.HUDAction.Interact); });
@@ -118,7 +118,7 @@ public class HUDStageManager : MonoBehaviour
     {
         CombatReportController reportController = report.GetComponent<CombatReportController>();
         StageTimerController timerController = timer.GetComponent<StageTimerController>();
-        
+
         int timeElapsed = timerController.GetElapsed();
         int timeReward  = timerController.GetRewardAmount();
 
@@ -139,7 +139,7 @@ public class HUDStageManager : MonoBehaviour
     #endregion
 
     #region Quit
-    
+
     public void ShowQuitConfirmation(bool show)
     {
         mask.gameObject.SetActive(show);

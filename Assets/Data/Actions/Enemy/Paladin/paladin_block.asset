@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   _animation: paladin_block_start
-  _duration: 5
+  _duration: 3
   _recoveryTime: 10
   chanceToBePerformed: 40
   toBePerformed: 0

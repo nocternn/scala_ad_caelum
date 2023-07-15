@@ -31,7 +31,7 @@ public class ParryAction : CharacterAction
             {
                 enemy.PerformAction(Enums.ActionType.Basic);
             }
-        });
+        }, TaskScheduler.FromCurrentSynchronizationContext());
         
         base.PerformAction(enemy, playAnimation);
     }

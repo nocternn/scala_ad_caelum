@@ -28,8 +28,8 @@ public class BlockAction : CharacterAction
         {
             enemy.stats.scaleDefense -= _scaleDef;
             enemy.animatorHandler.SetBool("isBlocking", false);
-        });
-        
+        }, TaskScheduler.FromCurrentSynchronizationContext());
+
         base.PerformAction(enemy, playAnimation);
     }
 }
