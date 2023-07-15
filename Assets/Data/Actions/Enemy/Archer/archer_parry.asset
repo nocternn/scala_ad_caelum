@@ -15,6 +15,6 @@ MonoBehaviour:
   id: 0
   _animation: archer_block
   _duration: 0.5
-  _recoveryTime: 10
+  _recoveryTime: 7
   chanceToBePerformed: 30
   toBePerformed: 0

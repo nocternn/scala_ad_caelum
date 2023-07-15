@@ -15,8 +15,8 @@ MonoBehaviour:
   id: 0
   _animation: archer_dodge_forward
   _duration: 0
-  _recoveryTime: 10
-  chanceToBePerformed: 50
+  _recoveryTime: 3
+  chanceToBePerformed: 40
   toBePerformed: 0
   _backwardAnimation: archer_dodge_backward
   _leftAnimation: archer_dodge_left

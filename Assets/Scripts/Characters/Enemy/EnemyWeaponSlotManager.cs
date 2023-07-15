@@ -26,10 +26,11 @@ public class EnemyWeaponSlotManager : CharacterWeaponSlotManager
     
     public override void LoadTwoHandIK()
     {
-        if (!EnemyManager.Instance.isTwoHanding)
-            return;
-        base.LoadTwoHandIK();
-        EnemyManager.Instance.animatorHandler.SetHandIK(leftHandIkTarget, rightHandIkTarget, EnemyManager.Instance.isTwoHanding);
+        if (EnemyManager.Instance.isTwoHanding)
+        {
+            base.LoadTwoHandIK();
+            EnemyManager.Instance.animatorHandler.SetHandIK(leftHandIkTarget, rightHandIkTarget, EnemyManager.Instance.isTwoHanding);
+        }
     }
 
     #endregion
@@ -39,6 +40,9 @@ public class EnemyWeaponSlotManager : CharacterWeaponSlotManager
     public void SetUsedWeaponType()
     {
         WeaponItem weapon = GetCurrentWeapon();
+        
+        if (StageManager.Instance.isLocalBattle)
+            EnemyManager.Instance.animatorHandler.SetUsedWeaponType(Dictionaries.WeaponTypePlayer[weapon.type]);
         EnemyManager.Instance.isTwoHanding = (weapon.handlingType == Enums.WeaponHandlingType.Both);
         EnemyManager.Instance.isAiming = (weapon.combatType == Enums.WeaponCombatType.Ranged);
     }

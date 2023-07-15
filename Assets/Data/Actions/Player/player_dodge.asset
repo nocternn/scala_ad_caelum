@@ -15,12 +15,9 @@ MonoBehaviour:
   id: 0
   _animation: Rolling
   _duration: 0
-  score: 0
-  recoveryTime: 0
-  minDistance: 0
-  maxDistance: 0
-  minAngle: 0
-  maxAngle: 0
+  _recoveryTime: 3
+  chanceToBePerformed: 40
+  toBePerformed: 0
   _backwardAnimation: Backstep
-  _leftAnimation: 
-  _rightAnimation: 
+  _leftAnimation: Rolling
+  _rightAnimation: Rolling

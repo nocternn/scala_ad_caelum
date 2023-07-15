@@ -11183,7 +11183,6 @@ MonoBehaviour:
   maxAttackRange: 10
   enemyType: 0
   _actions:
-  - {fileID: 11400000, guid: 8a34859cd64ca834ba886f7bb37e73c1, type: 2}
   - {fileID: 11400000, guid: 5cb09402183b89a43b1ae7bdd2ba78ca, type: 2}
 --- !u!95 &5866666021617260045
 Animator:

@@ -43,7 +43,6 @@ public class EnemyStateIdle : EnemyState
         for (int i = 0; i < colliders.Length; i++)
         {
             CharacterManager target = colliders[i].transform.GetComponent<CharacterManager>();
-
             // Proceed to next step if target is not of the same type as A.I.
             if (target != null && target.characterType != manager.characterType)
             {

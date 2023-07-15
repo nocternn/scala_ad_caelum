@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -85,6 +86,15 @@ public class CharacterAnimatorHandler : MonoBehaviour
     public virtual void EraseHandIK()
     {
         
+    }
+    
+    public virtual void SetUsedWeaponType(string currentWeaponType)
+    {
+        foreach(KeyValuePair<Enums.WeaponType, string> type in Dictionaries.WeaponTypePlayer)
+        {
+            _animator.SetBool(String.Format("isUsing{0}", type.Value), false);
+        }
+        _animator.SetBool(String.Format("isUsing{0}", currentWeaponType), true);
     }
 
     #endregion

@@ -77,11 +77,8 @@ public class CharacterWeaponSlotManager : MonoBehaviour
 
     public virtual void LoadTwoHandIK()
     {
-        if (EnemyManager.Instance.isTwoHanding)
-        {
-            leftHandIkTarget = rightHandSlot.currentWeaponModel.GetComponentInChildren<LeftHandIKTarget>();
-            rightHandIkTarget = rightHandSlot.currentWeaponModel.GetComponentInChildren<RightHandIKTarget>();
-        }
+        leftHandIkTarget = rightHandSlot.currentWeaponModel.GetComponentInChildren<LeftHandIKTarget>();
+        rightHandIkTarget = rightHandSlot.currentWeaponModel.GetComponentInChildren<RightHandIKTarget>();
     }
 
     #endregion

@@ -15,9 +15,9 @@ MonoBehaviour:
   id: 2
   _animation: greatsword_basic_attack_03
   _duration: 0
-  score: 0
-  recoveryTime: 0
+  _recoveryTime: 5
+  score: 3
   minDistance: 0
-  maxDistance: 0
-  minAngle: 0
-  maxAngle: 0
+  maxDistance: 5
+  minAngle: -50
+  maxAngle: 50

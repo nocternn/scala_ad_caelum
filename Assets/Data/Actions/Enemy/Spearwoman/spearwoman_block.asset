@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 0
   _animation: spearwoman_block_start
   _duration: 5
-  _recoveryTime: 10
+  _recoveryTime: 5
   chanceToBePerformed: 40
   toBePerformed: 0
   _scaleDef: 0.5

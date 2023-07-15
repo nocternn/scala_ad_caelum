@@ -12334,12 +12334,7 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: 333a48060170b3f47bfb4b4c47dded6a,
         type: 3}
       propertyPath: m_WarningMessage
-      value: "\nBinding warning: Some generic clip(s) animate transforms that are
-        already bound by a Humanoid avatar. These transforms can only be changed
-        by Humanoid clips.\n\tTransform 'mixamorig:RightHand'\n\tTransform 'mixamorig:Hips'\n\tTransform
-        'mixamorig:RightForeArm'\n\tTransform 'mixamorig:Spine'\n\tTransform 'mixamorig:RightHand'\n\tTransform
-        'mixamorig:Hips'\n\tTransform 'mixamorig:RightForeArm'\n\tTransform 'mixamorig:Spine'\n\tTransform
-        'mixamorig:RightHand'\n\tTransform 'mixamorig:Hips'\n\tand more ..."
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 333a48060170b3f47bfb4b4c47dded6a,
         type: 3}
@@ -18225,6 +18220,36 @@ PrefabInstance:
         by Humanoid clips.\n\tTransform 'mixamorig:RightHand'\n\tTransform 'mixamorig:RightForeArm'\n\tTransform
         'mixamorig:RightHand'\n\tTransform 'mixamorig:RightForeArm'\n\tTransform
         'mixamorig:RightHand'\n\tTransform 'mixamorig:RightForeArm'"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6574942821208442412, guid: 15e2cd8a76585f04fad29ca46fda712e,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6574942821208442412, guid: 15e2cd8a76585f04fad29ca46fda712e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6574942821208442412, guid: 15e2cd8a76585f04fad29ca46fda712e,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6574942821208442412, guid: 15e2cd8a76585f04fad29ca46fda712e,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6574942821208442412, guid: 15e2cd8a76585f04fad29ca46fda712e,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6574942821208442412, guid: 15e2cd8a76585f04fad29ca46fda712e,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7016953585726905462, guid: 15e2cd8a76585f04fad29ca46fda712e,
         type: 3}

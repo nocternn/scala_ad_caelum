@@ -24,12 +24,13 @@ public class PlayerWeaponSlotManager : CharacterWeaponSlotManager
         }
         public override void LoadTwoHandIK()
         {
-                if (!PlayerManager.Instance.isTwoHanding)
-                        return;
-                base.LoadTwoHandIK();
-                PlayerManager.Instance.animatorHandler.SetHandIK(
-                        leftHandIkTarget, rightHandIkTarget,
-                        PlayerManager.Instance.isTwoHanding);
+                if (PlayerManager.Instance.isTwoHanding)
+                {
+                        base.LoadTwoHandIK();
+                        PlayerManager.Instance.animatorHandler.SetHandIK(
+                                leftHandIkTarget, rightHandIkTarget,
+                                PlayerManager.Instance.isTwoHanding);
+                }
         }
 
         #endregion
@@ -41,17 +42,7 @@ public class PlayerWeaponSlotManager : CharacterWeaponSlotManager
                 WeaponItem weapon = GetCurrentWeapon();
 
                 PlayerManager.Instance.animatorHandler.SetUsedWeaponType(Dictionaries.WeaponTypePlayer[weapon.type]);
-                
-                if (weapon.type == Enums.WeaponType.Pistol
-                    || weapon.type == Enums.WeaponType.Greatsword
-                    || weapon.type == Enums.WeaponType.Scythe)
-                {
-                        PlayerManager.Instance.isTwoHanding = true;
-                }
-                else
-                {
-                        PlayerManager.Instance.isTwoHanding = false;
-                }
+                PlayerManager.Instance.isTwoHanding = (weapon.handlingType == Enums.WeaponHandlingType.Both);
         }
         
         public override void ToggleShooting()

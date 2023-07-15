@@ -41,15 +41,6 @@ public class PlayerAnimatorHandler : CharacterAnimatorHandler
 	
 	#region Setters
 
-	public void SetUsedWeaponType(string currentWeaponType)
-	{
-		foreach(KeyValuePair<Enums.WeaponType, string> type in Dictionaries.WeaponTypePlayer)
-		{
-			_animator.SetBool(String.Format("isUsing{0}", type.Value), false);
-		}
-		_animator.SetBool(String.Format("isUsing{0}", currentWeaponType), true);
-	}
-
 	public override void SetHandIK(LeftHandIKTarget leftHandTarget, RightHandIKTarget rightHandTarget, bool isTwoHanding)
 	{
 		base.SetHandIK(leftHandTarget, rightHandTarget, isTwoHanding);

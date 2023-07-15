@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 0
   _animation: paladin_block_start
   _duration: 3
-  _recoveryTime: 10
+  _recoveryTime: 3
   chanceToBePerformed: 40
   toBePerformed: 0
   _scaleDef: 0.8

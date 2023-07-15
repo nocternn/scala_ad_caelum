@@ -35,7 +35,7 @@ public class EnemyStateCombatStance : EnemyState
         }
         manager.locomotion.Move(horizontalMovement, verticalMovement);
 
-		// If the A.I. is too far from the target, return it to its pursue target state
+        // If the A.I. is too far from the target, return it to its pursue target state
         if (_distanceFromTarget > manager.stats.maxAttackRange
             || !idleState.IsTargetVisible(manager, manager.currentTarget, _viewableAngle))
         {
@@ -67,16 +67,16 @@ public class EnemyStateCombatStance : EnemyState
 			RollForActionChance(manager);
 			PerformAction(manager);
 		}
-
+		
 		// Keep rotating towards the target
         pursueTargetState.HandleRotation(manager);
 
-		// If no character action is performed,
+        // If no character action is performed,
 		if (!manager.isInteracting)
 		{
 			// If there is a viable attack, then perform it
         	if (manager.stats.currentRecoveryTime <= 0 && attackState.currentAttack != null)
-        	{
+            {
            		randomDestinationSet = false;
             	return attackState;
         	}
@@ -189,6 +189,8 @@ public class EnemyStateCombatStance : EnemyState
 			// Select random action from the array above and perform it
 			int selectedActionIndex = UnityEngine.Random.Range(0, actions.Length - 1);
 			actions[selectedActionIndex].PerformAction(manager);
+			
+			Debug.Log(actions[selectedActionIndex]);
 
 			// Reset other actions
 			foreach (var action in actions)
@@ -200,9 +202,12 @@ public class EnemyStateCombatStance : EnemyState
 
     private void GetNewAttack(EnemyManager manager)
     {
-	    WeaponAction[] actions = _weapon.GetActions();
-	    
-        int maxScore = 0;
+	    // Don't retrieve actives, ultimates and charges
+	    WeaponAction[] actions = Array.FindAll(
+			    _weapon.GetActions(),
+			    action => action.type == Enums.ActionType.Basic || action.type == Enums.ActionType.Shoot
+		    );
+	    int maxScore = 0;
         foreach (WeaponAction attack in actions)
         {
             if ((_distanceFromTarget >= attack.minDistance)

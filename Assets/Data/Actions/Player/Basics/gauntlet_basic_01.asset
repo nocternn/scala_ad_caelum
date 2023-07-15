@@ -15,9 +15,9 @@ MonoBehaviour:
   id: 0
   _animation: gauntlet_basic_attack_01
   _duration: 0
-  score: 0
-  recoveryTime: 0
+  _recoveryTime: 5
+  score: 3
   minDistance: 0
-  maxDistance: 0
-  minAngle: 0
-  maxAngle: 0
+  maxDistance: 3
+  minAngle: -50
+  maxAngle: 50
