@@ -2971,7 +2971,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a37b0f8e223b6ba4c90b40df17b36a88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 1
+  baseHealth: 1500000
   baseAttack: 440
   baseDefense: 330
   baseCritical: 40
@@ -7128,7 +7128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a37b0f8e223b6ba4c90b40df17b36a88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 1
+  baseHealth: 500000
   baseAttack: 202
   baseDefense: 235
   baseCritical: 45
@@ -12732,7 +12732,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a37b0f8e223b6ba4c90b40df17b36a88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 1
+  baseHealth: 1000000
   baseAttack: 385
   baseDefense: 310
   baseCritical: 30
@@ -17331,6 +17331,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4874963852426159851, guid: a4ee618d6c735a74eabb185b4bb93f1c,
         type: 3}
+      propertyPath: baseHealth
+      value: 3000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 4874963852426159851, guid: a4ee618d6c735a74eabb185b4bb93f1c,
+        type: 3}
       propertyPath: _actions.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -18264,7 +18269,7 @@ PrefabInstance:
     - target: {fileID: 7016953586103164687, guid: 15e2cd8a76585f04fad29ca46fda712e,
         type: 3}
       propertyPath: baseHealth
-      value: 1
+      value: 300000
       objectReference: {fileID: 0}
     - target: {fileID: 7016953586103164687, guid: 15e2cd8a76585f04fad29ca46fda712e,
         type: 3}

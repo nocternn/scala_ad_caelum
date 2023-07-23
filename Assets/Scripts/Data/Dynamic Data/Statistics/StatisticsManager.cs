@@ -147,11 +147,9 @@ public class StatisticsManager : MonoBehaviour
 
     #region Getters
 
-    public bool IsBeginning()
+    public bool IsFirstStage()
     {
-        bool isFirstIteration = playerStats.progress.iteration == 1;
-        bool isfirstStage = playerStats.progress.stage == 1;
-        return isFirstIteration && isfirstStage;
+        return playerStats.progress.stage == 1;
     }
 
     public Statistics GetStatsPlayer(string name)

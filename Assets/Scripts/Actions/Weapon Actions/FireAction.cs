@@ -33,7 +33,7 @@ public class FireAction : WeaponAction
             GameObject ammo = Instantiate(
                 weapon.ammo.model,
                 instantiationLocation.transform.position,
-                player.GetCameraRotation("pivot")
+                CameraManager.Instance.GetRotation("pivot")
             );
             RangedDamageCollider damageCollider = ammo.GetComponentInChildren<RangedDamageCollider>();
             // Set player ammo
@@ -65,7 +65,7 @@ public class FireAction : WeaponAction
                 else
                 {
                     _playerAmmo.transform.rotation = Quaternion.Euler(
-                        player.GetCameraLocalEulerAngles().x,
+                        CameraManager.Instance.GetLocalEulerAngles().x,
                         player.lockOnTransform.eulerAngles.y,
                         0
                     );
@@ -74,7 +74,7 @@ public class FireAction : WeaponAction
             else
             {
                 _playerAmmo.transform.rotation = Quaternion.Euler(
-                    player.GetCameraEulerAngles("pivot").x,
+                    CameraManager.Instance.GetEulerAngles("pivot").x,
                     player.lockOnTransform.eulerAngles.y,
                     0
                 );

@@ -10,7 +10,7 @@ public class MainMenuManager : MonoBehaviour
         SceneLoader.Instance.previousSceneType = Enums.SceneType.Menu;
         SceneLoader.Instance.previousMenuType = Enums.MenuType.Main;
 
-        if (StatisticsManager.Instance.IsBeginning())
+        if (StatisticsManager.Instance.IsFirstStage())
             StatisticsManager.Instance.ResetStatsPlayer(Enums.StatsType.Combat);
 
         StartCoroutine(SceneLoader.Instance.LoadScene(1));

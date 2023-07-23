@@ -133,50 +133,6 @@ public class PlayerManager : CharacterManager
     
     #region Getters
 
-    public Vector3 GetCameraDirection(string direction = "none")
-    {
-        if (direction.Equals("forward"))
-            return CameraManager.Instance.currentCamera.cameraTransform.forward;
-        if (direction.Equals("right"))
-            return CameraManager.Instance.currentCamera.cameraTransform.right;
-        return Vector3.zero;
-    }
-
-    public Quaternion GetCameraRotation(string target = "camera")
-    {
-        if (target.Equals("pivot"))
-            return CameraManager.Instance.currentCamera.cameraPivotTransform.rotation;
-        if (target.Equals("lockOn"))
-            return CameraManager.Instance.currentCamera.currentLockOnTarget.rotation;
-        return CameraManager.Instance.currentCamera.cameraTransform.rotation;
-    }
-    
-    public Vector3 GetCameraEulerAngles(string target = "camera")
-    {
-        if (target.Equals("pivot"))
-            return CameraManager.Instance.currentCamera.cameraPivotTransform.eulerAngles;
-        if (target.Equals("lockOn"))
-            return CameraManager.Instance.currentCamera.currentLockOnTarget.eulerAngles;
-        return CameraManager.Instance.currentCamera.cameraTransform.eulerAngles;
-    }
-    public Vector3 GetCameraLocalEulerAngles(string target = "camera")
-    {
-        if (target.Equals("pivot"))
-            return CameraManager.Instance.currentCamera.cameraPivotTransform.localEulerAngles;
-        if (target.Equals("lockOn"))
-            return CameraManager.Instance.currentCamera.currentLockOnTarget.localEulerAngles;
-        return CameraManager.Instance.currentCamera.cameraTransform.localEulerAngles;
-    }
-    
-    public Vector3 GetCameraPosition(string target = "camera")
-    {
-        if (target.Equals("pivot"))
-            return CameraManager.Instance.currentCamera.cameraPivotTransform.position;
-        if (target.Equals("lockOn"))
-            return CameraManager.Instance.currentCamera.currentLockOnTarget.position;
-        return CameraManager.Instance.currentCamera.cameraTransform.position;
-    }
-
     public float GetMovementInput(string direction)
     {
         if (direction.Equals("vertical"))

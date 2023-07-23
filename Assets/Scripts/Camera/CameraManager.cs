@@ -50,4 +50,52 @@ public class CameraManager : MonoBehaviour
         }
         currentCamera.camera.enabled = true;
     }
+    
+    #region Getters
+
+    public Vector3 GetDirection(string direction = "none")
+    {
+        if (direction.Equals("forward"))
+            return currentCamera.cameraTransform.forward;
+        if (direction.Equals("right"))
+            return currentCamera.cameraTransform.right;
+        return Vector3.zero;
+    }
+
+    public Quaternion GetRotation(string target = "camera")
+    {
+        if (target.Equals("pivot"))
+            return currentCamera.cameraPivotTransform.rotation;
+        if (target.Equals("lockOn"))
+            return currentCamera.currentLockOnTarget.rotation;
+        return currentCamera.cameraTransform.rotation;
+    }
+    
+    public Vector3 GetEulerAngles(string target = "camera")
+    {
+        if (target.Equals("pivot"))
+            return currentCamera.cameraPivotTransform.eulerAngles;
+        if (target.Equals("lockOn"))
+            return currentCamera.currentLockOnTarget.eulerAngles;
+        return currentCamera.cameraTransform.eulerAngles;
+    }
+    public Vector3 GetLocalEulerAngles(string target = "camera")
+    {
+        if (target.Equals("pivot"))
+            return currentCamera.cameraPivotTransform.localEulerAngles;
+        if (target.Equals("lockOn"))
+            return currentCamera.currentLockOnTarget.localEulerAngles;
+        return currentCamera.cameraTransform.localEulerAngles;
+    }
+    
+    public Vector3 GetPosition(string target = "camera")
+    {
+        if (target.Equals("pivot"))
+            return currentCamera.cameraPivotTransform.position;
+        if (target.Equals("lockOn"))
+            return currentCamera.currentLockOnTarget.position;
+        return currentCamera.cameraTransform.position;
+    }
+
+    #endregion
 }

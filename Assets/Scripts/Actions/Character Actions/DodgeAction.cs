@@ -19,8 +19,8 @@ public class DodgeAction : CharacterAction
     public override void PerformAction(PlayerManager player, bool playAnimation = true)
     {
         Vector3 moveDirection = Vector3.zero;
-        moveDirection  = player.GetCameraDirection("forward") * player.GetMovementInput("vertical");
-        moveDirection += player.GetCameraDirection("right") * player.GetMovementInput("horizontal");
+        moveDirection  = CameraManager.Instance.GetDirection("forward") * player.GetMovementInput("vertical");
+        moveDirection += CameraManager.Instance.GetDirection("right") * player.GetMovementInput("horizontal");
 
         if (player.inputHandler.moveAmount > 0)
         {

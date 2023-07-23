@@ -72,7 +72,7 @@ public class PlayerLocomotion : CharacterLocomotion
 	}
 	private void HandleAimedRotation(float delta)
 	{
-		Quaternion targetRotation = Quaternion.Euler(0, PlayerManager.Instance.GetCameraEulerAngles().y, 0);
+		Quaternion targetRotation = Quaternion.Euler(0, CameraManager.Instance.GetEulerAngles().y, 0);
 		transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * delta);
 	}
 	private void HandleLockedRotation(float delta)
@@ -90,7 +90,7 @@ public class PlayerLocomotion : CharacterLocomotion
 		else
 		{
 			Vector3 rotationDirection = Vector3.zero;
-			rotationDirection = PlayerManager.Instance.GetCameraPosition("lockOn") - transform.position;
+			rotationDirection = CameraManager.Instance.GetPosition("lockOn") - transform.position;
 			rotationDirection.Normalize();
 			rotationDirection.y = 0;
 				
@@ -118,13 +118,13 @@ public class PlayerLocomotion : CharacterLocomotion
 		Vector3 targetDirection = Vector3.zero;
 		if (isUsingMainCamera)
 		{
-			targetDirection  = PlayerManager.Instance.GetCameraDirection("forward") * PlayerManager.Instance.GetMovementInput("vertical");
-			targetDirection += PlayerManager.Instance.GetCameraDirection("right") * PlayerManager.Instance.GetMovementInput("horizontal");
+			targetDirection  = CameraManager.Instance.GetDirection("forward") * PlayerManager.Instance.GetMovementInput("vertical");
+			targetDirection += CameraManager.Instance.GetDirection("right") * PlayerManager.Instance.GetMovementInput("horizontal");
 		}
 		else
 		{
-			targetDirection  = PlayerManager.Instance.GetCameraDirection("forward") * PlayerManager.Instance.GetMovementInput("vertical");
-			targetDirection += PlayerManager.Instance.GetCameraDirection("right") * PlayerManager.Instance.GetMovementInput("horizontal");
+			targetDirection  = CameraManager.Instance.GetDirection("forward") * PlayerManager.Instance.GetMovementInput("vertical");
+			targetDirection += CameraManager.Instance.GetDirection("right") * PlayerManager.Instance.GetMovementInput("horizontal");
 		}
 		targetDirection.Normalize();
 		targetDirection.y = 0;

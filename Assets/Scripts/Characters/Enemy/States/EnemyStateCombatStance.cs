@@ -189,8 +189,6 @@ public class EnemyStateCombatStance : EnemyState
 			// Select random action from the array above and perform it
 			int selectedActionIndex = UnityEngine.Random.Range(0, actions.Length - 1);
 			actions[selectedActionIndex].PerformAction(manager);
-			
-			Debug.Log(actions[selectedActionIndex]);
 
 			// Reset other actions
 			foreach (var action in actions)

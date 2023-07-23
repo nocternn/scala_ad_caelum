@@ -286,8 +286,11 @@ public class StageManager : MonoBehaviour
     {
         if (!isLocalBattle)
         {
+            // Reset stage progress to beginning of current iteration
+            StatisticsManager.Instance.playerStats.progress.stage = 1;
             // Register number of deaths cleared stat
             StatisticsManager.Instance.playerStats.meta.numberOfDeaths++;
+            // Register all stats changes
             StatisticsManager.Instance.WriteStatsPlayer();
         }
         
