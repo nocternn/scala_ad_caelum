@@ -11,7 +11,6 @@ public abstract class Action : ScriptableObject
     [SerializeField] protected string _animation;
     [SerializeField] protected float _duration;
     [SerializeField] protected float _recoveryTime;
-    [SerializeField] public Enums.ActionType type { get; protected set; }
 
     #endregion
 

@@ -29,11 +29,12 @@ public class DamageCollider : MonoBehaviour
 
             // Calculate incoming damage
             int damage = 0;
-            damage += EnemyManager.Instance.stats.GetOutgoingDamage(enemyATK, enemyCRT);
-            damage += PlayerManager.Instance.stats.GetIncomingDamage(damage);
+            damage = EnemyManager.Instance.stats.GetOutgoingDamage(enemyATK, enemyCRT);
+            damage = PlayerManager.Instance.stats.GetIncomingDamage(damage);
 
             // Register damage
             PlayerManager.Instance.stats.TakeDamage(damage);
+            Debug.LogFormat("Player incoming damage = {0}", damage);
 
             if (!StageManager.Instance.isLocalBattle)
             {
@@ -54,16 +55,17 @@ public class DamageCollider : MonoBehaviour
 
             // Calculate incoming damage
             int damage = 0;
-            damage += PlayerManager.Instance.stats.GetOutgoingDamage(playerATK, playerCRT);
-            damage += EnemyManager.Instance.stats.GetIncomingDamage(damage);
+            damage = PlayerManager.Instance.stats.GetOutgoingDamage(playerATK, playerCRT);
+            damage = EnemyManager.Instance.stats.GetIncomingDamage(damage);
 
             // Register damage
-            EnemyManager.Instance.TakeDamage(damage);
+            EnemyManager.Instance.stats.TakeDamage(damage);
+            Debug.LogFormat("Enemy incoming damage = {0}", damage);
 
             // Register hit, increase SP, increase charge (if applicable)
             PlayerManager.Instance.stats.hitCount++;
             PlayerManager.Instance.stats.currentSkillPoints += 0.5f;
-			if (PlayerManager.Instance.attacker.IsAttackOfType(Enums.ActionType.Basic))
+			if (PlayerManager.Instance.attacker.IsAttackOfType(Enums.WeaponActionType.Basic))
             	PlayerManager.Instance.stats.UpdateAttackCharge(true);
 
             if (!StageManager.Instance.isLocalBattle)

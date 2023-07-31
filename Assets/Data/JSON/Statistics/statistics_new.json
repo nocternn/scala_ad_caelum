@@ -1,1 +1,0 @@
-{"name":"new","weapon":"Gauntlet","progress":{"iteration":1,"stage":6},"combat":{"baseHealth":10000,"baseAttack":500,"baseDefense":180,"baseCritical":40,"scaleHealth":1.25,"scaleAttack":1.0,"scaleDefense":1.0,"scaleCritical":2.0},"meta":{"numberOfRuns":1,"numberOfStagesCleared":9,"numberOfDeaths":0,"totalDamageDealt":41208,"totalDamageReceived":2054,"maxDamageSingleHit":5100}}

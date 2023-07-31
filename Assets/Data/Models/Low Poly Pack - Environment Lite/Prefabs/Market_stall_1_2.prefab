@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 64482296275550496}
   - component: {fileID: 2979944721861575837}
   - component: {fileID: 3537068740130216710}
-  - component: {fileID: 8669927677788236493}
   m_Layer: 0
   m_Name: Market_stall_1_2
   m_TagString: Untagged
@@ -128,15 +127,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isOpen: 0
   isOpenable: 0
---- !u!114 &8669927677788236493
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1607794851038060}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb0cc31ce82f4f943a564386aa4e2f56, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

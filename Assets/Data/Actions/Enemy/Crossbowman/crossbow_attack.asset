@@ -21,7 +21,5 @@ MonoBehaviour:
   maxDistance: 7
   minAngle: -50
   maxAngle: 50
-  _playerAmmo: {fileID: 0}
-  _enemyAmmo: {fileID: 0}
-  _playerHasShot: 0
-  _enemyHasShot: 0
+  _ammo: {fileID: 7416549110350207442, guid: 921a53afcc7e11e4283358de7522afbe, type: 3}
+  _hasShot: 0

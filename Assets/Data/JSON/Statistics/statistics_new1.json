@@ -1,1 +1,0 @@
-{"name":"new1","weapon":"Pistol","progress":{"iteration":1,"stage":1},"combat":{"baseHealth":10000,"baseAttack":500,"baseDefense":180,"baseCritical":40,"scaleHealth":1.0,"scaleAttack":1.0,"scaleDefense":1.0,"scaleCritical":1.0},"meta":{"numberOfRuns":0,"numberOfStagesCleared":0,"numberOfDeaths":0,"totalDamageDealt":0,"totalDamageReceived":0,"maxDamageSingleHit":0}}

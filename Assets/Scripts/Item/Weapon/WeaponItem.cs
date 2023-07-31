@@ -45,7 +45,7 @@ public class WeaponItem : Item
         return updatedDescription;
     }
 
-    public int GetSkillCost(Enums.ActionType actionType)
+    public int GetSkillCost(Enums.WeaponActionType actionType)
     {
         int cost = 0;
 
@@ -55,10 +55,10 @@ public class WeaponItem : Item
             {
                 switch (action.type)
                 {
-                    case Enums.ActionType.Active:
+                    case Enums.WeaponActionType.Active:
                         cost = ((ActiveAttackAction)action).cost;
                         break;
-                    case Enums.ActionType.Ultimate:
+                    case Enums.WeaponActionType.Ultimate:
                         cost = ((UltimateAttackAction)action).cost;
                         break;
                 }
@@ -68,7 +68,7 @@ public class WeaponItem : Item
         return cost;
     }
     
-    public Tuple<bool, int> GetSkillStatus(Enums.ActionType actionType)
+    public Tuple<bool, int> GetSkillStatus(Enums.WeaponActionType actionType)
     {
         bool cooldownStatus = false;
         int currentCooldown = -1;
@@ -79,11 +79,11 @@ public class WeaponItem : Item
             {
                 switch (action.type)
                 {
-                case Enums.ActionType.Active:
+                case Enums.WeaponActionType.Active:
                     cooldownStatus = ((ActiveAttackAction)action).skill.onCooldown;
                     currentCooldown = ((ActiveAttackAction)action).skill.currentCooldown;
                     break;
-                case Enums.ActionType.Ultimate:
+                case Enums.WeaponActionType.Ultimate:
                     cooldownStatus = ((UltimateAttackAction)action).skill.onCooldown;
                     currentCooldown = ((UltimateAttackAction)action).skill.currentCooldown;
                     break;
@@ -105,8 +105,8 @@ public class WeaponItem : Item
         {
             switch (action.type)
             {
-                case Enums.ActionType.Active:
-                case Enums.ActionType.Ultimate:
+                case Enums.WeaponActionType.Active:
+                case Enums.WeaponActionType.Ultimate:
                     action.Initialize();
                     break;
                 default:
@@ -115,14 +115,14 @@ public class WeaponItem : Item
         }
     }
 
-    public Tuple<bool, int, Enums.ActionType> PerformAttack(
-        Enums.CharacterType character, Enums.ActionType attack,
+    public Tuple<bool, int, Enums.WeaponActionType> PerformAttack(
+        Enums.CharacterType character, Enums.WeaponActionType attack,
         int id = 0,
         bool playAnimation = true)
     {
         bool performedStatus = false;
         int performedID = -1;
-        Enums.ActionType performedType = Enums.ActionType.None;
+        Enums.WeaponActionType performedType = Enums.WeaponActionType.None;
         
         foreach (var action in _actions)
         {
@@ -144,7 +144,7 @@ public class WeaponItem : Item
             }
         }
         
-        return new Tuple<bool, int, Enums.ActionType>(performedStatus, performedID, performedType);
+        return new Tuple<bool, int, Enums.WeaponActionType>(performedStatus, performedID, performedType);
     }
     
     

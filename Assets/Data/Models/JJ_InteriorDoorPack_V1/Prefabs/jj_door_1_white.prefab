@@ -13,8 +13,7 @@ GameObject:
   - component: {fileID: 23603418792493158}
   - component: {fileID: 8387995782492980189}
   - component: {fileID: 664371441366406266}
-  - component: {fileID: 3353094142352731719}
-  - component: {fileID: 3320765337101831575}
+  - component: {fileID: 8057008803593507010}
   m_Layer: 0
   m_Name: jj_door_1_white
   m_TagString: Untagged
@@ -115,7 +114,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 5, y: 2, z: 5}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3353094142352731719
+--- !u!114 &8057008803593507010
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -134,19 +133,6 @@ MonoBehaviour:
   _speed: 1
   _rotationAmount: 45
   _forwardDirection: 0
---- !u!114 &3320765337101831575
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1015707552984288}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3210a4fdef02f64409ecb6b2f3024e8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _door: {fileID: 0}
 --- !u!1 &1466499128429472
 GameObject:
   m_ObjectHideFlags: 0
