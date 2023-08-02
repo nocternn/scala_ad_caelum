@@ -35,6 +35,7 @@ public class HUDViewEffects : MonoBehaviour
         usedCardsBySystem.Add(card02.Item2);
         
         Tuple<EffectItem, int> card03 = GetRandomEffectItem(usedCardsBySystem);
+        usedCardsBySystem.Add(card03.Item2);
         // ------
 
         _card01.UpdateUI(card01.Item1);
@@ -49,8 +50,7 @@ public class HUDViewEffects : MonoBehaviour
             return !usedCardsByPlayer.Contains(i) && !usedCardsID.Contains(i);
         });
         
-        var rand = new System.Random();
-        int index = usableCardsID.ElementAt(rand.Next(0, usableCardsID.Count()));
+        int index = usableCardsID.ElementAt(UnityEngine.Random.Range(0, usableCardsID.Count() - 1));
         
         EffectItem card = effects[index];
         card.Initialize();

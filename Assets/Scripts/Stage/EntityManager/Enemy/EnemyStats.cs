@@ -11,10 +11,13 @@ public class EnemyStats : CharacterStats
 
     [Header("Properties")]
     public Enums.EnemyType enemyType;
+    [SerializeField] private bool _appliedPowerSurge;
     [SerializeField] private CharacterAction[] _actions;
 
     void Start()
     {
+        _appliedPowerSurge = false;
+
         maxHealth = ScaleStat(baseHealth, scaleHealth);
         currentHealth = maxHealth;
     }
@@ -49,11 +52,13 @@ public class EnemyStats : CharacterStats
 
             StageManager.Instance.EndStageWin();
         }
-        else if (currentHealth <= ScaleStat(maxHealth, 0.3f))
+        else if (currentHealth <= ScaleStat(maxHealth, 0.3f) && !_appliedPowerSurge)
         {
+            _appliedPowerSurge = true;
+
             // If current HP is lower than 30% of max HP, gain
-            // 20% more ATK
-            scaleAttack += 0.2f;
+            // 50% more ATKs
+            scaleAttack += 0.5f;
             // 10% more critical
             scaleCritical += 0.1f;
             // 30% more defense

@@ -14,10 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   primaryIcon: {fileID: 21300000, guid: 3033892a78afca14c89e689a878f7366, type: 3}
   name: Motto of Pubbe-Nivasanussati LEVEL
-  description: Combo hits are reset at COUNT to boost DMG by SCALAR% for DURATIONs.
+  description: OUNT to boost DMG by SCALAR% for DURATIONs.by SCALAR% for DURATIONs.
   type: 0
+  canUpgrade: 0
   id: 1
   level: 0
+  cost: 0
+  costDescription: 
   count:
   - 150
   - 150
@@ -33,4 +36,4 @@ MonoBehaviour:
   - 66
   - 77
   - 88
-  effect: {fileID: 0}
+  _class: {fileID: 0}
