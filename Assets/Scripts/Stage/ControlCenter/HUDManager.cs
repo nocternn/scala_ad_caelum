@@ -53,6 +53,7 @@ public class HUDManager : MonoBehaviour
 
     public void Initialize(bool firstInit = false)
     {
+        Cursor.lockState = CursorLockMode.Confined;
         hudCombat.gameObject.SetActive(false);
         
         if (!StageManager.Instance.isLocalBattle && firstInit)
@@ -79,6 +80,7 @@ public class HUDManager : MonoBehaviour
         
         if (StageManager.Instance.hudType == Enums.HUDType.Combat)
         {
+            Cursor.lockState = CursorLockMode.Locked;
             hudCombat.gameObject.SetActive(true);
             hudCombat.Initialize();
             hudCombat.UpdateSkillButtonsUI(StatisticsManager.Instance.playerWeapon);

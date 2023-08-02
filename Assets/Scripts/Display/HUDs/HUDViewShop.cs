@@ -12,8 +12,6 @@ public class HUDViewShop : MonoBehaviour
 
     public void Initialize()
     {
-        Cursor.lockState = CursorLockMode.Confined;
-        
         _container = transform.GetChild(2).GetChild(0).GetChild(0);
         foreach (Transform child in _container.transform)
             Destroy(child.gameObject);

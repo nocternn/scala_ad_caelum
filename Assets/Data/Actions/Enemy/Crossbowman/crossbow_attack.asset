@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 0
   _animation: crossbow_attack_01
   _duration: 0
-  _recoveryTime: 3
+  _recoveryTime: 7
   score: 3
   minDistance: 0
   maxDistance: 7

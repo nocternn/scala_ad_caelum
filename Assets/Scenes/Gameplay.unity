@@ -759,6 +759,7 @@ MonoBehaviour:
   attackBasicInput: 0
   attackChargedInput: 0
   attackUltimateInput: 0
+  backInput: 0
   lockOnInput: 0
   interactInput: 0
   verticalMovementInput: 0
@@ -3112,7 +3113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a37b0f8e223b6ba4c90b40df17b36a88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 150000
+  baseHealth: 90000
   baseAttack: 832
   baseDefense: 330
   baseCritical: 40
@@ -4490,7 +4491,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbd98f4acb99c3341a18f9e7a00632d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fileDialogue: 
+  _fileName: 
+  _filePath: 
   _iteration:
     stage01: []
     stage02: []
@@ -13014,7 +13016,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a37b0f8e223b6ba4c90b40df17b36a88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 100000
+  baseHealth: 70000
   baseAttack: 787
   baseDefense: 310
   baseCritical: 30
@@ -17244,7 +17246,7 @@ PrefabInstance:
     - target: {fileID: 4874963852426159851, guid: a4ee618d6c735a74eabb185b4bb93f1c,
         type: 3}
       propertyPath: baseHealth
-      value: 300000
+      value: 100000
       objectReference: {fileID: 0}
     - target: {fileID: 4874963852426159851, guid: a4ee618d6c735a74eabb185b4bb93f1c,
         type: 3}
