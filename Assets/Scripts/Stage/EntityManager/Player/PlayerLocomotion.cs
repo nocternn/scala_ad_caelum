@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerLocomotion : CharacterLocomotion
 {
-	public new Rigidbody rigidbody;
+	public Rigidbody rigidbody;
 	
 	private void Awake()
 	{

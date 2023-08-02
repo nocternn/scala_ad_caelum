@@ -211,7 +211,10 @@ public class PlayerManager : CharacterManager
     {
         // Lock off target if player is locking on
         if (IsLockingOnTarget())
+        {
+            inputHandler.lockOnInput = true;
             inputHandler.HandleLockOnInput();
+        }
     }
 
     #endregion

@@ -81,7 +81,7 @@ public class PlayerAttacker : MonoBehaviour
             PlayerManager.Instance.stats.currentSkillPoints -= costSP;
             
             _lastAttackResult =
-                _currentWeapon.PerformAttack(Enums.CharacterType.Playable, Enums.WeaponActionType.Ultimate, 0, false);
+                _currentWeapon.PerformAttack(Enums.CharacterType.Playable, Enums.WeaponActionType.Ultimate);
             UpdateLastestSuccess();
         }
     }

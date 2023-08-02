@@ -1,0 +1,216 @@
+{
+    "stage01" : [
+        {
+            "name" : "Thanatos",
+            "sentences" : [
+                "Remember, this is not a dream.",
+                "And yet, it is not reality either.",
+                "You are here, only to see yourself.",
+                "Once again, welcome to Caelum."
+            ]
+        }
+    ],
+    "stage02": [
+        {
+            "name" : "Thanatos",
+            "sentences" : [
+                "How was tonight's warm-up?",
+                "Archer has been looking forward to it recently."
+            ]
+        },
+        {
+            "name" : "Orpheus",
+            "sentences" : [
+                "What's there to look forward to? We're just beating each other up.",
+                "And to answer your question, it's as gruesome as usual."
+            ]
+        },
+        {
+            "name" : "Thanatos",
+            "sentences" : [
+                "Now, now, beating each other up is a nice bonding activity from what I can see.",
+                "It's not just Archer. The others also seem excited to face you again."
+            ]
+        },
+        {
+            "name" : "Orpheus",
+            "sentences" : [
+                "That... just sounds like they're happy to clobber me."
+            ]
+        },
+        {
+            "name" : "Thanatos",
+            "sentences" : [
+                "I suppose I can't convince you with just words, but maybe Spear can with her actions.",
+                "Go on, let's not make her wait too long."
+            ]
+        }
+    ],
+    "stage03" : [
+        {
+            "name" : "Thanatos",
+            "sentences" : [
+                "Any changes?"
+            ]
+        },
+        {
+            "name" : "Orpheus",
+            "sentences" : [
+                "She certainly did seem to be enjoying the fight. Does that have anything to do with me though?",
+                "I think she just likes to fight, regardless who she's against."
+            ]
+        },
+        {
+            "name" : "Thanatos",
+            "sentences" : [
+                "There is truth to that, yes. But, you see...",
+                "I've known her for a loooong time. I can tell when she enjoys beating up the opponent, and when she enjoys facing an opponent she respects."
+            ]
+        },
+        {
+            "name" : "Orpheus",
+            "sentences" : [
+                "... Flattering, but I'm no worthy opponent.",
+                "I don't see how or why she'd respect me."
+            ]
+        },
+        {
+            "name" : "Thanatos",
+            "sentences" : [
+                "I'll let Cross show you the answer to that.",
+                "Guy's a good pep-talker. Or should I say, pep-shooter."
+            ]
+        },
+        {
+            "name" : "Orpheus",
+            "sentences" : [
+                "...",
+                "That was terrible."
+            ]
+        }
+    ],
+    "stage04" : [
+        {
+            "name" : "Orpheus",
+            "sentences" : [
+                "*heavy breathing*",
+                "Hold. Let me rest for a bit.",
+                "*inhales* *exhales* Okay. Phew.",
+                "I know what you're going to ask.",
+                "I must admit, I've been dodging his bolts more recently. But that's no big deal, right?",
+                "He even shoots slower than Archer."
+            ]
+        },
+        {
+            "name" : "Thanatos",
+            "sentences" : [
+                "Ouch. He might get hurt if he hears that, you know.",
+                "Anyways.",
+                "You have improved greatly since your first battle. I still remember the greenhorn who could not dodge any of his bolts.",
+                "I think that's impressive, your growth. I believe Cross thinks so too, and not only him.",
+                "I you talk to them more, I'm sure they'll tell you the same thing, and maybe they'll even tell you more than that."
+            ]
+        },
+        {
+            "name" : "Orpheus",
+            "sentences" : [
+                "I don't know if you could tell this obvious fact, but I'm not much of a small-talk person.",
+                "I'm not trying to be a jerk. I just don't know how to do it."
+            ]
+        },
+        {
+            "name" : "Thanatos",
+            "sentences" : [
+                "You sure you're not trying? That was some sass just now.",
+                "But I have noticed, yes.",
+                "I'm not saying you should change that part of you completely, but if you don't take any bit of the olive branch, you're gonna end up alone for a long time to come, you know.",
+                "You could start by asking about their day. That simple."
+            ]
+        },
+        {
+            "name" : "Orpheus",
+            "sentences" : [
+                "Simple to say, but not that simple to do. Not to me at least.",
+                "I see your point, though.",
+                "In any case, I've rested enough. The early I go in there, the earlier I can get out.",
+                "See you around."
+            ]
+        }
+    ],
+    "stage05" : [
+        {
+            "name" : "Thanatos",
+            "sentences" : [
+                "You looked distraught iin the first half of that battle.",
+                "What did Ninja say to make you look so determined now?"
+            ]
+        },
+        {
+            "name" : "Orpheus",
+            "sentences" : [
+                "I was thinking about what you said, and that made me lose concentration.",
+                "Ninja pointed out that I'm being rude by not paying full attention to the fight, but he didn't seem to be offended about it.",
+                "I didn't pick up on this before, but he seems to be a chill dude. And silent, kind of like me."
+            ]
+        },
+        {
+            "name" : "Thanatos",
+            "sentences" : [
+                "He is, indeed. If you talk to him next time too, maybe you'll find even more similarities between you two.",
+                "Speaking of chill dudes, Paladin is the same. Care to go have a chat with him?"
+            ]
+        },
+        {
+            "name" : "Orpheus",
+            "sentences" : [
+                "I... I think I can try. ",
+                "Paladin has always been talkative. I suppose he'll be driving most the conversation."
+            ]
+        },
+        {
+            "name" : "Thanatos",
+            "sentences" : [
+                "That's even better for you, isn't it?"
+            ]
+        },
+        {
+            "name" : "Orpheus",
+            "sentences" : [
+                "Guess so...",
+                "I'm going now."
+            ]
+        }
+    ],
+    "stageEnd" : [
+        {
+            "name" : "Orpheus",
+            "sentences" : [
+                "You were right. He did drive most of the conversation. And it wasn't too bad.",
+                "He didn't judge every sentence I said. He listened to me. And he responded to me.",
+                "Ninja did too, now that I think about it."
+            ]
+        },
+        {
+            "name" : "Thanatos",
+            "sentences" : [
+                "What about the rest, then?"
+            ]
+        },
+        {
+            "name" : "Orpheus",
+            "sentences" : [
+                "I don't know. I haven't talked to them much.",
+                "Maybe I should. They seem like they would do the same as Paladin.",
+                "I think I'll try to next time."
+            ]
+        },
+        {
+            "name" : "Thanatos",
+            "sentences" : [
+                "They will, I guarantee you that.",
+                "And on that note, congratulations, Orpheus. You've made it through another night.",
+                "I too, look forward to seeing you here again tomorrow."
+            ]
+        }
+    ]
+}

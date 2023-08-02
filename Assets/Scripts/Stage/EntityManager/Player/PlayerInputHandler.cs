@@ -15,6 +15,7 @@ public class PlayerInputHandler : MonoBehaviour
 	public float triggerInput = 0;
 	public bool dodgeInput;
 	public bool attackActiveInput, attackBasicInput, attackChargedInput, attackUltimateInput;
+	public bool backInput;
 	public bool lockOnInput;
 	public bool interactInput;
     
@@ -69,6 +70,9 @@ public class PlayerInputHandler : MonoBehaviour
 			
 			// Action - Interact with object
 			_playerControls.PlayerActions.Interact.performed += _ => interactInput = true;
+			
+			// Action - Escape screen
+			_playerControls.PlayerActions.Back.performed += _ => backInput = true;
 		}
 
 		_playerControls.Enable();
@@ -147,11 +151,21 @@ public class PlayerInputHandler : MonoBehaviour
 			PlayerManager.Instance.stats.UpdateAttackCharge(false);
 		}
 		else if (attackUltimateInput)
-		{
+	    {
 			PlayerManager.Instance.HandleAttack(Enums.WeaponActionType.Ultimate);
 		}
     }
 
+    private void HandleBackInput()
+    {
+	    if (backInput)
+	    {
+		    backInput = false;
+		    PlayerManager.Instance.LockOff();
+		    StageManager.Instance.Back();
+	    }
+    }
+    
     public void HandleLockOnInput()
     {
 	    bool usingPistol = false;
@@ -204,6 +218,7 @@ public class PlayerInputHandler : MonoBehaviour
 
 	    HandleDodgeInput();
 	    HandleAttackInput();
+	    HandleBackInput();
 	    HandleLockOnInput();
 	    HandleInteractInput();
     }

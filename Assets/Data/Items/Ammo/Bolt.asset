@@ -15,8 +15,8 @@ MonoBehaviour:
   primaryIcon: {fileID: 0}
   name: Bolt
   description: 
-  model: {fileID: 7416549110350207442, guid: 921a53afcc7e11e4283358de7522afbe, type: 3}
   type: 1
+  model: {fileID: 7416549110350207442, guid: 921a53afcc7e11e4283358de7522afbe, type: 3}
   forwardVelocity: 2500
   upwardVelocity: 0
   mass: 0

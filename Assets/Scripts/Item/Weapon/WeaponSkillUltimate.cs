@@ -20,7 +20,7 @@ public class WeaponSkillUltimate : WeaponSkill
     // If current health is below 33% then don't attack
     if (PlayerManager.Instance.stats.currentHealth < PlayerManager.Instance.stats.ScaleStat(PlayerManager.Instance.stats.maxHealth, threshold))
       return;
-
+    
     // Set damage
     PlayerManager.Instance.weaponSlotManager.SetDamage(damageOriginal + damageExtra);
 
@@ -33,15 +33,15 @@ public class WeaponSkillUltimate : WeaponSkill
     // Get damage reduction
     PlayerManager.Instance.stats.scaleDefense += dmgReduction;
 
-    // Enemmy takes damage per second for duration seconds
-    StartCoroutine(ApplyEffect(damageOverTime, duration));
+    // Enemy takes damage per second for duration seconds
+    StartCoroutine(base.ApplyEffect(damageOverTime, duration));
 
     // Lose HP over time after duration; remove dmg reduction after duration seconds
     Task.Delay((int)Mathf.Round(1000 * duration)).ContinueWith(t =>
 		{
       StartCoroutine(ApplyEffect(hpLossOverTime, duration));
       PlayerManager.Instance.stats.scaleDefense -= dmgReduction;
-		});
+		}, TaskScheduler.FromCurrentSynchronizationContext());
   }
 
   protected override void Greatsword()
@@ -117,6 +117,7 @@ public class WeaponSkillUltimate : WeaponSkill
 
   private IEnumerator ApplyEffect(float scalar, int duration)
   {
+    Debug.Log("HereX");
     int damage = PlayerManager.Instance.stats.ScaleStat(PlayerManager.Instance.stats.maxHealth, scalar);
     for (int i = 1; i <= duration; i++)
     {

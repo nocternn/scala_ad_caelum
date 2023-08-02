@@ -61,6 +61,9 @@ public class DamageCollider : MonoBehaviour
             // Register damage
             EnemyManager.Instance.stats.TakeDamage(damage);
             Debug.LogFormat("Enemy incoming damage = {0}", damage);
+            
+            // Target the player
+            EnemyManager.Instance.currentTarget = PlayerManager.Instance;
 
             // Register hit, increase SP, increase charge (if applicable)
             PlayerManager.Instance.stats.hitCount++;

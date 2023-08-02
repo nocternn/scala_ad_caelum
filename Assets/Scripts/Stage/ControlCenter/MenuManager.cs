@@ -33,12 +33,11 @@ public class MenuManager : MonoBehaviour
         inventoryMenu  = GameObject.FindObjectsOfType<MenuViewInventory>(true)[0];
         statisticsMenu = GameObject.FindObjectsOfType<MenuViewStatistics>(true)[0];
         quitMenu       = GameObject.FindObjectsOfType<MenuViewQuit>(true)[0];
-
-        SceneLoader.Instance.sceneType = Enums.SceneType.Menu;
     }
 
     public void Initialize()
     {
+        Cursor.lockState = CursorLockMode.Confined;
         ToggleAllMenus(false);
 
         switch (menuType)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RangedDamageCollider : DamageCollider
 {
-    public AmmoItem ammoItem;
+    public Transform item;
 
     private float maxRange = 25.0f;
 
@@ -14,23 +14,20 @@ public class RangedDamageCollider : DamageCollider
         
         if (_damageCollider.tag.Equals(collision.tag))
             return;
-        
+
         DestroyAmmo();
     }
 
     void Update()
     {
-        Vector3 pos = transform.root.position;
-        if (pos.x > maxRange || pos.y > maxRange || pos.z > maxRange)
-        {
+        if (Mathf.Abs(item.position.x) > maxRange || item.position.y < 0 || Mathf.Abs(item.position.z) > maxRange)
             DestroyAmmo();
-        }
     }
     
     protected void DestroyAmmo()
     {
         PlayerManager.Instance.weaponSlotManager.DisableDamageCollider();
         EnemyManager.Instance.weaponSlotManager.DisableDamageCollider();
-        Destroy(transform.root.gameObject);
+        Destroy(item.gameObject);
     }
 }

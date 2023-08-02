@@ -6,32 +6,30 @@ using UnityEngine;
 public class DialogueManager : MonoBehaviour
 {
     [Header("File Paths")]
-    [SerializeField] private string _fileDialogue;
+    [SerializeField] private string _fileName;
+    [SerializeField] private string _filePath;
     
     [Header("Data")]
     [SerializeField] private DialogueIteration _iteration;
     
     public void Initialize()
     {
-        string filePath =
-            $"/Data/JSON/Dialogue/iteration_{StatisticsManager.Instance.playerStats.progress.iteration}.json";
-        _fileDialogue = Application.dataPath + filePath;
+        _fileName = $"iteration_{StatisticsManager.Instance.playerStats.progress.iteration}.json";
+        _filePath = Application.dataPath + $"/Resources/Dialogue/{_fileName}";
         
         ReadDialogues();
     }
 
     private void ReadDialogues()
     {
-        if (!File.Exists(_fileDialogue))
+        if (!File.Exists(_filePath))
         {
             Debug.Log("No dialogue file found");
             return;
         }
-
-        using (StreamReader reader = new StreamReader(_fileDialogue))
-        { 
-            JsonUtility.FromJsonOverwrite(reader.ReadToEnd(), _iteration);
-        }
+        
+        _iteration = JsonUtility.FromJson<DialogueIteration>(
+            Resources.Load<TextAsset>("Dialogue/" + _fileName.Substring(0, _fileName.Length - 5)).ToString());
     }
 
     public Queue<Dialogue> GetDialogues(int id)

@@ -20,6 +20,7 @@ public class SceneLoader : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            SceneLoader.Instance.sceneType = Enums.SceneType.Menu;
             DontDestroyOnLoad(this.gameObject);
         }
         else

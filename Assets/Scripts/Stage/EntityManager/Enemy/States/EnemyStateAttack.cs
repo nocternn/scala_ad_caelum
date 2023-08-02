@@ -12,6 +12,12 @@ public class EnemyStateAttack : EnemyState
     [Header("A.I. Settings - Attack")]
     public bool hasPerformedAttack;
     
+    protected override void Awake()
+    {
+        pursueTargetState = GetComponent<EnemyStatePursueTarget>();
+        combatStanceState = GetComponent<EnemyStateCombatStance>();
+    }
+    
     public override EnemyState Tick()
     {
         pursueTargetState.HandleRotation();

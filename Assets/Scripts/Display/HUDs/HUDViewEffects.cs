@@ -18,6 +18,8 @@ public class HUDViewEffects : MonoBehaviour
 
     public void Initialize()
     {
+        Cursor.lockState = CursorLockMode.Confined;
+        
         usedCardsByPlayer = new HashSet<int>();
         selectedCard = null;
         

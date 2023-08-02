@@ -145,6 +145,7 @@ public class HUDViewStage : MonoBehaviour
 
     public void ShowQuitConfirmation(bool show)
     {
+        if (show) Cursor.lockState = CursorLockMode.Confined;
         mask.gameObject.SetActive(show);
         quit.gameObject.SetActive(show);
     }

@@ -15,9 +15,9 @@ MonoBehaviour:
   primaryIcon: {fileID: 0}
   name: Arrow
   description: 
-  model: {fileID: 1721424694137836426, guid: 49f52094009c0c545990c20e0fa5e092, type: 3}
   type: 0
-  forwardVelocity: 3500
+  model: {fileID: 1721424694137836426, guid: 49f52094009c0c545990c20e0fa5e092, type: 3}
+  forwardVelocity: 3000
   upwardVelocity: 0
   mass: 0
   useGravity: 0

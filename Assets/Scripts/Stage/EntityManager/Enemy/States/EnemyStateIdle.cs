@@ -10,9 +10,14 @@ public class EnemyStateIdle : EnemyState
     [SerializeField] private EnemyStatePursueTarget pursueTargetState;
     
     [Header("A.I. Settings - Detection")]
-    public float detectionRadius = 15;
-    public float minDetectionAngle = -50;
-    public float maxDetectionAngle = 50;
+    public float detectionRadius;
+    public float minDetectionAngle;
+    public float maxDetectionAngle;
+
+    protected override void Awake()
+    {
+        pursueTargetState = GetComponent<EnemyStatePursueTarget>();
+    }
     
     public override EnemyState Tick()
     {

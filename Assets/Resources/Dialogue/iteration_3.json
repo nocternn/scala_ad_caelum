@@ -1,0 +1,62 @@
+{
+    "stage01" : [
+        {
+            "name" : "Thanatos",
+            "sentences" : []
+        },
+        {
+            "name" : "Orpheus",
+            "sentences" : []
+        }
+    ],
+    "stage02": [
+        {
+            "name" : "Thanatos",
+            "sentences" : []
+        },
+        {
+            "name" : "Orpheus",
+            "sentences" : []
+        }
+    ],
+    "stage03" : [
+        {
+            "name" : "Thanatos",
+            "sentences" : []
+        },
+        {
+            "name" : "Orpheus",
+            "sentences" : []
+        }
+    ],
+    "stage04" : [
+        {
+            "name" : "Thanatos",
+            "sentences" : []
+        },
+        {
+            "name" : "Orpheus",
+            "sentences" : []
+        }
+    ],
+    "stage05" : [
+        {
+            "name" : "Thanatos",
+            "sentences" : []
+        },
+        {
+            "name" : "Orpheus",
+            "sentences" : []
+        }
+    ],
+    "stageEnd" : [
+        {
+            "name" : "Thanatos",
+            "sentences" : []
+        },
+        {
+            "name" : "Orpheus",
+            "sentences" : []
+        }
+    ]
+}

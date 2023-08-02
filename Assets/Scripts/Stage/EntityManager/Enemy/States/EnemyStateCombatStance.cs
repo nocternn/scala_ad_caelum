@@ -17,6 +17,13 @@ public class EnemyStateCombatStance : EnemyState
     [Header("A.I. Settings - Combat Stance")]
     [SerializeField] private float horizontalMovement, verticalMovement;
     [SerializeField] private bool randomDestinationSet;
+    
+    protected override void Awake()
+    {
+	    idleState = GetComponent<EnemyStateIdle>();
+	    pursueTargetState = GetComponent<EnemyStatePursueTarget>();
+	    attackState = GetComponent<EnemyStateAttack>();
+    }
 
     public override EnemyState Tick()
     {
@@ -33,11 +40,17 @@ public class EnemyStateCombatStance : EnemyState
             EnemyManager.Instance.locomotion.Move(0, 0);
             return this;
         }
-        EnemyManager.Instance.locomotion.Move(horizontalMovement, verticalMovement);
 
-        // If the A.I. is too far from the target, return it to its pursue target state
-        if (_distanceFromTarget > EnemyManager.Instance.stats.maxAttackRange
-            || !idleState.IsTargetVisible(EnemyManager.Instance.currentTarget, _viewableAngle))
+        // If the A.I. is no longer visible, return it to its idle state
+        if (!idleState.IsTargetVisible(EnemyManager.Instance.currentTarget, _viewableAngle))
+        {
+	        randomDestinationSet = false;
+
+	        EnemyManager.Instance.currentTarget = null;
+	        
+	        return idleState;
+        }
+        if (_distanceFromTarget > EnemyManager.Instance.stats.maxAttackRange)
         {
             randomDestinationSet = false;
             return pursueTargetState;
@@ -60,16 +73,17 @@ public class EnemyStateCombatStance : EnemyState
 					break;
 			}
         }
+        // Move target
+        EnemyManager.Instance.locomotion.Move(horizontalMovement, verticalMovement);
+        // Keep rotating towards the target
+        pursueTargetState.HandleRotation();
 
-		// If the A.I. is currently doing nothing, roll for a character action
+        // If the A.I. is currently doing nothing, roll for a character action
 		if (EnemyManager.Instance.stats.currentRecoveryTime <= 0)
 		{
 			RollForActionChance();
 			PerformAction();
 		}
-		
-		// Keep rotating towards the target
-        pursueTargetState.HandleRotation();
 
         // If no character action is performed,
 		if (!EnemyManager.Instance.isInteracting)

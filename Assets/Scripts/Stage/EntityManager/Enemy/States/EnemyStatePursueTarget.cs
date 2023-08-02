@@ -8,6 +8,12 @@ public class EnemyStatePursueTarget : EnemyState
     [SerializeField] private EnemyStateIdle idleState;
     [SerializeField] private EnemyStateCombatStance combatStanceState;
     
+    protected override void Awake()
+    {
+        idleState = GetComponent<EnemyStateIdle>();
+        combatStanceState = GetComponent<EnemyStateCombatStance>();
+    }
+    
     public override EnemyState Tick()
     {
         // Chase the target

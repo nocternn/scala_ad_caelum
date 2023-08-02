@@ -8,6 +8,7 @@ public class StatisticsManager : MonoBehaviour
     public static StatisticsManager Instance { get; private set; }
 
     [Header("File Paths")]
+    [SerializeField] private string _dirName;
     [SerializeField] private string _dirPath;
 
     [Header("Data")]
@@ -29,7 +30,9 @@ public class StatisticsManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
 
-            _dirPath = Application.dataPath + "/Data/JSON/Statistics";
+            _dirName = "Statistics";
+            _dirPath = Application.dataPath + $"/Resources/{_dirName}";
+
             ReadAllStats();
         }
         else
@@ -48,18 +51,14 @@ public class StatisticsManager : MonoBehaviour
 
         foreach (var file in files)
         {
-            using (StreamReader reader = new StreamReader(file.FullName))
+            string json = Resources.Load<TextAsset>(_dirName + "/" + file.Name.Substring(0, file.Name.Length - 5)).ToString();
+            if (file.Name.Equals("statistics_default.json"))
             {
-                if (file.Name.Equals("statistics_default.json"))
-                {
-                    JsonUtility.FromJsonOverwrite(reader.ReadToEnd(), _defaultStats);
-                }
-                else
-                {
-                    Statistics stats = new Statistics();
-                    JsonUtility.FromJsonOverwrite(reader.ReadToEnd(), stats);
-                    _allStats.Add(stats);
-                }
+                _defaultStats = JsonUtility.FromJson<Statistics>(json);
+            }
+            else
+            {
+                _allStats.Add(JsonUtility.FromJson<Statistics>(json));
             }
         }
     }

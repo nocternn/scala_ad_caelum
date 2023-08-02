@@ -17,7 +17,7 @@ public class EnemyManager : CharacterManager
     public EnemyStats stats;
     public EnemyWeaponSlotManager weaponSlotManager;
     public NavMeshAgent navMeshAgent;
-    public new Rigidbody rigidbody;
+    public Rigidbody rigidbody;
 
     [Header("A.I. Settings - Components")]
     public Transform currentEnemy;
@@ -78,9 +78,11 @@ public class EnemyManager : CharacterManager
 
     private void HandleStateMachine()
     {
+        EnemyState nextState;
         if (currentState != null)
         {
-            EnemyState nextState = currentState.Tick();
+            currentState.UpdateVision();
+            nextState = currentState.Tick();
             if (nextState != null)
             {
 				nextState.UpdateVision();

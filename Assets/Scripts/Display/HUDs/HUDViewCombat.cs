@@ -17,6 +17,8 @@ public class HUDViewCombat : MonoBehaviour
     
     public void Initialize()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+            
         _barEnemyHealth        = transform.Find("BarHealthEnemy").GetComponentInChildren<StatBarView>();
         _barPlayerHealth       = transform.Find("BarHealthPlayer").GetComponentInChildren<StatBarView>();
         _barPlayerSkillPoints  = transform.Find("BarSkillPlayer").GetComponentInChildren<StatBarView>();

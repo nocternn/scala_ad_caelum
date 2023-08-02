@@ -8,6 +8,8 @@ public abstract class EnemyState : MonoBehaviour
     [SerializeField] protected float _distanceFromTarget;
     [SerializeField] protected float _viewableAngle;
 
+    protected abstract void Awake();
+    
     public abstract EnemyState Tick();
 
     public void UpdateVision()

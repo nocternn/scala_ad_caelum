@@ -124,6 +124,7 @@ public class StageManager : MonoBehaviour
 
             PlayerManager.Instance.ToggleActive(true);
             PlayerManager.Instance.SetWeapon(StatisticsManager.Instance.playerWeapon);
+			PlayerManager.Instance.LockOff();
             PlayerManager.Instance.stats.CalculateCritChance(id);
         }
         else
@@ -337,6 +338,7 @@ public class StageManager : MonoBehaviour
 
             if (hudType == Enums.HUDType.Combat)
             {
+				Cursor.lockState = CursorLockMode.Locked;
                 TogglePlayer(true);
 
                 // If the enemy is no longer alive then it means the stage is cleared and show the combat report

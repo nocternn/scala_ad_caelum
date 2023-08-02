@@ -25,6 +25,8 @@ public class UltimateAttackAction : WeaponAction
     public override void PerformAction(PlayerManager player, bool playAnimation = true)
     {
         skill.UseSkill(player.weaponSlotManager.GetCurrentWeapon().type);
+        skill.Cooldown();
+        
         if (playAnimation)
 			player.PlayTargetAnimation(_animation, true);
         

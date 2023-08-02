@@ -7,7 +7,7 @@ public abstract class CameraHandler : MonoBehaviour
     #region Attributes
 
     [Header("Objects")]
-    public new Camera camera;
+    public Camera camera;
     public Transform targetTransform;
     public Transform cameraTransform;
     public Transform cameraPivotTransform;
