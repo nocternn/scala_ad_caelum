@@ -15,9 +15,9 @@ MonoBehaviour:
   primaryIcon: {fileID: 0}
   name: Bullet
   description: 
-  model: {fileID: 4652294645591498199, guid: 8624db34f333d354ebb8f15c34a4714c, type: 3}
   type: 2
-  forwardVelocity: 5000
+  model: {fileID: 4652294645591498199, guid: 8624db34f333d354ebb8f15c34a4714c, type: 3}
+  forwardVelocity: 4500
   upwardVelocity: 0
   mass: 0
   useGravity: 0

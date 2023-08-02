@@ -28,11 +28,7 @@ public class FireAction : WeaponAction
                 player.weaponSlotManager.rightHandSlot.GetComponentInChildren<AmmoInstantiationLocation>();
 
             // Instantiate ammo
-            GameObject ammo = Instantiate(
-                weapon.ammo.model,
-                instantiationLocation.transform.position,
-                CameraManager.Instance.GetRotation("pivot")
-            );
+            GameObject ammo = Instantiate(weapon.ammo.model, instantiationLocation.transform);
             RangedDamageCollider damageCollider = ammo.GetComponentInChildren<RangedDamageCollider>();
             // Set player ammo
             _ammo = ammo;
@@ -40,6 +36,7 @@ public class FireAction : WeaponAction
 
             // Enable damage
             damageCollider.item = _ammo.transform;
+            damageCollider.tag = "Player";
             player.weaponSlotManager.SetDamageCollider(false, damageCollider);
             player.weaponSlotManager.EnableDamageCollider();
 
@@ -47,7 +44,7 @@ public class FireAction : WeaponAction
             if (playAnimation)
                 player.PlayTargetAnimation(_animation, true);
         }
-        else
+        else if (_ammo != null)
         {
             // Set ammo direction
             _ammo.gameObject.SetActive(true);

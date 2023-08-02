@@ -52,12 +52,12 @@ public class EnemyStats : CharacterStats
         else if (currentHealth <= ScaleStat(maxHealth, 0.3f))
         {
             // If current HP is lower than 30% of max HP, gain
-            // 30% more ATK
-            scaleAttack += 0.3f;
+            // 20% more ATK
+            scaleAttack += 0.2f;
             // 10% more critical
             scaleCritical += 0.1f;
-            // 50% more defense
-            scaleDefense += 0.5f;
+            // 30% more defense
+            scaleDefense += 0.3f;
         }
     }
 
