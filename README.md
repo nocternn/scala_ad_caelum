@@ -12,7 +12,7 @@ Unity Hub and Editor are required to run this project. The version used for deve
 4. Choose Open. The project should now load automatically.
 
 ## How to run the build
-The deployed applciation is targeted toward Windows systems only.
+The deployed application is targeted toward Windows systems only.
 1. Download the ZIP file from the link above.
 2. Extract the archive and navigate into the new directory.
 3. Read the Instructions.txt file.
