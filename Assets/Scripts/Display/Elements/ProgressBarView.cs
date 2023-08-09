@@ -14,6 +14,7 @@ public class ProgressBarView : MonoBehaviour
 
     public void UpdateProgress(int index)
     {
+        index = Mathf.Min(index, Arrays.StageProgressFill.Length - 1);
         _progressFill.fillAmount = Arrays.StageProgressFill[index];
     }
 }

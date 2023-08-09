@@ -16,8 +16,11 @@ MonoBehaviour:
   name: Motto of Asavakkhaya LEVEL
   description: 'Attacks grant COUNT bonus combo hits on hit. CD: DURATIONs'
   type: 0
+  canUpgrade: 1
   id: 3
   level: 0
+  cost: 80
+  costDescription: 
   count:
   - 25
   - 30
@@ -29,4 +32,4 @@ MonoBehaviour:
   - 5
   - 5
   scalar: []
-  effect: {fileID: 0}
+  _class: {fileID: 0}

@@ -58,7 +58,7 @@ public class DialogueView : MonoBehaviour
     {
         if (_dialogues.Count == 0)
         {
-            _manager.SwitchToBuff();
+            _manager.SwitchToNextScreen();
         }
         else
         {

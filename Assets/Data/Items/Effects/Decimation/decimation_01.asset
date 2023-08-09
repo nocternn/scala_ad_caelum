@@ -16,8 +16,11 @@ MonoBehaviour:
   name: Blade, Grave, and Scar LEVEL
   description: Every COUNT HP loss boosts DMG by SCALAR%.
   type: 1
+  canUpgrade: 1
   id: 1
   level: 0
+  cost: 80
+  costDescription: 
   count:
   - 100
   - 100
@@ -29,4 +32,4 @@ MonoBehaviour:
   - 1.2
   - 1.4
   - 1.6
-  effect: {fileID: 0}
+  _class: {fileID: 0}

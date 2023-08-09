@@ -210,40 +210,54 @@ public class StageManager : MonoBehaviour
     
     public void SwitchToNextStage()
     {
-        id++;
         _initialized = false;
-        door.Open();
         
         bool quit = false;
         if (!isLocalBattle)
         {
-            // Register stage progress
-            StatisticsManager.Instance.playerStats.progress.stage = id;
-            // Register combat stats
-            StatisticsManager.Instance.CopyCombatStats(PlayerManager.Instance);
-            // Register number of stages cleared stat
-            StatisticsManager.Instance.playerStats.meta.numberOfStagesCleared++;
-            
-            if (id <= StatisticsProgress.MaxStages)
+            if (id < StatisticsProgress.MaxStages)
             {
+                door.Open();
+                
+                id++;
+
+                // Register stage progress
+                StatisticsManager.Instance.playerStats.progress.stage = id;
+                // Register combat stats
+                StatisticsManager.Instance.CopyCombatStats(PlayerManager.Instance);
+                // Register number of stages cleared stat
+                StatisticsManager.Instance.playerStats.meta.numberOfStagesCleared++;
+
                 hudType = Enums.HUDType.Dialogue;
                 previousHudType = Enums.HUDType.Dialogue;
             }
             else
             {
-                quit = true;
-            
                 // Register iteration progress
-                // If current iteration is last and we passed the last stage then loop back to the beginning
+                // * If current iteration is last and we passed the last stage
+                // * then restart the progress
                 if (StatisticsManager.Instance.playerStats.progress.iteration == StatisticsProgress.MaxIterations)
+                {
                     StatisticsManager.Instance.ResetStatsPlayer(Enums.StatsType.Progress);
+                }
+                // * If current iteration is not last but we passed the last stage
+                // * then go to the beginning of next iteration
+                else
+                {
+                    StatisticsManager.Instance.playerStats.progress.iteration++;
+                    StatisticsManager.Instance.playerStats.progress.stage = 1;
+                }
             
                 // Register number of runs stat
                 StatisticsManager.Instance.playerStats.meta.numberOfRuns++;
+
+                quit = true;
             }
         }
         else
         {
+            door.Open();
+
 			// Register number of local battles won
             StatisticsManager.Instance.playerStats.meta.numberOfLocalBattlesWon++;
 

@@ -80,9 +80,16 @@ public class HUDViewStage : MonoBehaviour
         _initialized = true;
     }
 
-    public void SwitchToBuff()
+    public void SwitchToNextScreen()
     {
-        HUDManager.Instance.Action(Enums.HUDActionType.SwitchEffects);
+        if (StageManager.Instance.id < StatisticsProgress.MaxStages)
+        {
+            HUDManager.Instance.Action(Enums.HUDActionType.SwitchEffects);
+        }
+        else
+        {
+            StageManager.Instance.SwitchToNextStage();
+        }
     }
 
     #region Coin

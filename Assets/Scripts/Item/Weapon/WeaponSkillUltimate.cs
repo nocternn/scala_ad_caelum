@@ -117,7 +117,6 @@ public class WeaponSkillUltimate : WeaponSkill
 
   private IEnumerator ApplyEffect(float scalar, int duration)
   {
-    Debug.Log("HereX");
     int damage = PlayerManager.Instance.stats.ScaleStat(PlayerManager.Instance.stats.maxHealth, scalar);
     for (int i = 1; i <= duration; i++)
     {
